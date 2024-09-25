@@ -10,3 +10,6 @@ cd webserver/
 python3 -m venv .
 
 bin/pip install mysqlclient
+
+
+django-admin startproject mysite

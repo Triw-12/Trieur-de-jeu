@@ -15,3 +15,7 @@ bin/pip install django
 
 
 django-admin startproject mysite
+
+
+# Launch the server
+python manage.py runserver

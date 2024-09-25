@@ -1,6 +1,12 @@
 # Trieur-de-jeu
 
-Utilisation d'un CT debian 12 avec proxmox
+## But
+
+Créer un site web pour ajouter, supprimer, chercher et recommander des jeux du CJ de Télécom SudParis.
+
+## Matériel
+
+Le site est hébergé en CT Debian 12 avec Proxmox
 
 ## Installation
 
@@ -17,6 +23,7 @@ pip install -r requirements.txt
 ## Lancer le serveur
 
 ```py
+cd website/
 python3 manage.py migrate
-python manage.py runserver
+python3 manage.py runserver
 ```

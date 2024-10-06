@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+Connexion
+{% endblock title %}
+
+{% block body %}
+<h1>Se connecter</h1>
+<form method="post" class="form">
+    <p>{{ message }}</p>
+    {{ form.as_p }}
+    {% csrf_token %}
+    <button type="submit" id="envoi">Se connecter</button><br /><br />
+    <a href="">Inscrivez-vous !</a>
+</form>
+{% endblock body %}

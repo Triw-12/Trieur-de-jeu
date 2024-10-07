@@ -23,8 +23,11 @@ import board_games.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', board_games.views.home, name='home'),
     path('login/', LoginView.as_view(
             template_name='players/login.html',
             redirect_authenticated_user=True),
         name='login'),
+    path('logout/', LogoutView.as_view(),name='logout'),
+    path('signup/', players.views.signup, name='signup')
 ]

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.conf import settings
 from django.contrib.auth import login
 
-from . import forms
+from authentification import forms
 
 def signup(request):
     form = forms.SignupForm()
@@ -14,4 +14,4 @@ def signup(request):
             # auto-login user
             login(request, user)
             return redirect(settings.LOGIN_REDIRECT_URL)
-    return render(request, 'players/signup.html', context={'form': form})
+    return render(request, 'authentification/signup.html', context={'form': form})

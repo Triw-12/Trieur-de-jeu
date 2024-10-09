@@ -16,7 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
+import authentification.views
+import board_games.views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', board_games.views.home, name='home'),
+    path('login/', LoginView.as_view(
+            template_name='authentification/login.html',
+            redirect_authenticated_user=True),
+        name='login'),
+    path('logout/', LogoutView.as_view(),name='logout'),
+    path('signup/', authentification.views.signup, name='signup')
 ]

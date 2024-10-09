@@ -11,6 +11,6 @@ Connexion
     {{ form.as_p }}
     {% csrf_token %}
     <button type="submit" id="envoi">Se connecter</button><br /><br />
-    <a href="">Inscrivez-vous !</a>
+    <a href="{% url 'signup' %}">Inscrivez-vous !</a>
 </form>
 {% endblock body %}

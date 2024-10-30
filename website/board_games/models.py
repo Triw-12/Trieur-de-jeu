@@ -4,11 +4,11 @@ from django.db import models
 class Games(models.Model):
     game_id = models.AutoField("game_id", primary_key=True, blank=False)
     game_name = models.CharField("game_name", max_length=200, blank=False)
-    stock_nb = models.IntegerField("stock_nb", default=0, blank=True)
+    stock_nb = models.IntegerField("stock_nb", default=1, blank=True)
     game_length_min = models.IntegerField("game_length_min", default=0, blank=True)
     game_length_max = models.IntegerField("game_length_max", default=999, blank=True)
-    min_players = models.IntegerField("min_players", default=0, blank=True)
-    max_players = models.IntegerField("max_players", default=0, blank=True)
+    min_players = models.IntegerField("min_players", default=1, blank=True)
+    max_players = models.IntegerField("max_players", default=99, blank=True)
     min_age = models.IntegerField("min_age", default=0, blank=True)
 
 class Lending(models.Model):

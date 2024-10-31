@@ -5,15 +5,12 @@ Home
 {% endblock title %}
 
 {% block body %}
-Home <br />
+<h1>Home</h1>
 
 {% if user.is_authenticated %}
 <strong>Bonjour {{ request.user }}</strong>
-<form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
 {% else %}
+<strong>Vous n'êtes pas connecté</strong>
 <a href="{% url 'login' %}">Login</a>
 {% endif %}
 {% endblock body %}

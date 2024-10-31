@@ -28,6 +28,8 @@ urlpatterns = [
             template_name='authentification/login.html',
             redirect_authenticated_user=True),
         name='login'),
-    path('logout/', LogoutView.as_view(),name='logout'),
-    path('signup/', authentification.views.signup, name='signup')
+    path('logout/', authentification.views.logout_custom,name='logout'),
+    path('signup/', authentification.views.signup, name='signup'),
+    path('advanced_search/', board_games.views.advanced_search, name='advanced_search'),
+    path('add_game/', board_games.views.add_game, name='add_game'),
 ]

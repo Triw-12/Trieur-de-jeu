@@ -8,7 +8,20 @@
 </head>
 
 <body>
-    <!-- Barre de navigation à mettre en place-->
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'advanced_search' %}">Recherche avancée</a>
+        {% if user.is_authenticated %}
+            {% if user.is_staff %}
+            <a href={% url 'add_game' %}>Ajouter un jeu</a>
+            <a href="/admin/">Admin</a>
+            {% endif %}
+            <a href={% url 'logout' %}>Se déconnecter</a>
+        {% else %}
+            <a href="{% url 'login' %}">Se connecter</a>
+            <a href="{% url 'signup' %}">S'inscrire</a>
+        {% endif %}
+    </nav>
     {% block body %}{% endblock body %}
 </body>
 

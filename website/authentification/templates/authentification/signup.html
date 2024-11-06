@@ -1,13 +1,34 @@
 {% extends 'base.html' %}
 {% block title %}Inscription{% endblock title %}
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'CSS/signup.css' %}">
+{% endblock head %}
 {% block body %}
-<h2>Inscription</h2>
 {% if form.errors %}
 {{ form.errors }}
 {% endif %}
-<form method="post" class="form">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <button type="submit" id="envoi">S’inscrire</button>
-</form>
+
+<div class="background container-fluid p-0">
+    <img class="img-bg" src="{% static 'IMG/bg.jpg' %}">
+    <div class="row background-pics">
+    </div>
+
+</div>
+<div class="foreground container-fluid">
+    <div class="row">
+        <div class="d-flex col-lg-5 col-md-6 col-xs-12 align-items-center justify-content-center">
+            <div class="form p-3 pt-5 rounded-4">
+                <h1 class="mb-3">S'inscrire</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.username }}
+                    {{ form.password1 }}
+                    {{ form.password2 }}
+                    <input type="submit" value="Valider" class="btn btn-success">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock body %}

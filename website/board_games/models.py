@@ -22,6 +22,13 @@ class Lending(models.Model):
 class Tags(models.Model):
     game_id = models.AutoField("game_id", primary_key=True, blank=False)
     tag_id = models.CharField("tag_id", max_length=200, blank=False)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['game_id', 'tag_id'], name='unique_migration_host_combination_tags'
+            )
+        ]
+
 
 class History(models.Model):
     play_id = models.AutoField("play_id", primary_key=True, blank=False)
@@ -32,6 +39,12 @@ class History(models.Model):
 class History_players(models.Model):
     play_id = models.AutoField("play_id", primary_key=True, blank=False)
     user_id = models.IntegerField("user_id", blank=False)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['play_id', 'user_id'], name='unique_migration_host_combination_history'
+            )
+        ]
 
 class Extensions(models.Model):
     extension_id = models.AutoField("extension_id", primary_key=True, blank=False)

@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class Games(models.Model):
@@ -13,14 +14,14 @@ class Games(models.Model):
 
 class Lending(models.Model):
     lending_id = models.AutoField(primary_key=True, blank=False)
-    user_id = models.IntegerField("user_id", blank=False)
-    game_id = models.IntegerField("game_id", blank=False)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     date_start = models.DateField("date_start", blank=False)
     date_expected_end = models.DateField("date_end", blank=False)
     date_end = models.DateField("date_end", blank=True)
 
 class Tags(models.Model):
-    game_id = models.AutoField("game_id", primary_key=True, blank=False)
+    game_id = models.ForeignKey(Games,blank=False)
     tag_id = models.CharField("tag_id", max_length=200, blank=False)
     class Meta:
         constraints = [
@@ -37,8 +38,8 @@ class History(models.Model):
     rating = models.IntegerField("rating", blank=True)
 
 class History_players(models.Model):
-    play_id = models.AutoField("play_id", primary_key=True, blank=False)
-    user_id = models.IntegerField("user_id", blank=False)
+    play_id = models.ForeignKey(History,blank=False,on_delete=models.CASCADE)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,blank=False,on_delete=models.CASCADE)
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -48,5 +49,5 @@ class History_players(models.Model):
 
 class Extensions(models.Model):
     extension_id = models.AutoField("extension_id", primary_key=True, blank=False)
-    game_id = models.IntegerField("game_id", blank=False)
+    game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     time_add = models.IntegerField("time_add", blank=False)

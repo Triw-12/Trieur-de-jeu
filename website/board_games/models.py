@@ -21,7 +21,7 @@ class Lending(models.Model):
     date_end = models.DateField("date_end", blank=True)
 
 class Tags(models.Model):
-    game_id = models.ForeignKey(Games,blank=False)
+    game_id = models.ForeignKey(Games,blank=False, on_delete=models.CASCADE)
     tag_id = models.CharField("tag_id", max_length=200, blank=False)
     class Meta:
         constraints = [

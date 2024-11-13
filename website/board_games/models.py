@@ -33,7 +33,7 @@ class Tags(models.Model):
 
 class History(models.Model):
     play_id = models.AutoField("play_id", primary_key=True, blank=False)
-    game_id = models.IntegerField("game_id", blank=False)
+    game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     date = models.DateField("date", blank=False)
     rating = models.IntegerField("rating", blank=True)
 

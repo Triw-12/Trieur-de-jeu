@@ -122,7 +122,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'authentification/static',
+    BASE_DIR / 'static',
+    'authentification/static', 
+    'board_games/static'
 ]
 
 # Default primary key field type

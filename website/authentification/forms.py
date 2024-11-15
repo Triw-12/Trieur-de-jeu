@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.forms import TextInput, PasswordInput
 
 class SignupForm(UserCreationForm):
@@ -23,3 +23,7 @@ class SignupForm(UserCreationForm):
             "class": "form-control my-3",
             "placeholder" : "Confirmer",
         })
+
+class LoginForm(AuthenticationForm):
+    model = get_user_model()
+    fields = ('username',)

@@ -1,0 +1,3 @@
+[submodule "website/static/images"]
+	path = website/static/images
+	url = git@github.com:Triw-12/images.git

@@ -21,7 +21,7 @@ def logout_custom(request):
     logout(request)
     return redirect('home')
 
-def login(request):
+def login_custom(request):
     form = forms.LoginForm()
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)

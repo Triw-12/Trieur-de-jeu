@@ -17,17 +17,17 @@
             <a href="/admin/">Admin</a>
             {% endif %}
             {% if simple_search %}
-            <form method="post" action="{% url 'advanced_search' %}">
-                {% csrf_token %}
-                {{ simple_search.as_p }}
-                <button type="submit">Rechercher</button>
-            </form>
             {% endif %}
             <a href={% url 'logout' %}>Se déconnecter</a>
         {% else %}
             <a href="{% url 'login' %}">Se connecter</a>
             <a href="{% url 'signup' %}">S'inscrire</a>
         {% endif %}
+        <form method="post" action="{% url 'advanced_search' %}">
+            {% csrf_token %}
+            {{ simple_search.as_p }}
+            <button type="submit">Rechercher</button>
+        </form>
     </nav>
     {% block body %}{% endblock body %}
 </body>

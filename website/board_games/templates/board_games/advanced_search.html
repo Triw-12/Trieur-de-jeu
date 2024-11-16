@@ -17,7 +17,7 @@ Recherche avancée
     <h2>Résultats de la recherche</h2>
     <ul>
         {% for game in games %}
-            <li>{{ game.game_name }}</li>
+            <li><a href={% url 'game' game.game_id %}>{{ game.game_name }}</a></li>
         {% endfor %}
     </ul>
 {% endif %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{{ game.game_name }}
+{% endblock title %}
+
+{% block body %}
+<h1>{{ game.game_name }}</h1>
+
+<ul>
+    <li>Nombre de joueurs : {{ game.min_players }} à {{ game.max_players }}</li>
+    <li>Âge minimum : {{ game.min_age }} ans</li>
+    <li>Durée moyenne : {{ game.playing_time }} minutes</li>
+</ul>
+
+
+{% endblock body %}

@@ -28,11 +28,9 @@ def advanced_search(request):
                 games = games.filter(game_length_max__lte=form.cleaned_data['game_length_max'])
             if form.cleaned_data['tag']:
                 games = games.filter(tag__icontains=form.cleaned_data['tag'])
-            print(games)
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])
-            print("Simple",games)
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games})
     return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search})
 
@@ -45,3 +43,8 @@ def add_game(request):
             game = form.save()
             return redirect('home')
     return render(request, 'board_games/add_game.html',context={'form': form, 'simple_search': simple_search})
+
+def game(request, id):
+    simple_search = forms.Simple_search()
+    game = Games.objects.get(game_id=id)
+    return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search})

@@ -11,8 +11,6 @@ class Games(models.Model):
     min_players = models.IntegerField("min_players", default=1, blank=True)
     max_players = models.IntegerField("max_players", default=99, blank=True)
     min_age = models.IntegerField("min_age", default=0, blank=True)
-    def save(self, *args, **kwargs):
-        super(Games, self).save(*args, **kwargs)
 
 class Lending(models.Model):
     lending_id = models.AutoField(primary_key=True, blank=False)

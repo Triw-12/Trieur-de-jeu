@@ -18,7 +18,7 @@ class Lending(models.Model):
     game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     date_start = models.DateField("date_start", blank=False)
     date_expected_end = models.DateField("date_end", blank=False)
-    date_end = models.DateField("date_end", blank=True)
+    date_end = models.DateField("date_end", blank=True, null=True)
 
 class Tags(models.Model):
     game_id = models.ForeignKey(Games,blank=False, on_delete=models.CASCADE)
@@ -35,7 +35,7 @@ class History(models.Model):
     play_id = models.AutoField("play_id", primary_key=True, blank=False)
     game_id = models.ForeignKey(Games,blank=False, on_delete=models.CASCADE)
     date = models.DateField("date", blank=False)
-    rating = models.IntegerField("rating", blank=True)
+    rating = models.IntegerField("rating", blank=True, null=True)
 
 class History_players(models.Model):
     play_id = models.ForeignKey(History,blank=False,on_delete=models.CASCADE)

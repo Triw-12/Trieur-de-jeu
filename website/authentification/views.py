@@ -23,6 +23,8 @@ def logout_custom(request):
 
 def login_custom(request):
     form = forms.LoginForm()
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
         if form.is_valid():
@@ -33,6 +35,7 @@ def login_custom(request):
             if user is not None:
                 login(request, user)
                 message = f'Bonjour, {user.username}! Vous êtes connecté.'
+                return redirect('home')
             else:
                 message = 'Identifiants invalides.'
     return render(

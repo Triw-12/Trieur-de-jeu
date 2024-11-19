@@ -1,5 +1,4 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'CSS/base.css' %}">
 <!doctype html>
 <html lang="fr">
 
@@ -9,6 +8,7 @@
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}    
+    <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
     <title>{% block title %}{% endblock title %}</title>
     
     {% block head %}{% endblock head %}

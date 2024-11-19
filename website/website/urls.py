@@ -24,10 +24,7 @@ import board_games.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', board_games.views.home, name='home'),
-    path('login/', LoginView.as_view(
-            template_name='authentification/login.html',
-            redirect_authenticated_user=True),
-        name='login'),
+    path('login/', authentification.views.login_custom, name='login'),
     path('logout/', authentification.views.logout_custom,name='logout'),
     path('signup/', authentification.views.signup, name='signup'),
     path('advanced_search/', board_games.views.advanced_search, name='advanced_search'),

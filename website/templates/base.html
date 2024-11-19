@@ -1,21 +1,35 @@
 {% load static %}
 <!doctype html>
-<html>
+<html lang="fr">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}    
+    <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
     <title>{% block title %}{% endblock title %}</title>
+    
     {% block head %}{% endblock head %}
 </head>
 
 <body>
-    <nav>
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'advanced_search' %}">Recherche avancée</a>
-        {% if user.is_authenticated %}
-            {% if user.is_staff %}
-            <a href={% url 'add_game' %}>Ajouter un jeu</a>
-            <a href="/admin/">Admin</a>
+    <div class="navbar">
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'advanced_search' %}">Recherche avancée</a>
+            {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <a href={% url 'add_game' %}>Ajouter un jeu</a>
+                <a href="/admin/">Admin</a>
+                {% endif %}
+                <a href={% url 'logout' %}>Se déconnecter</a>
+            {% else %}
+                <a href="{% url 'login' %}">Se connecter</a>
+                <a href="{% url 'signup' %}">S'inscrire</a>
             {% endif %}
+
             <a href={% url 'logout' %}>Se déconnecter</a>
         {% else %}
             <a href="{% url 'login' %}">Se connecter</a>
@@ -29,6 +43,7 @@
         </form>
         {% endif %}
     </nav>
+ </div>
     {% block body %}{% endblock body %}
 </body>
 

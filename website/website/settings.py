@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-0!qwjx674(lbk$-iz%iivlcj+z_o*fy0@r@^&aqz+gu2a*q47n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentification',
-    'board_games'
+    'board_games',
+    "django_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -123,6 +124,12 @@ DATE_FORMAT = "l d F y"
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+    'authentification/static', 
+    'board_games/static'
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field

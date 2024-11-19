@@ -1,0 +1,42 @@
+.right {
+    height: 100%;
+}
+
+.row{
+    height: 100%;
+}
+
+.foreground{
+    height: 90vh;
+}
+
+.img-bg{
+    height: 100%;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+}
+
+.form{
+    text-align: center;
+    top: 500px;
+    background-color: beige;
+    max-height: 90%;
+    width: 70%;
+}
+
+.background{
+    height: 90vh;
+}
+
+.foreground{
+    position: absolute;
+    top: 10vh;
+}
+
+.background-pics{
+    position: absolute;
+    top: 10vh;
+}

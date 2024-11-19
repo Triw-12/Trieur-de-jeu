@@ -4,7 +4,7 @@ from django.conf import settings
 
 class Games(models.Model):
     game_id = models.AutoField("game_id", primary_key=True, blank=False)
-    game_name = models.CharField("game_name", max_length=200, blank=False)
+    game_name = models.CharField("game_name", unique=True, max_length=200, blank=False)
     stock_nb = models.IntegerField("stock_nb", default=1, blank=True)
     game_length_min = models.IntegerField("game_length_min", default=0, blank=True)
     game_length_max = models.IntegerField("game_length_max", default=999, blank=True)
@@ -18,7 +18,7 @@ class Lending(models.Model):
     game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     date_start = models.DateField("date_start", blank=False)
     date_expected_end = models.DateField("date_end", blank=False)
-    date_end = models.DateField("date_end", blank=True)
+    date_end = models.DateField("date_end", blank=True, null=True)
 
 class Tags(models.Model):
     game_id = models.ForeignKey(Games,blank=False, on_delete=models.CASCADE)
@@ -33,9 +33,9 @@ class Tags(models.Model):
 
 class History(models.Model):
     play_id = models.AutoField("play_id", primary_key=True, blank=False)
-    game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
+    game_id = models.ForeignKey(Games,blank=False, on_delete=models.CASCADE)
     date = models.DateField("date", blank=False)
-    rating = models.IntegerField("rating", blank=True)
+    rating = models.IntegerField("rating", blank=True, null=True)
 
 class History_players(models.Model):
     play_id = models.ForeignKey(History,blank=False,on_delete=models.CASCADE)
@@ -49,5 +49,6 @@ class History_players(models.Model):
 
 class Extensions(models.Model):
     extension_id = models.AutoField("extension_id", primary_key=True, blank=False)
+    extension_name = models.CharField("extension_name", unique=True, max_length=200, blank=False)
     game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     time_add = models.IntegerField("time_add", blank=False)

@@ -6,4 +6,19 @@ Recherche avancée
 
 {% block body %}
 <h1>Recherche avancée</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Rechercher</button>
+</form>
+
+{% if games %}
+    <h2>Résultats de la recherche</h2>
+    <ul>
+        {% for game in games %}
+            <li><a href={% url 'game' game.game_id %}>{{ game.game_name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
 {% endblock body %}

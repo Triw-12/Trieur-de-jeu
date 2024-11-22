@@ -1,16 +1,33 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}
-Connexion
-{% endblock title %}
-
+{% block title %}Connexion{% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'CSS/auth.css' %}">
+{% endblock head %}
 {% block body %}
-<h1>Se connecter</h1>
-<form method="post" class="form">
-    <p>{{ message }}</p>
-    {{ form.as_p }}
-    {% csrf_token %}
-    <button type="submit" id="envoi">Se connecter</button><br /><br />
-    <a href="{% url 'signup' %}">Inscrivez-vous !</a>
-</form>
+{% if form.errors %}
+{{ form.errors }}
+{% endif %}
+
+<div class="background container-fluid p-0">
+    <img class="img-bg" src="{% static 'images/authentification/bg.jpg' %}">
+    <div class="row background-pics">
+    </div>
+
+</div>
+<div class="foreground container-fluid">
+    <div class="row">
+        <div class="d-flex col-lg-5 col-md-6 col-xs-12 align-items-center justify-content-center">
+            <div class="form p-3 pt-5 rounded-4">
+                <h1 class="mb-3">Se connecter</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.username }}
+                    {{ form.password }}
+                    <input type="submit" value="Valider" class="btn btn-success">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock body %}

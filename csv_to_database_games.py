@@ -16,17 +16,17 @@ for i in db_res.fetchall():
 with open("Jeu_csv-Jeux.csv", "r") as file:
     for line in file: # For each line
         if not first: # Allows to forget the first line (titles) of the csv
-            L = line.split(";")
-            game_name = L[0]
-            difficulty = L[1]
-            min_age = L[2]
-            game_length_min = L[3]
-            game_length_max = L[4]
-            min_players = L[5]
-            max_players = L[6]
-            types = L[7]
-            caution = L[8]
-            stock_nb = L[9]
+            words = line.split(";")
+            game_name = words[0]
+            difficulty = words[1]
+            min_age = words[2]
+            game_length_min = words[3]
+            game_length_max = words[4]
+            min_players = words[5]
+            max_players = words[6]
+            types = words[7]
+            caution = words[8]
+            stock_nb = words[9]
             # Change game_name in order to escape the ' symbol in SQL.
             game_name_normalised = game_name.replace("'", "''")
 

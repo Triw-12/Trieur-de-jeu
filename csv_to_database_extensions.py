@@ -16,10 +16,10 @@ for i in db_res.fetchall():
 with open("Jeu_csv-Extentions.csv", "r") as file:
     for line in file: # For each line
         if not first: # Allows to forget the first line (titles) of the csv
-            L = line.split(";")
-            extension_name = L[0]
-            game_name = L[1]
-            time_add = L[2]
+            words = line.split(";")
+            extension_name = words[0]
+            game_name = words[1]
+            time_add = words[2]
             # Change game_name in order to escape the ' symbol in SQL.
             game_name_normalised = game_name.replace("'", "''")
 

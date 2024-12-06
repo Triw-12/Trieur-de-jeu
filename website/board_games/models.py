@@ -57,4 +57,4 @@ class Extensions(models.Model):
     game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     time_add = models.IntegerField("time_add", blank=False)
     def __str__(self):
-        return self.extension_name + " de " + self.game_id.game_name
+        return self.extension_name + " of " + self.game_id.game_name

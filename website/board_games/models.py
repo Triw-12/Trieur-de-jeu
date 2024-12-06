@@ -32,7 +32,7 @@ class Tags(models.Model):
             )
         ]
     def __str__(self):
-        return "(" + self.game_name + ", " + self.game_id.tag_id + ")"
+        return '(' + str(self.game_id) + ', ' + str(self.tag_id) + ')'
 
 
 class History(models.Model):

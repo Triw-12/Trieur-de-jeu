@@ -11,6 +11,8 @@ class Games(models.Model):
     min_players = models.IntegerField("min_players", default=1, blank=True)
     max_players = models.IntegerField("max_players", default=99, blank=True)
     min_age = models.IntegerField("min_age", default=0, blank=True)
+    def __str__(self):
+        return self.game_name
 
 class Lending(models.Model):
     lending_id = models.AutoField(primary_key=True, blank=False)
@@ -29,6 +31,8 @@ class Tags(models.Model):
                 fields=['game_id', 'tag_id'], name='unique_migration_host_combination_tags'
             )
         ]
+    def __str__(self):
+        return "(" + self.game_name + ", " + self.game_id.tag_id + ")"
 
 
 class History(models.Model):
@@ -52,3 +56,5 @@ class Extensions(models.Model):
     extension_name = models.CharField("extension_name", unique=True, max_length=200, blank=False)
     game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     time_add = models.IntegerField("time_add", blank=False)
+    def __str__(self):
+        return self.extension_name + " de " + self.game_id.game_name

@@ -30,11 +30,6 @@
                 <a href="{% url 'signup' %}">S'inscrire</a>
             {% endif %}
 
-            <a href={% url 'logout' %}>Se déconnecter</a>
-        {% else %}
-            <a href="{% url 'login' %}">Se connecter</a>
-            <a href="{% url 'signup' %}">S'inscrire</a>
-        {% endif %}
         {% if simple_search %}
         <form method="post" action="{% url 'advanced_search' %}">
             {% csrf_token %}

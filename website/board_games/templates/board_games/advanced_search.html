@@ -19,7 +19,7 @@ Recherche avancée
 {% if games %}
     <h2>Résultats de la recherche</h2>
     <ul>
-        {% for game in games %}
+        {% for game, tags in games.items %}
             <div class="container game-res border rounded m-4 p-2">
             <div class="row game-row h-100">
                 <div class="col-xs-6 col-2 d-flex align-items-center h-100 ">
@@ -34,19 +34,25 @@ Recherche avancée
                         </div>
                     </div>
                     <div class="row h-100">
-                        <div class="col-2 d-flex p-3 justify-content-center">
-                            <p> Joueurs : de {{ game.min_players }} à {{ game.max_players }} </p>
+                        <div class="col-3 d-flex p-3 justify-content-center">
+                            <p> Joueurs : <br> de {{ game.min_players }} à {{ game.max_players }} </p>
                         </div>
-                        <div class="col-2 d-flex p-3 justify-content-center">
-                            <p> Durée : {{ game.playing_time }}m</p>
+                        <div class="col-3 d-flex p-3 justify-content-center">
+                            <p> Durée : <br> {{game.game_length_min}}m</p>
                         </div>
-                        <div class="col-2 d-flex p-3 justify-content-center">
-                            <p> Catégorie : {{ game.tag }}m</p>
+                        <div class="col-3 d-flex p-3 ">
+                            <p> Tag : <br> {{ tags }} </p>
+                        </div>
+                        <div class="col-3 d-flex p-3 justify-content-center">
+                            <p> Difficulté : <br> ez </p>
                         </div>
                     </div>
                 </div>
             </div>
             </div>
+        {% endfor %}
+        {% for tag in tags %}
+        <p> {{tag}} </p>
         {% endfor %}
     </ul>
 {% endif %}

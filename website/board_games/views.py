@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from board_games import forms
-from board_games.models import Games
+from board_games.models import Games, Tags
+
 
 def home(request):
     simple_search = forms.Simple_search()
@@ -13,6 +14,7 @@ def advanced_search(request):
         form = forms.Advanced_search(request.POST)
         simple_search = forms.Simple_search()
         if form.is_valid():
+            tags = Tags.objects.all()
             games = Games.objects.all()
             if form.cleaned_data['game_name']:
                 games = games.filter(game_name__icontains=form.cleaned_data['game_name'])
@@ -28,7 +30,17 @@ def advanced_search(request):
                 games = games.filter(game_length_max__lte=form.cleaned_data['game_length_max'])
             if form.cleaned_data['tag']:
                 games = games.filter(tag__icontains=form.cleaned_data['tag'])
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games})
+            games_and_tags = {}
+            for tag in tags:
+                if tag.game_id in games:
+                    if tag.game_id not in games_and_tags:
+                        games_and_tags[tag.game_id] = ""
+                        print(tag.game_id)
+                    games_and_tags[tag.game_id] += tag.tag_id + ", " 
+            for key in games_and_tags.keys():
+                games_and_tags[key] = games_and_tags[key][:-2]
+            print(games_and_tags)
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games_and_tags})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games})

@@ -27,10 +27,9 @@ class Command(BaseCommand):
             for row in reader:
                 extension_name, game_name, time_add = row
                 # Change game_name in order to escape the ' symbol in SQL.
-                game_name_normalised = game_name.replace("'", "''")
 
                 try:
-                    game = Games.objects.get(game_name=game_name_normalised)
+                    game = Games.objects.get(game_name=game_name)
                 except Games.DoesNotExist:
                     print(f"Game '{game_name}' does not exist in the database.")
                     continue

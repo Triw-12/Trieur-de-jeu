@@ -23,5 +23,10 @@ def barycentre(M: list, MX : list, n : int, m : int, u: int, uTot : int) :
 	return Xu
 
 
-
-def 
+def valeurHypp(MX: list, X : list, n : int, m : int, j : int, utot : int, distmax : float, distmin : float) :
+	"""Hyppotèse: MX de taille n*m, X de taille m"""
+	"""Donne une valeur hyppotétique de j pour X"""
+	
+	dist : float = distance(X, XM[j], m)
+	
+	return utot*(dist-distmin)/(distmax-distmin)

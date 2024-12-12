@@ -1,20 +1,11 @@
 from math import *
 
 
-def moyenne(M : list, m : int,  u : int):
-	#Hyppothèse: m est la taille de M, m>0
-	#Renvois la moyenne de u des parties par rapport au jeu dans M
-	
-	moy : float= 0
-	for i in range(m) :
-		moy += M[u][i]
-	
-	return (moy/m)
-	
 
+	
 
 def Pearson(M: list, u: int, v: int, u_moy : float, v_moy : float):
-	# Renvois la Correlation de Pearlson entre u et v selon M
+	""" Renvois la Correlation de Pearlson entre u et v selon M"""
 	
 	m : int = len(M[0])
 	scalair : float = 0
@@ -31,7 +22,7 @@ def Pearson(M: list, u: int, v: int, u_moy : float, v_moy : float):
 
 
 def MoyPon(M: list, u: int, j: int):
-	#Renvois une note hyppothétique de j pour u
+	"""Renvois une note hyppothétique de j pour u"""
 	
 	n : int = len(M)
 	m : int = len(M[0])
@@ -50,19 +41,22 @@ def MoyPon(M: list, u: int, j: int):
 	
 	return (u_moy + (Pearpond/Pear))
 
-def filtrageCollaboratif(M,u) :
-	L : list = []
+
+def collaboratif(M : list, m : int, n : int, u : int) :
+	"""Hyppothèse: M est de taille m*n ; u<m"""
+	"""Renvois des notes hyppothétiques pour le joueur u à partir de M"""
+	notes : list = [0 for i in range(n)]
 	
-	for j in range(len(M[u])):
-		if (M[u][j] == 0) :
-			L.append(MoyPon(M,u,j))
-		else :
-			L.append(0)
+	for j in range(n):
+		
+		if (M[u][j] == 0) :	#Pour les jeux jamais joués
+			notes[j] = MoyPon(M,u,j)
+
 	
-	return L
+	return notes
 
 
 
-M = [[4,4,3,0,2],[2,1,4,0,0],[2,1,4,2,4]]
+M = [[2,1,4,0,0],[2,1,4,2,4]]
 
-print(filtrageCollaboratif(M,1))
+print(filtrageCollaboratif(M,2,5,0))

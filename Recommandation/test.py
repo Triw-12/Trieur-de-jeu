@@ -1,0 +1,4 @@
+from barycentre import distance
+
+
+print(distance([1,1,0],[1,1,1],3))

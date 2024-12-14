@@ -1,7 +1,7 @@
 from math import *
 
 def distance(X: list, Y: list, nx: int) :
-	"""Renvois la distance entre X et Y, tout deux de tailles nx"""
+	"""Renvoie la distance entre X et Y, tous deux de tailles nx"""
 	dist : int = 0
 	
 	for i in range (nx) :
@@ -12,7 +12,7 @@ def distance(X: list, Y: list, nx: int) :
 
 
 def barycentre(M: list, n : int, m : int, MX : list, nx : int, u: int, uTot : int) :
-	"""Calcule le barycentre de u par rapport au jeu de M (sous la forme de vecteur stocker dans MX)""" 
+	"""Calcule le barycentre de u par rapport au jeu de M (sous la forme de vecteur stocké dans MX)""" 
 	
 	Xu = [0 for i in range (nx)]	#Vecteur barycentre de u
 	
@@ -25,7 +25,7 @@ def barycentre(M: list, n : int, m : int, MX : list, nx : int, u: int, uTot : in
 
 
 def valeurHypp( dist : float, distmax : float, distmin : float) :
-	"""Hyppothèse: distmax > dist > distmin"""
+	"""Hypothèse: distmax > dist > distmin"""
 	"""Donne une valeur hyppotétique de j pour X"""
 	
 	return utot*(dist-distmin)/(distmax-distmin)
@@ -33,7 +33,7 @@ def valeurHypp( dist : float, distmax : float, distmin : float) :
 
 
 def contenus(M :int , n : int, m : int, MX : list, nx : int , u : int, utot : int) :
-	"""Renvois un tableau des notes hyppotéthiques pour u pour les jeux non joués de M de taille n x m, les jeux sont représentés par des vecteurs de taille nx dans MX"""
+	"""Renvoie un tableau des notes hypothétiques pour u pour les jeux non joués de M de taille n x m, les jeux sont représentés par des vecteurs de taille nx dans MX"""
 	
 	notes = [ 0 for i in range (m) ]
 	dist = [ 0. for i in range (m) ]

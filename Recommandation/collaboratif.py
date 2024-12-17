@@ -26,14 +26,14 @@ def MoyPon(M: list, u: int, j: int):
 	
 	n : int = len(M)
 	m : int = len(M[0])
-	u_moy : float = moyenne(M, m, u)
+	u_moy : float = sum(M[u])/m
 	
 	Pear = 0
 	Pearpond = 0
 	
 	for v in range(n) :
 		if M[v][j] > 0 :
-			v_moy = moyenne(M, m, v)
+			v_moy = sum(M[v])/m
 			P = Pearson(M, u, v, u_moy, v_moy)
 			Ppuiss = pow(abs(P),1.5) * P
 			Pear += Ppuiss
@@ -59,4 +59,4 @@ def collaboratif(M : list, m : int, n : int, u : int) :
 
 M = [[2,1,4,0,0],[2,1,4,2,4]]
 
-print(filtrageCollaboratif(M,2,5,0))
+print(collaboratif(M,2,5,0))

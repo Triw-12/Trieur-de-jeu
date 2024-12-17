@@ -11,6 +11,8 @@ def notes(M : list, n : int, m : int, MX : list, nx : int, u : int) :
 	notesCollab = collaboratif(M,n,m,u,uTot)
 	notesCont = contenus(M,n,m,MX,nx,uTot)
 
-	notes[(notesCollab[i] + notesCont[i]) /2 for i in range (m)]
+	notes = [ (notesCollab[i] + notesCont[i]) /2 for i in range (m) ]
 	
 	return notes
+
+

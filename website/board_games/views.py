@@ -35,11 +35,9 @@ def advanced_search(request):
                 if tag.game_id in games:
                     if tag.game_id not in games_and_tags:
                         games_and_tags[tag.game_id] = ""
-                        print(tag.game_id)
                     games_and_tags[tag.game_id] += tag.tag_id + ", " 
             for key in games_and_tags.keys():
                 games_and_tags[key] = games_and_tags[key][:-2]
-            print(games_and_tags)
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games_and_tags})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])

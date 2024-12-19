@@ -15,34 +15,39 @@
 </head>
 
 <body>
-    <div class="navbar container-fluid">
-        <nav>
-            <a href="{% url 'home' %}">Home</a>
-            <a href="{% url 'advanced_search' %}">Recherche avancée</a>
-            {% if user.is_authenticated %}
-                {% if user.is_staff %}
-                <a href={% url 'add_game' %}>Ajouter un jeu</a>
-                <a href="/admin/">Admin</a>
+    <div class="navbar">
+        <div class="dropdown ps-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Menu
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
+                <li><a class="dropdown-item" href="{% url 'advanced_search' %}">Recherche avancée</a></li>
+                {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                    <li><a class="dropdown-item" href={% url 'add_game' %}>Ajouter un jeu</a></li>
+                    <li><a class="dropdown-item" href="/admin/">Admin</a></li>
+                    {% endif %}
+                    <li><a class="dropdown-item" href={% url 'logout' %}>Se déconnecter</a></li>
+                {% else %}
+                    <li><a class="dropdown-item" href="{% url 'login' %}">Se connecter</a></li>
+                    <li><a class="dropdown-item" href="{% url 'signup' %}">S'inscrire</a></li>
                 {% endif %}
-                <a href={% url 'logout' %}>Se déconnecter</a>
-            {% else %}
-                <a href="{% url 'login' %}">Se connecter</a>
-                <a href="{% url 'signup' %}">S'inscrire</a>
-            {% endif %}
-            {% if simple_search %}
-                <form class="simple_search" method="post" action="{% url 'advanced_search' %}">
-                    <div class="row">
-                        <div class="col-10">
-                            {% csrf_token %}
-                            {{ simple_search.as_p }}
-                        </div>
-                        <div class="col-2">
-                            <button class="button_search" type="submit">Rechercher</button>
-                        </div>
-                    </div>
-                </form>
-            {% endif %}
-        </nav>
+            </ul>
+        </div>
+        {% if simple_search %}
+        <form class="simple_search" method="post" action="{% url 'advanced_search' %}">
+            <div class="row">
+                <div class="col-10">
+                    {% csrf_token %}
+                    {{ simple_search.as_p }}
+                </div>
+                <div class="col-2">
+                    <button class="button_search" type="submit">Rechercher</button>
+                </div>
+            </div>
+        </form>
+        {% endif %}
     </div>
     {% block body %}{% endblock body %}
 </body>

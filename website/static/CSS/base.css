@@ -1,0 +1,11 @@
+.navbar{
+    height: 10vh;
+    background-color: grey;
+    display: flex;
+
+}
+
+.simple_search{
+    margin-left: 10px;
+    float: left;
+}

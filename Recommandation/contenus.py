@@ -19,12 +19,12 @@ def barycentre(M: list, n : int, m : int, MX : list, nx : int, u: int, uTot : in
 	for i in range (m) :	#Pour chaque jeu
 		
 		for j in range (nx):	#Pour chaque composante du vecteur
-			Xu[-1] += MX[i][j] * M[u][i] / uTot
+			Xu[j] += MX[i][j] * M[u][i] / uTot
 		
 	return Xu
 
 
-def valeurHypp( dist : float, distmax : float, distmin : float) :
+def valeurHypp( dist : float, distmax : float, distmin : float, utot : int) :
 	"""Hypothèse: distmax > dist > distmin"""
 	"""Donne une valeur hyppotétique de j pour X"""
 	
@@ -56,8 +56,8 @@ def contenus(M :int , n : int, m : int, MX : list, nx : int , u : int, utot : in
 	
 	for i in range (m) :	#On donne les notes
 		
-		if M[j][i] == 0 :	#Si le jeu n'a jamais été joué
-			notes[i] = valeurHypp(dist[i], distmax, distmin)
+		if M[u][i] == 0 :	#Si le jeu n'a jamais été joué
+			notes[i] = valeurHypp(dist[i], distmax, distmin, utot)
 	
 	return notes
 

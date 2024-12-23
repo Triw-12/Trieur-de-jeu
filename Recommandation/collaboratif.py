@@ -54,9 +54,3 @@ def collaboratif(M : list, m : int, n : int, u : int) :
 
 	
 	return notes
-
-
-
-M = [[2,1,4,0,0],[2,1,4,2,4]]
-
-print(collaboratif(M,2,5,0))

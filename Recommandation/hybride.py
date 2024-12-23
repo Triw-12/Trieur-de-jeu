@@ -8,8 +8,8 @@ def notes(M : list, n : int, m : int, MX : list, nx : int, u : int) :
 	uMoy : int = sum(M[u]) / m
 	uTot : int = sum(M[u])
 
-	notesCollab = collaboratif(M,n,m,u,uTot)
-	notesCont = contenus(M,n,m,MX,nx,uTot)
+	notesCollab = collaboratif(M,n,m,u)
+	notesCont = contenus(M,n,m,MX,nx,u,uTot)
 
 	notes = [ (notesCollab[i] + notesCont[i]) /2 for i in range (m) ]
 	

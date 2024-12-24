@@ -16,16 +16,16 @@ X4 = [0,0,2]
 X5 = [4,1,1]
 MX = [X1,X2,X3,X4,X5]
 
-print(barycentre(M,3,5,MX,3,1,sum(M[1])))
+print(barycentre(M,MX,1,sum(M[1])))
 
-print(contenus(M,3,5,MX,3,1,sum(M[1])))
+print(contenus(M,MX,1,sum(M[1])))
 
 
 from collaboratif import *
 
-print(collaboratif(M,3,5,1))
+print(collaboratif(M,1))
 
 
 from hybride import *
 
-notes(M,3,5,MX,3,1)
+notes(M,MX,1)

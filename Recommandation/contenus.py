@@ -1,64 +1,65 @@
 from math import *
 
-def distance(X: list, Y: list, nx: int) :
-	"""Renvoie la distance entre X et Y, tous deux de tailles nx"""
+def distance(v1: list, v2: list) :
+	"""Renvoie la distance entre v1 et v2, tous deux de même tailles"""
+	assert len(v1) == len(v2)
 	dist : int = 0
 	
-	for i in range (nx) :
-		dist += (X[i] - Y[i])**2
+	for i in range (len(v1)) :
+		dist += (v1[i] - v2[i])**2
 	
 	dist = sqrt(dist)
 	return dist
 
 
-def barycentre(M: list, n : int, m : int, MX : list, nx : int, u: int, uTot : int) :
-	"""Calcule le barycentre de u par rapport au jeu de M (sous la forme de vecteur stocké dans MX)""" 
+def barycentre(nb_jeux_joues: list, vecteur_jeux : list, u: int, uTot : int) :
+	"""Calcule le barycentre de u par rapport au jeu de nb_jeux_joues (sous la forme de vecteur stocké dans vecteur_jeux)""" 
 	
-	Xu = [0 for i in range (nx)]	#Vecteur barycentre de u
+	vect_u = [0 for i in range (len(vecteur_jeux))]	#Vecteur barycentre de u
 	
-	for i in range (m) :	#Pour chaque jeu
+	for i in range (len(vecteur_jeux)) :	#Pour chaque jeu
 		
-		for j in range (nx):	#Pour chaque composante du vecteur
-			Xu[j] += MX[i][j] * M[u][i] / uTot
+		for j in range (len(vecteur_jeux[0])):	#Pour chaque composante du vecteur
+			vect_u[j] += vecteur_jeux[i][j] * nb_jeux_joues[u][i] / uTot
 		
-	return Xu
+	return vect_u
 
 
 def valeurHypp( dist : float, distmax : float, distmin : float, utot : int) :
 	"""Hypothèse: distmax > dist > distmin"""
 	"""Donne une valeur hyppotétique de j pour X"""
+	assert distmax > dist > distmin
 	
 	return utot*(dist-distmin)/(distmax-distmin)
 
 
 
-def contenus(M :int , n : int, m : int, MX : list, nx : int , u : int, utot : int) :
-	"""Renvoie un tableau des notes hypothétiques pour u pour les jeux non joués de M de taille n x m, les jeux sont représentés par des vecteurs de taille nx dans MX"""
-	
+def contenus(nb_jeux_joues :int , vecteur_jeux : list, u : int, utot : int) :
+	"""Renvoie un tableau des notes hypothétiques pour u pour les jeux non joués de nb_jeux_joues de taille n x m, les jeux sont représentés par des vecteurs de taille nx dans vecteur_jeux"""
+	assert len(nb_jeux_joues) == len(vecteur_jeux[0])
+	m = len(vecteur_jeux)
 	notes = [ 0 for i in range (m) ]
 	dist = [ 0. for i in range (m) ]
 	
-	Xu = barycentre(M, n, m, MX, nx, u, utot)	#barycentre
+	vect_u = barycentre(nb_jeux_joues,vecteur_jeux,u, utot)	#barycentre
 	
 	distmax = 0;
 	distmin = 0;
 	
-	for i in range (m) :	#On calcule les distances au barycentre
+	for i in range (m):	#On calcule les distances au barycentre
 		
-		dist[i] = distance(MX[i], Xu, nx)
+		dist[i] = distance(vecteur_jeux[i], vect_u, len(vecteur_jeux[0]))
 		
-		if M[u][i] > 0 and dist[i] > distmax :
+		if nb_jeux_joues[u][i] > 0 and dist[i] > distmax :
 			distmax = dist[i]
 			
-		elif M[u][i] > 0 and dist[i] < distmin :
+		elif nb_jeux_joues[u][i] > 0 and dist[i] < distmin :
 			distmin = dist[i]
 	
 	
-	for i in range (m) :	#On donne les notes
+	for i in range (m):	#On donne les notes
 		
-		if M[u][i] == 0 :	#Si le jeu n'a jamais été joué
+		if nb_jeux_joues[u][i] == 0 :	#Si le jeu n'a jamais été joué
 			notes[i] = valeurHypp(dist[i], distmax, distmin, utot)
 	
 	return notes
-
-

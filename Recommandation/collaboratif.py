@@ -5,7 +5,7 @@ from math import *
 	
 
 def pearson(nb_jeux_joues: list, u: int, v: int, u_moy : float, v_moy : float):
-	""" Renvois la Correlation de Pearlson entre u et v selon nb_jeux_joues"""
+	""" Renvoie la Correlation de Pearson entre u et v selon nb_jeux_joues"""
 	
 	m : int = len(nb_jeux_joues[0])
 	scalaire : float = 0
@@ -22,7 +22,7 @@ def pearson(nb_jeux_joues: list, u: int, v: int, u_moy : float, v_moy : float):
 
 
 def moyennePonderee(nb_jeux_joues: list, u: int, j: int):
-	"""Renvois une note hyppothétique de j pour u"""
+	"""Renvoie une note hyppothétique de j pour u"""
 	
 	n : int = len(nb_jeux_joues)
 	m : int = len(nb_jeux_joues[0])
@@ -43,7 +43,7 @@ def moyennePonderee(nb_jeux_joues: list, u: int, j: int):
 
 
 def collaboratif(nb_jeux_joues : list, u : int) :
-	"""Hyppothèse: nb_jeux_joues est de taille m*n ; u<m"""
+	"""Hypothèse: nb_jeux_joues est de taille m*n ; u<m"""
 	"""Renvois des notes hyppothétiques pour le joueur u à partir de nb_jeux_joues"""
 	n = len(nb_jeux_joues[0])
 	notes : list = [0 for _ in range(n)]

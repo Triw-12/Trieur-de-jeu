@@ -2,8 +2,8 @@ from collaboratif import collaboratif
 from contenus import contenus
 
 def notes(nb_jeux_joues : list, vecteur_jeux : list, u : int) :
-	"""Hyppothèse : nb_jeux_joues est de dimension n*m, vecteur_jeux est de taille nx, u<m"""
-	"""Renvois les notes hyppotétiques des jeux pour u conformément au donné de nb_jeux_joues et vecteur_jeux"""
+	"""Hypothèse : nb_jeux_joues est de dimension n*m, vecteur_jeux est de taille nx, u<m"""
+	"""Renvoie les notes hypothétiques des jeux pour u conformément au donné de nb_jeux_joues et vecteur_jeux"""
 	m = len(vecteur_jeux)
 	uMoy : int = sum(nb_jeux_joues[u]) / m
 	uTot : int = sum(nb_jeux_joues[u])

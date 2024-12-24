@@ -15,7 +15,7 @@ def distance(v1: list, v2: list) :
 def barycentre(nb_jeux_joues: list, vecteur_jeux : list, u: int, uTot : int) :
 	"""Calcule le barycentre de u par rapport au jeu de nb_jeux_joues (sous la forme de vecteur stocké dans vecteur_jeux)""" 
 	
-	vect_u = [0 for i in range (len(vecteur_jeux))]	#Vecteur barycentre de u
+	vect_u = [0 for i in range (len(vecteur_jeux[0]))]	#Vecteur barycentre de u
 	
 	for i in range (len(vecteur_jeux)) :	#Pour chaque jeu
 		
@@ -48,7 +48,7 @@ def contenus(nb_jeux_joues :int , vecteur_jeux : list, u : int, utot : int) :
 	
 	for i in range (m):	#On calcule les distances au barycentre
 		
-		dist[i] = distance(vecteur_jeux[i], vect_u, len(vecteur_jeux[0]))
+		dist[i] = distance(vecteur_jeux[i], vect_u)
 		
 		if nb_jeux_joues[u][i] > 0 and dist[i] > distmax :
 			distmax = dist[i]

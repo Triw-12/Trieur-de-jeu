@@ -4,7 +4,7 @@ X = [1,0,0,0,0]
 Y = [2,0,0,0,0]
 nX = 5
 
-print(distance(X,Y,nX))
+print(distance(X,Y))
 
 
 

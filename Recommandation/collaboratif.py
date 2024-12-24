@@ -45,8 +45,8 @@ def moyennePonderee(nb_jeux_joues: list, u: int, j: int):
 def collaboratif(nb_jeux_joues : list, u : int) :
 	"""Hyppothèse: nb_jeux_joues est de taille m*n ; u<m"""
 	"""Renvois des notes hyppothétiques pour le joueur u à partir de nb_jeux_joues"""
-	n = len(nb_jeux_joues)
-	notes : list = [0 for i in range(n)]
+	n = len(nb_jeux_joues[0])
+	notes : list = [0 for _ in range(n)]
 	
 	for j in range(n):
 		

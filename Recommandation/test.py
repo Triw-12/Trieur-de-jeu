@@ -28,4 +28,4 @@ print(collaboratif(M,1))
 
 from hybride import *
 
-notes(M,MX,1)
+print(notes(M,MX,1))

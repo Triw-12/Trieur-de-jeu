@@ -50,8 +50,7 @@ def collaboratif(nb_jeux_joues : list, u : int) :
 	
 	for j in range(n):
 		
-		if (nb_jeux_joues[u][j] == 0) :	#Pour les jeux jamais joués
-			notes[j] = moyennePonderee(nb_jeux_joues,u,j)
+		notes[j] = moyennePonderee(nb_jeux_joues,u,j)
 
 	
 	return notes

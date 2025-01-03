@@ -25,16 +25,16 @@ def barycentre(nb_jeux_joues: list, vecteur_jeux : list, u: int, uTot : int) :
 	return vect_u
 
 
-def valeurHypp( dist : float, distmax : float, distmin : float, utot : int) :
+def valeurHypp( dist : float, distmax : float, distmin : float, umax : int, umin : int) :
 	"""Hypothèse: distmax > dist > distmin"""
 	"""Donne une valeur hypothétique de j pour X"""
 	assert distmax > dist > distmin
 	
-	return utot*(dist-distmin)/(distmax-distmin)
+	return (umax-umin)*(dist-distmin)/(distmax-distmin)
 
 
 
-def contenus(nb_jeux_joues :int , vecteur_jeux : list, u : int, utot : int) :
+def contenus(nb_jeux_joues :list , vecteur_jeux : list, u : int, utot : int) :
 	"""Renvoie un tableau des notes hypothétiques pour u pour les jeux non joués de nb_jeux_joues de taille n x m, les jeux sont représentés par des vecteurs de taille nx dans vecteur_jeux"""
 	assert len(nb_jeux_joues) == len(vecteur_jeux[0])
 	m = len(vecteur_jeux)
@@ -45,6 +45,9 @@ def contenus(nb_jeux_joues :int , vecteur_jeux : list, u : int, utot : int) :
 	
 	distmax = 0.0;
 	distmin = 0.0;
+	umin = 0
+	umax = 0
+	
 	
 	for i in range (m):	#On calcule les distances au barycentre
 		
@@ -52,14 +55,16 @@ def contenus(nb_jeux_joues :int , vecteur_jeux : list, u : int, utot : int) :
 		
 		if nb_jeux_joues[u][i] > 0 and dist[i] > distmax :
 			distmax = dist[i]
+			umax = nb_jeux_joues[u][i]
 			
 		elif nb_jeux_joues[u][i] > 0 and dist[i] < distmin :
 			distmin = dist[i]
+			umin = nb_jeux_joues[u][i]
 	
 	
 	for i in range (m):	#On donne les notes
 		
 		if nb_jeux_joues[u][i] == 0 :	#Si le jeu n'a jamais été joué
-			notes[i] = valeurHypp(dist[i], distmax, distmin, utot)
+			notes[i] = valeurHypp(dist[i], distmax, distmin, umax, umin)
 	
 	return notes

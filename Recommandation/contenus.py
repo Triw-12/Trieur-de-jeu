@@ -56,7 +56,7 @@ def contenus(nb_jeux_joues :list , vecteur_jeux : list, u : int, utot : int) :
 			distmax = dist[i]
 			umax = nb_jeux_joues[u][i]
 			
-		elif dist[i] < distmin :
+		if dist[i] < distmin :
 			distmin = dist[i]
 	
 	

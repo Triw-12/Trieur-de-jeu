@@ -1,11 +1,15 @@
 .navbar{
     height: 10vh;
-    background-color: grey;
+    background-color: black;
     display: flex;
-
+    justify-content: center;
+    align-items: center;
 }
 
-.simple_search{
-    margin-left: 10px;
-    float: left;
+
+
+.menu-btn{
+    position: absolute;
+    top: 10px;
+    left: 10px;
 }

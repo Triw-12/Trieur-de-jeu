@@ -16,40 +16,40 @@
 
 <body>
     <div class="navbar">
-        <div class="dropdown ps-3">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Menu
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
-                <li><a class="dropdown-item" href="{% url 'advanced_search' %}">Recherche avancée</a></li>
-                {% if user.is_authenticated %}
-                    {% if user.is_staff %}
-                    <li><a class="dropdown-item" href={% url 'add_game' %}>Ajouter un jeu</a></li>
-                    <li><a class="dropdown-item" href="/admin/">Admin</a></li>
-                    {% endif %}
-                    <li><a class="dropdown-item" href={% url 'logout' %}>Se déconnecter</a></li>
-                {% else %}
-                    <li><a class="dropdown-item" href="{% url 'login' %}">Se connecter</a></li>
-                    <li><a class="dropdown-item" href="{% url 'signup' %}">S'inscrire</a></li>
-                {% endif %}
-            </ul>
-        </div>
         {% if simple_search %}
         <form class="simple_search" method="post" action="{% url 'advanced_search' %}">
             <div class="row">
-                <div class="col-10">
+                <div class="col-10 my-auto">
                     {% csrf_token %}
-                    {{ simple_search.as_p }}
+                    {{ simple_search.game_name }}
                 </div>
                 <div class="col-2">
-                    <button class="button_search" type="submit">Rechercher</button>
+                    <button class="button_search btn btn-danger" type="submit">Rechercher</button>
                 </div>
             </div>
         </form>
         {% endif %}
     </div>
     {% block body %}{% endblock body %}
+    <div class="dropdown ps-3 ms-2"></div>
+        <button class="btn btn-danger dropdown-toggle menu-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Menu
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
+            <li><a class="dropdown-item" href="{% url 'advanced_search' %}">Recherche avancée</a></li>
+            {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                <li><a class="dropdown-item" href={% url 'add_game' %}>Ajouter un jeu</a></li>
+                <li><a class="dropdown-item" href="/admin/">Admin</a></li>
+                {% endif %}
+                <li><a class="dropdown-item" href={% url 'logout' %}>Se déconnecter</a></li>
+            {% else %}
+                <li><a class="dropdown-item" href="{% url 'login' %}">Se connecter</a></li>
+                <li><a class="dropdown-item" href="{% url 'signup' %}">S'inscrire</a></li>
+            {% endif %}
+        </ul>
+    </div>
 </body>
 
 

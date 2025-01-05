@@ -25,8 +25,8 @@ class SignupForm(UserCreationForm):
         })
 
 class LoginForm(Form):
-    username = CharField(max_length=63, label='Nom d’utilisateur')
-    password = CharField(max_length=63, widget=PasswordInput, label='Mot de passe')
+    username = CharField(max_length=150, label='Nom d’utilisateur')
+    password = CharField(max_length=150, widget=PasswordInput, label='Mot de passe')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs.update({

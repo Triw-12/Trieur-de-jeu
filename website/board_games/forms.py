@@ -14,6 +14,11 @@ class AddExtensions(forms.ModelForm):
 
 class Simple_search(forms.Form):
     game_name = forms.CharField(label='Nom du jeu', max_length=200, required=True)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["game_name"].widget.attrs.update({
+            "placeholder": "Nom du jeu",
+        })
 
 class Advanced_search(forms.Form):
     game_name = forms.CharField(label='Nom du jeu', max_length=200, required=False)

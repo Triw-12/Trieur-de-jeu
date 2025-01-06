@@ -30,7 +30,6 @@
         </form>
         {% endif %}
     </div>
-    {% block body %}{% endblock body %}
     <div class="dropdown ps-3 ms-2"></div>
         <button class="btn btn-danger dropdown-toggle menu-btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Menu
@@ -50,6 +49,7 @@
             {% endif %}
         </ul>
     </div>
+    {% block body %}{% endblock body %}
 </body>
 
 

@@ -1,9 +1,5 @@
 from math import *
 
-
-
-	
-
 def pearson(nb_jeux_joues: list, u: int, v: int, u_moy : float, v_moy : float):
 	""" Renvoie la Correlation de Pearson entre u et v selon nb_jeux_joues"""
 	

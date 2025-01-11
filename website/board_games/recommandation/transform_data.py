@@ -16,6 +16,9 @@ def games_to_vector():
 
 
 def nomber_play():
+	"""
+	Renvois une matrice dont la première composante et le joueur, la deuxième composante est un jeu et la case contient le nombre de fois que le joueur a joué au jeu
+	"""
     users = User.objects.all()
     games = Games.objects.all()
     nb_jeux_joues = [[0 for _ in range(len(games))] for _ in range(len(users))]

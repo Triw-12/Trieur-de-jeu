@@ -14,15 +14,14 @@ def init():
 	vecteur_jeux = games_to_vector()
 
 
-def notes(u : int) :
-	"""Hypothèse : nb_jeux_joues est de dimension n*m, vecteur_jeux est de taille nx, u<m"""
-	"""Renvoie les notes hypothétiques des jeux pour u conformément au donné de nb_jeux_joues et vecteur_jeux"""
+def notes(joueur : int):
+	"""Hypothèse : nb_jeux_joues est de dimension n*m, vecteur_jeux est de taille nx, joueur<m"""
+	"""Renvoie les notes hypothétiques des jeux pour joueur conformément au donné de nb_jeux_joues et vecteur_jeux"""
 	m = len(vecteur_jeux)
-	uMoy : int = sum(nb_jeux_joues[u]) / m
-	uTot : int = sum(nb_jeux_joues[u])
+	uTot : int = sum(nb_jeux_joues[joueur])
 
-	notesCollaboratif = collaboratif(nb_jeux_joues,u)
-	notesContenus = contenus(nb_jeux_joues,vecteur_jeux,u,uTot)
+	notesCollaboratif = collaboratif(nb_jeux_joues,joueur)
+	notesContenus = contenus(nb_jeux_joues,vecteur_jeux,joueur,uTot)
 
 	notes = [ (notesCollaboratif[i] + notesContenus[i]) /2 for i in range (m) ]
 	

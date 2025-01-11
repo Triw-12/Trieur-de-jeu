@@ -26,6 +26,6 @@ from collaboratif import *
 print(collaboratif(M,1))
 
 
-from hybride import *
+# from hybride import *
 
-print(notes(M,MX,1))
+# print(notes(M,MX,1))

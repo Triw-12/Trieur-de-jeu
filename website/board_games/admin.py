@@ -3,6 +3,7 @@ from board_games.models import Games, Lending, Tags, History, History_players, E
 
 
 admin.site.register(Games)
+admin.site.register(Tags)
 admin.site.register(Lending)
 admin.site.register(History)
 admin.site.register(History_players)

@@ -29,3 +29,5 @@ def nomber_play():
             game = Games.objects.get(game_id=history.game_id.game_id)
             nb_jeux_joues[user.user_id][game.game_id] += 1
     return nb_jeux_joues
+
+

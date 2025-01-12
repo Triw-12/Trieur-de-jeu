@@ -44,7 +44,7 @@ class Tags(models.Model):
 class History(models.Model):
     play_id = models.AutoField("play_id", primary_key=True, blank=False)
     game_id = models.ForeignKey(Games,blank=False, on_delete=models.CASCADE)
-    date = models.DateField("date", blank=False)
+    date = models.DateTimeField("date", auto_now_add=True)
     rating = models.IntegerField("rating", blank=True, null=True)
 
     def __str__(self):

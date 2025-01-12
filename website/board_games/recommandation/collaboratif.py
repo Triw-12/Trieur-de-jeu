@@ -34,8 +34,10 @@ def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int):
 			ppuiss = pow(abs(res_pearson),1.5) * res_pearson
 			pear += ppuiss
 			pearpond = (nb_jeux_joues[joueur2][j] - joueur2_moyenne) * ppuiss
-	
-	return (joueur_moyenne + (pearpond/pear))
+	if pear == 0:
+		return joueur_moyenne
+	else:
+		return (joueur_moyenne + (pearpond/pear))
 
 
 def collaboratif(nb_jeux_joues : list, joueur : int) :

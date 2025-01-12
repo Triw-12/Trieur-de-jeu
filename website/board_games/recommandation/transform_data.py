@@ -4,7 +4,7 @@ from authentification.models import User
 
 def games_to_vector():
     """
-    Create a vector of games with their tags.
+    Crée un vecteur de jeux à partir de la base de données
     """
     games = Games.objects.all()
     games_vector = []
@@ -17,17 +17,18 @@ def games_to_vector():
 
 def nomber_play():
     """
-    Renvois une matrice dont la première composante et le joueur, la deuxième composante est un jeu et la case contient le nombre de fois que le joueur a joué au jeu
+    Renvoie une matrice dont la première composante et le joueur, la deuxième composante est un jeu et la case contient le nombre de fois que le joueur a joué au jeu
     """
     users = User.objects.all()
     games = Games.objects.all()
+    dict_user = {}
     nb_jeux_joues = [[0 for _ in range(len(games))] for _ in range(len(users))]
-    for user in users:
+    for i, user in enumerate(users):
         history_players = History_players.objects.filter(user_id=user)
+        dict_user[user.id] = i
         for history_player in history_players:
-            history = History.objects.get(play_id=history_player.play_id)
-            game = Games.objects.get(game_id=history.game_id.game_id)
-            nb_jeux_joues[user.user_id][game.game_id] += 1
-    return nb_jeux_joues
-
+            history = history_player.play_id
+            game = history.game_id
+            nb_jeux_joues[i][game.game_id-1] += 1
+    return nb_jeux_joues, dict_user
 

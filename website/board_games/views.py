@@ -1,11 +1,19 @@
 from django.shortcuts import render, redirect
 from board_games import forms
-from board_games.models import Games, Tags
+from board_games.models import Games, Tags, History, History_players
+from board_games.recommandation.hybride import notes
+from authentification.models import User
+from datetime import datetime
 
 
 def home(request):
     simple_search = forms.Simple_search()
-    return render(request, 'board_games/home.html', context={'simple_search': simple_search})
+    games = None
+    if request.user.is_authenticated:
+        games = Games.objects.all()
+        notes_game = notes(request.user.id)
+        games = sorted([(game, notes_game[i]) for i, game in enumerate(games)], key=lambda x: x[1], reverse=True)[:15]
+    return render(request, 'board_games/home.html', context={'simple_search': simple_search, 'games': games})
 
 def advanced_search(request):
     simple_search = forms.Simple_search()
@@ -57,4 +65,14 @@ def add_game(request):
 def game(request, id):
     simple_search = forms.Simple_search()
     game = Games.objects.get(game_id=id)
-    return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search})
+    users = User.objects.all()
+    if request.method == 'POST':
+        num_players = request.POST.get('num_players')
+        if num_players:
+            history = History.objects.create(game_id=game, date=datetime.now())
+            for i in range(int(num_players)):
+                user = request.POST.get('player_' + str(i+1))
+                if user:
+                    user_db = User.objects.get(id=user)
+                    History_players.objects.create(play_id=history, user_id=user_db)
+    return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users})

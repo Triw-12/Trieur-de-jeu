@@ -13,7 +13,8 @@ def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : f
 			scalaire += (nb_jeux_joues[joueur1][i] - joueur1_moyenne) * (nb_jeux_joues[joueur2][i] - joueur2_moyenne)
 			ecard_u +=  (nb_jeux_joues[joueur1][i] - joueur1_moyenne) * (nb_jeux_joues[joueur1][i] - joueur1_moyenne)
 			ecard_v += (nb_jeux_joues[joueur2][i] - joueur2_moyenne) * (nb_jeux_joues[joueur2][i] - joueur2_moyenne)
-	
+	if ecard_u == 0 or ecard_v == 0:
+		return 0
 	return (scalaire/ (sqrt(ecard_u * ecard_v)))
 
 

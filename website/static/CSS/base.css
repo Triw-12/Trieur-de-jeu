@@ -1,0 +1,15 @@
+.navbar{
+    height: 10vh;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.menu-btn{
+    position: absolute;
+    top: 10px;
+    left: 0px
+}

@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}Inscription{% endblock title %}
 {% block head %}
-<link rel="stylesheet" href="{% static 'CSS/signup.css' %}">
+<link rel="stylesheet" href="{% static 'CSS/auth.css' %}">
 {% endblock head %}
 {% block body %}
 {% if form.errors %}
@@ -27,7 +27,9 @@
                     {{ form.password2 }}
                     <input type="submit" value="Valider" class="btn btn-success">
                 </form>
-            </div>
+                <div class="link-log-su pt-4">
+                    <a href="/login/" class="p-4">Se connecter</a>
+                </div>
         </div>
     </div>
 </div>

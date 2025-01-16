@@ -16,6 +16,12 @@ class Games(models.Model):
 
     def __str__(self):
         return self.game_name
+    
+    def rating(self):
+        ratings = Rating.objects.filter(game_id=self.game_id)
+        if len(ratings) == 0:
+            return 0
+        return sum([rating.rating for rating in ratings]) / len(ratings)
 
 class Lending(models.Model):
     lending_id = models.AutoField(primary_key=True, blank=False)

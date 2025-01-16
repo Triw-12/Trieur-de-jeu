@@ -4,6 +4,7 @@ from board_games.models import Games, Tags, History, History_players
 from board_games.recommandation.hybride import notes
 from authentification.models import User
 from datetime import datetime
+from django.http import HttpResponseForbidden
 
 
 def home(request):
@@ -76,3 +77,15 @@ def game(request, id):
                     user_db = User.objects.get(id=user)
                     History_players.objects.create(play_id=history, user_id=user_db)
     return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users})
+
+def profil(request, id):
+    simple_search = forms.Simple_search()
+    if request.user.id != id and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    user = User.objects.get(id=id)
+    return render(request, 'board_games/profil.html', context={'user': user, 'simple_search': simple_search})
+
+def stats(request):
+    simple_search = forms.Simple_search()
+    users = User.objects.all()
+    return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search})

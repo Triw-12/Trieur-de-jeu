@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from board_games import forms
-from board_games.models import Games, Tags, History, History_players
+from board_games.models import Games, Tags, History, History_players, Rating
 from board_games.recommandation.hybride import notes
 from authentification.models import User
 from datetime import datetime
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseNotFound
 
 
 def home(request):
@@ -65,8 +65,12 @@ def add_game(request):
 
 def game(request, id):
     simple_search = forms.Simple_search()
+    rating = forms.RateGame()
     game = Games.objects.get(game_id=id)
     users = User.objects.all()
+    message = ""
+    if 'rated' in request.GET:
+        message = "Merci pour votre évaluation!"
     if request.method == 'POST':
         num_players = request.POST.get('num_players')
         if num_players:
@@ -76,7 +80,8 @@ def game(request, id):
                 if user:
                     user_db = User.objects.get(id=user)
                     History_players.objects.create(play_id=history, user_id=user_db)
-    return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users})
+                    message = 'Partie enregistrée'
+    return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating})
 
 def profil(request, id):
     simple_search = forms.Simple_search()
@@ -89,3 +94,19 @@ def stats(request):
     simple_search = forms.Simple_search()
     users = User.objects.all()
     return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search})
+
+def rate_game(request,id):
+    form = forms.RateGame()
+    game = Games.objects.get(game_id=id)
+    if request.method == 'POST':
+        form = forms.RateGame(request.POST)
+        if form.is_valid():
+            existing_rating = Rating.objects.filter(game_id=game, user_id=request.user).first()
+            if existing_rating:
+                existing_rating.delete()
+            rating = form.save(commit=False)
+            rating.game_id = game
+            rating.user_id = request.user
+            rating.save()
+            return redirect(f'../game/{id}?rated={rating.rating}')
+    return HttpResponseNotFound

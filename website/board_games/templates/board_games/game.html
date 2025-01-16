@@ -8,6 +8,7 @@
 {% block body %}
 <h1>{{ game.game_name }}</h1>
 
+{{ message }}
 
 <h2>Description</h2>
 <ul>
@@ -21,6 +22,14 @@
         <li>Durée moyenne : {{ game.game_length_min }} minutes</li>
     {% endif %}
 </ul>
+
+<h2>Noter le jeu</h2>
+<form method="post" action="{% url 'rate_game' game.game_id %}">
+    {% csrf_token %}
+    {{ form.rating.label_tag }}
+    {{ form.rating }}
+    <button type="submit">Noter</button>
+</form>
 
 <h2>Ajouter une partie</h2>
 <form method="post">
@@ -36,9 +45,7 @@
     <div id="players">
         <label for="player_1">Joueur 1 :</label>
         <select name="player_1" id="player_1" required>
-            {% for user in users %}
-                <option value="{{ user.id }}">{{ user.username }}</option>
-            {% endfor %}
+            <option value="{{ request.user.id }}">{{ request.user.username }}</option>
         </select>
     </div>
     <button type="submit">Ajouter</button>
@@ -49,7 +56,24 @@
         var playersDiv = document.getElementById('players');
         playersDiv.innerHTML = '';
 
-        for (var i = 1; i <= numPlayers; i++) {
+        // Add the first player as the request.user
+        var label = document.createElement('label');
+        label.setAttribute('for', 'player_1');
+        label.textContent = 'Joueur 1 :';
+        playersDiv.appendChild(label);
+
+        var select = document.createElement('select');
+        select.setAttribute('name', 'player_1');
+        select.setAttribute('id', 'player_1');
+        select.setAttribute('required', 'required');
+        var option = document.createElement('option');
+        option.setAttribute('value', '{{ request.user.id }}');
+        option.textContent = '{{ request.user.username }}';
+        select.appendChild(option);
+        playersDiv.appendChild(select);
+
+        // Add the remaining players as guests
+        for (var i = 2; i <= numPlayers; i++) {
             var label = document.createElement('label');
             label.setAttribute('for', 'player_' + i);
             label.textContent = 'Joueur ' + i + ' :';
@@ -59,6 +83,12 @@
             select.setAttribute('name', 'player_' + i);
             select.setAttribute('id', 'player_' + i);
             select.setAttribute('onchange', 'disableSelectedOptions()');
+
+            var guestOption = document.createElement('option');
+            guestOption.setAttribute('value', 'guest_' + i);
+            guestOption.textContent = 'Invité ' + i;
+            select.appendChild(guestOption);
+
             {% for user in users %}
                 var option = document.createElement('option');
                 option.setAttribute('value', '{{ user.id }}');

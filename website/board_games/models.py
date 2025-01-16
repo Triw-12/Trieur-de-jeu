@@ -45,7 +45,6 @@ class History(models.Model):
     play_id = models.AutoField("play_id", primary_key=True, blank=False)
     game_id = models.ForeignKey(Games,blank=False, on_delete=models.CASCADE)
     date = models.DateTimeField("date", auto_now_add=True)
-    rating = models.IntegerField("rating", blank=True, null=True)
 
     def __str__(self):
         return '(' + str(self.game_id) + ', ' + str(self.date) + ')'
@@ -71,3 +70,19 @@ class Extensions(models.Model):
 
     def __str__(self):
         return self.extension_name + " of " + self.game_id.game_name
+
+class Rating(models.Model):
+    rating_id = models.AutoField(primary_key=True, blank=False)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
+    rating = models.IntegerField("rating", blank=False, validators=[MinValueValidator(1), MaxValueValidator(10)])
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user_id', 'game_id'], name='unique_user_game_rating'
+            )
+        ]
+
+    def __str__(self):
+        return '(' + str(self.user_id) + ', ' + str(self.game_id) + ', ' + str(self.rating) + ')'

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from board_games.models import Games, Extensions, Tags, Lending, History, History_players
+from board_games.models import Games, Extensions, Tags, Lending, History, History_players, Rating
 from authentification.models import User
 
 class GameTestCase(TestCase):
@@ -9,8 +9,9 @@ class GameTestCase(TestCase):
         self.tag = Tags.objects.create(game_id=self.game, tag_id="Test tag")
         self.user = User.objects.create_user(username="test", password="test")
         self.lending = Lending.objects.create(user_id=self.user, game_id=self.game, date_start="2021-01-01", date_expected_end="2021-01-15")
-        self.history = History.objects.create(game_id=self.game, rating=5)
+        self.history = History.objects.create(game_id=self.game)
         self.history_player = History_players.objects.create(play_id=self.history, user_id=self.user)
+        self.rating = Rating.objects.create(user_id=self.user, game_id=self.game, rating=4)
 
     def test_game(self):
         game = Games.objects.get(game_name="Test game")
@@ -33,7 +34,6 @@ class GameTestCase(TestCase):
 
     def test_history_creation(self):
         self.assertEqual(self.history.game_id, self.game)
-        self.assertEqual(self.history.rating, 5)
 
     def test_history_players_creation(self):
         self.assertEqual(self.history_player.play_id, self.history)
@@ -46,5 +46,10 @@ class GameTestCase(TestCase):
         self.assertEqual(self.lending.game_id, self.game)
         self.assertEqual(self.lending.date_start, "2021-01-01")
         self.assertEqual(self.lending.date_expected_end, "2021-01-15")
+
+    def test_rating_creation(self):
+        self.assertEqual(self.test_case.rating.user_id, self.test_case.user)
+        self.assertEqual(self.test_case.rating.game_id, self.test_case.game)
+        self.assertEqual(self.test_case.rating.rating, 4)
 
     

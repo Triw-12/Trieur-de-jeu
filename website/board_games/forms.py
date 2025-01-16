@@ -1,5 +1,5 @@
 from django import forms
-from board_games.models import Games, Extensions
+from board_games.models import Games, Extensions, Rating
 
 class AddGames(forms.ModelForm):
     class Meta:
@@ -28,3 +28,12 @@ class Advanced_search(forms.Form):
     game_length_min = forms.IntegerField(label='Durée minimum', required=False)
     game_length_max = forms.IntegerField(label='Durée maximum', required=False)
     tag = forms.CharField(label='Tag', max_length=200, required=False)
+
+class RateGame(forms.ModelForm):
+    RATING_CHOICES = [(i, str(i)) for i in range(1, 11)]
+    
+    rating = forms.ChoiceField(choices=RATING_CHOICES, label='Rating')
+    
+    class Meta:
+        model = Rating
+        fields = ['rating']

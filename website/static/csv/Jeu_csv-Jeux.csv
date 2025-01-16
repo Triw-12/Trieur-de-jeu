@@ -65,7 +65,7 @@ Intrigues à Venise;2;12;90;90;3;5;Plateau/Déduction/Team VS;150;0;Reserve
 Isle of Skye;2;10;60;60;2;5;Plateau/Stratégie/Team VS;30;1;Oui
 It's a Wonderful World;3;14;45;45;1;5;Stratégie/Construction;40;1;Oui
 Java;3;12;60;60;2;4;Plateau/Construction;80;1;Oui
-Jenga (x2);1;6;10;10;1;99;Dextérité;20;3;Oui (x3)
+Jenga;1;6;10;10;1;20;Dextérité;20;3;Oui (x3)
 Jeu d'Adresse;1;6;10;10;2;2;Dextérité/Précision;10;1;Oui
 Jeu d'échec Star Wars;2;8;30;30;2;2;Réflexion;100;1;Oui
 Jeu de dames;1;6;10;10;2;2;Réflexion/Stratégie/Team VS;30;1;Oui
@@ -140,7 +140,7 @@ Shogi (Dragon-fly Chinese chess);3;6;30;30;2;2;Réflexion;30;1;Oui
 Skaal;2;10;60;60;3;6;Plateau;40;1;Oui
 Smallworld;3;8;40;80;2;5;Plateau/Construction;50;1;Oui
 Splendor;2;10;30;30;2;4;Cartes;40;1;Oui
-Super Cluédo (x2);2;12;60;60;3;10;Réflexion/Team VS;30;1;Oui
+Super Cluédo;2;12;60;60;3;10;Réflexion/Team VS;30;2;Oui
 Super Gang (Incomplet);3;12;120;120;3;5;Stratégie/Team VS;150;0;Reserve
 Talisman;2;12;60;60;2;6;Exploration/Dés;60;1;Oui
 TamTam : Il était une fois;1;6;10;10;2;3;Réflexes;20;1;Oui

@@ -48,8 +48,8 @@ class GameTestCase(TestCase):
         self.assertEqual(self.lending.date_expected_end, "2021-01-15")
 
     def test_rating_creation(self):
-        self.assertEqual(self.test_case.rating.user_id, self.test_case.user)
-        self.assertEqual(self.test_case.rating.game_id, self.test_case.game)
-        self.assertEqual(self.test_case.rating.rating, 4)
+        self.assertEqual(self.rating.user_id, self.test_case.user)
+        self.assertEqual(self.rating.game_id, self.test_case.game)
+        self.assertEqual(self.rating.rating, 4)
 
     

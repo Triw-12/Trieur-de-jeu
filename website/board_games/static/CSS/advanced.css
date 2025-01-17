@@ -10,3 +10,20 @@
 .test{
     background-color: blue;
 }
+
+.user-input{
+    width: 60%;
+}
+
+.digit-box{
+    min-width: 50px;
+    width: 5%;
+}
+
+#id-max-players{
+    float:right;
+}
+
+#id-max-time{
+    float:right;
+}

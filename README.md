@@ -30,8 +30,10 @@ git pull
 
 ## Lancer le serveur
 
-```py
+```sh
 cd website/
 python3 manage.py migrate
+python3 manage.py add_games # Si toujours pas ajouté
+python3 manage.py add_extensions # Idem
 python3 manage.py runserver
 ```

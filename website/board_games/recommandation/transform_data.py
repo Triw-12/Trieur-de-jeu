@@ -15,7 +15,7 @@ def games_to_vector():
     return games_vector
 
 
-def nomber_play():
+def number_play():
     """
     Renvoie une matrice dont la première composante et le joueur, la deuxième composante est un jeu et la case contient le nombre de fois que le joueur a joué au jeu
     """

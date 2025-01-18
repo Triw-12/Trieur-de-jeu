@@ -9,6 +9,16 @@ Home
 
 {% if user.is_authenticated %}
 <strong>Bonjour {{ request.user }}</strong>
+<div class="recomendation">
+    <h2>Recommandations</h2>
+    <ul>
+        {% for game, note in games %}
+        <li>
+            <a href="{% url 'game' game.game_id %}">{{ game.game_name }}</a> - Note: {{ note }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 {% else %}
 <strong>Vous n'êtes pas connecté</strong>
 <a href="{% url 'login' %}">Login</a>

@@ -2,7 +2,7 @@ Nom;Difficulté;Age min;Durée minimale;Durée maximale;Nb joueurs min;Nb joueur
 50 Missions;2;8;20;20;1;4;Jeu social/Coop;20;1;Oui
 7 Wonders;2;10;30;30;2;7;Cartes/Construction;50;1;Oui
 7 wonders : Duel;3;10;30;30;2;2;Stratégie;30;1;Oui
-À l'heure du crime, où étiez-vous ?;1;10;20;20;5;20;Jeu social;20;1;Oui
+"À l'heure du crime; où étiez-vous ?";1;10;20;20;5;20;Jeu social;20;1;Oui
 Adel Verpflichtet;2;12;45;45;2;6;Bluff;30;2;Oui (x2)
 Aeon's End;3;14;60;60;1;4;Stratégie/Coop;50;1;Oui
 Astoria;3;10;45;45;2;6;Stratégie/Rôle secret/Team VS;30;0;?
@@ -13,10 +13,10 @@ Barbe Noire : La vraie vie des Pirates;3;12;120;240;1;4;Plateau;40;1;Oui
 Blood Bowl;3;14;120;120;2;2;Grille/Sport/Team VS;30;1;Oui
 Bluffer;1;10;15;15;2;6;Jeu social;30;1;Oui
 Canardage;1;8;20;20;3;6;Cartes;20;1;Oui
-Captain Sonar;3;12;45;45;2;8;Déduction/Social/Team VS;40;1;Oui
+Captain Sonar;3;12;45;45;2;8;Déduction/Jeu social/Team VS;40;1;Oui
 Catan;3;10;75;75;3;4;Stratégie/Construction;40;1;Oui
 Célestia;2;8;30;30;2;6;Dés;30;1;Oui
-Cerbère;2;10;45;45;3;7;Cartes/Social/Team VS;40;1;Oui
+Cerbère;2;10;45;45;3;7;Cartes/Jeu social/Team VS;40;1;Oui
 Chinese Chess;4;6;60;60;2;2;Stratégie;30;1;Oui
 Citadelles;2;10;60;60;2;8;Cartes/Construction;20;1;Oui
 Civilisation;4;12;360;360;2;7;Stratégie/Civilisation;50;1;Oui
@@ -24,7 +24,7 @@ Cluedo;2;8;60;60;2;6;Réflexion;30;2;Oui (x2)
 Code de Vinci;1;12;15;15;2;4;Réflexion/Team VS;30;1;Oui
 Code names;1;10;15;15;2;8;Réflexion/Team VS;30;1;Oui
 Comment j'ai adopté un gnou;1;7;15;30;3;8;Jeu social/Imagination;10;1;Oui
-Complot;1;10;15;15;2;8;Bluff/Social;20;1;Oui
+Complot;1;10;15;15;2;8;Bluff/Jeu social;20;1;Oui
 Cranium;2;12;60;60;4;16;Jeu social/Réflexion;30;1;Oui
 Crazy Kick;1;8;10;10;2;8;Réflexes/Team VS;20;1;Oui
 Cryptide;2;14;30;50;3;5;Déduction;30;1;Oui
@@ -42,10 +42,10 @@ Dungeoneer : Le repaire des abominations;2;12;30;30;2;4;Cartes/Team VS;30;1;Oui
 Dungeoneer : Le tombeau du seigneur des liches;2;12;30;30;2;4;Cartes/Team VS;30;1;Oui
 El Grande;1;12;90;90;2;5;Plateau/Conquête/Team VS;50;1;Oui
 Elixir;1;10;60;60;3;8;Cartes;20;1;Oui
-Exit - Le cadavre de l'Orient-Express;2;12;60;60;1;4;Réflexion/Social/Coop;20;0;?
+Exit - Le cadavre de l'Orient-Express;2;12;60;60;1;4;Réflexion/Jeu social/Coop;20;0;?
 Exploding Kittens;1;7;15;15;2;5;Cartes/Jeu social;20;1;Oui
 Family Game;1;8;10;10;2;5;Cartes/Mémoire/Team VS;10;1;Oui
-Fiesta de los juegos;2;10;15;15;4;8;Coop/social;30;0;?
+Fiesta de los juegos;2;10;15;15;4;8;Coop/Jeu social;30;0;?
 Formula D;2;8;60;60;2;10;Chance;50;1;Oui
 Fou fou fou!;1;8;15;15;3;8;Jeu social;20;1;Oui
 Full Metal Planete;4;14;90;90;2;4;Stratégie;200;1;Oui
@@ -65,7 +65,7 @@ Intrigues à Venise;2;12;90;90;3;5;Plateau/Déduction/Team VS;150;0;Reserve
 Isle of Skye;2;10;60;60;2;5;Plateau/Stratégie/Team VS;30;1;Oui
 It's a Wonderful World;3;14;45;45;1;5;Stratégie/Construction;40;1;Oui
 Java;3;12;60;60;2;4;Plateau/Construction;80;1;Oui
-Jenga (x2);1;6;10;10;1;99;Dextérité;20;3;Oui (x3)
+Jenga;1;6;10;10;1;20;Dextérité;20;3;Oui (x3)
 Jeu d'Adresse;1;6;10;10;2;2;Dextérité/Précision;10;1;Oui
 Jeu d'échec Star Wars;2;8;30;30;2;2;Réflexion;100;1;Oui
 Jeu de dames;1;6;10;10;2;2;Réflexion/Stratégie/Team VS;30;1;Oui
@@ -79,7 +79,7 @@ L'âge de Pierre;3;10;60;60;2;4;Plateau/Stratégie;50;1;Oui
 La cours des miracles;2;10;45;45;2;5;Plateau/Bluff;40;1;Oui
 La fièvre de l'or;1;10;45;45;3;5;Cartes;30;1;Oui
 La fureur de Dracula;4;14;180;180;2;4;Plateau/Long;50;1;Oui
-La relève : Le visiteur du futur;3;12;40;60;2;4;Plateau/aventure/Team VS;40;1;Oui
+La relève : Le visiteur du futur;3;12;40;60;2;4;Plateau/Aventure/Team VS;40;1;Oui
 La vallée des mammouth;2;12;120;120;3;6;Civilisation;40;1;Oui
 Labyrinthe;1;8;45;45;1;4;Réflexion/Team VS;30;1;Oui
 Le cochon qui rit;1;4;20;20;1;4;Dés/Jeu social;-20;1;Oui
@@ -103,12 +103,12 @@ Megacity Oceania;2;10;45;60;2;4;Construction/Adresse;50;1;Oui
 Mille sabords;1;8;30;30;2;5;Cartes/Dés;20;1;Oui
 Milles bornes;1;6;30;30;2;8;Cartes;20;0;?
 Minivilles;2;7;30;30;2;4;Stratégie;30;1;Oui
-Mito;1;7;15;25;3;5;Social;20;1;Oui
+Mito;1;7;15;25;3;5;Jeu social;20;1;Oui
 Monopoly Europe;1;8;30;30;2;6;Plateau/Stratégie;30;1;Oui
 Montjoie!;4;10;150;150;3;6;Cartes/Stratégie;50;1;Oui
 Mr Jack;2;9;30;30;2;2;Stratégie/Déduction;30;1;Oui
-Munchkin;2;10;60;60;3;6;Cartes/Social;30;1;Oui
-Munchkin Chtulu;2;10;60;60;3;6;Cartes/Social;30;1;Oui
+Munchkin;2;10;60;60;3;6;Cartes/Jeu social;30;1;Oui
+Munchkin Chtulu;2;10;60;60;3;6;Cartes/Jeu social;30;1;Oui
 Mysterium;2;10;42;42;2;7;Jeu social/Coop;40;1;Oui
 Nain Jaune;1;6;10;10;2;6;Cartes;20;1;Oui
 Négoces;1;12;10;20;3;6;Négociations;20;1;Oui
@@ -116,7 +116,7 @@ Not Alone;2;10;30;45;2;7;Cartes/Team VS;30;1;Oui
 Onirim;2;10;15;15;1;2;Cartes/Coop;20;1;Oui
 Oriflamme;2;10;15;30;3;5;Cartes;20;1;Oui
 Oui seigneur des ténèbres;1;10;20;30;4;16;Improvisation/Jeu social;30;1;Oui
-Oui, honorable parrain !;1;10;30;30;4;11;Cartes/Jeu social/Team VS;20;1;Oui
+"Oui; honorable parrain !";1;10;30;30;4;11;Cartes/Jeu social/Team VS;20;1;Oui
 Pandemic;4;10;45;45;2;4;Réflexion/Coop;40;1;Oui
 Perudo;1;8;15;30;2;6;Dés/Bluff;30;1;Oui
 Petits Meurtres et Faits Divers;1;12;45;45;4;7;Jeu social/Imagination;30;1;Oui
@@ -130,7 +130,7 @@ Rencontre cosmique;3;12;90;90;2;6;Stratégie/Team VS;70;1;Oui
 Res Arcana;3;12;30;60;2;4;Deckbuilding;40;1;Oui
 Réversi;1;6;15;15;2;2;Réflexion/Team VS;20;1;Oui
 Root;3;10;75;150;1;6;SRPG;80;1;Oui
-Root : Monde Souterrain;4;10;75;75;1;6;Plateau/Stratéige;60;1;Oui
+Root : Monde Souterrain;4;10;75;75;1;6;Plateau/Stratégie;60;1;Oui
 Runestone;1;10;15;15;2;2;Dés;50;1;Oui
 Saboteur;1;8;30;30;3;10;Cartes/Stratégie;20;1;Oui
 Scrabble;2;10;60;60;2;6;Réflexion/Chiant;40;1;Oui
@@ -140,7 +140,7 @@ Shogi (Dragon-fly Chinese chess);3;6;30;30;2;2;Réflexion;30;1;Oui
 Skaal;2;10;60;60;3;6;Plateau;40;1;Oui
 Smallworld;3;8;40;80;2;5;Plateau/Construction;50;1;Oui
 Splendor;2;10;30;30;2;4;Cartes;40;1;Oui
-Super Cluédo (x2);2;12;60;60;3;10;Réflexion/Team VS;30;1;Oui
+Super Cluédo;2;12;60;60;3;10;Réflexion/Team VS;30;2;Oui
 Super Gang (Incomplet);3;12;120;120;3;5;Stratégie/Team VS;150;0;Reserve
 Talisman;2;12;60;60;2;6;Exploration/Dés;60;1;Oui
 TamTam : Il était une fois;1;6;10;10;2;3;Réflexes;20;1;Oui
@@ -151,20 +151,20 @@ The Binding of Isaac : Four Souls;3;14;30;60;2;4;Stratégie;50;1;Oui
 The Tricky Cube;5;8;3;20;1;1;Puzzle;10;1;Oui
 Time Bomb;1;8;15;15;4;8;Jeu social/Team VS;20;1;Oui
 Time's up : Academy;1;12;30;30;4;12;Jeu social/Team VS;30;1;Oui
-Top Ten;1;8;30;30;4;9;Social;20;1;Oui
+Top Ten;1;8;30;30;4;9;Jeu social;20;1;Oui
 Tragedy Looper;5;14;120;120;2;4;Déduction/Team VS;50;1;Oui
-Unlock! : Escape adventures;2;10;60;60;1;6;Réflexion/Social/Coop;40;0;?
-Unlock! : Game adventures;2;10;60;60;1;6;Réflexion/Social/Coop;40;1;Oui
-Unlock! : Heroic adventures;2;10;60;60;1;6;Réflexion/Social/Coop;40;1;Oui
-Unlock! : Legendart adventures;2;10;60;60;1;6;Réflexion/Social/Coop;40;0;?
-Unlock! : Mythic Adventures;2;10;60;60;1;6;Réflexion/Social/Coop;40;1;Oui
-Unlock! : Star Wars;2;10;60;60;1;6;Réflexion/Social/Coop;40;1;Oui
+Unlock! : Escape adventures;2;10;60;60;1;6;Réflexion/Jeu social/Coop;40;0;?
+Unlock! : Game adventures;2;10;60;60;1;6;Réflexion/Jeu social/Coop;40;1;Oui
+Unlock! : Heroic adventures;2;10;60;60;1;6;Réflexion/Jeu social/Coop;40;1;Oui
+Unlock! : Legendart adventures;2;10;60;60;1;6;Réflexion/Jeu social/Coop;40;0;?
+Unlock! : Mythic Adventures;2;10;60;60;1;6;Réflexion/Jeu social/Coop;40;1;Oui
+Unlock! : Star Wars;2;10;60;60;1;6;Réflexion/Jeu social/Coop;40;1;Oui
 Uruk : Naissance de l'écriture;1;12;15;15;2;5;Cartes;30;1;Oui
 Wazabi;1;8;20;20;2;6;Dés;30;1;Oui
 When I dream;2;8;30;30;2;5;Cartes/Jeu social/Team VS;30;1;Oui
 Wild Space;1;10;30;30;1;5;Stratégie/Cartes;30;1;Oui
 Yggdrasil Chronicles;4;12;90;90;1;5;Stratégie/Coop;50;1;Oui
 Yokai no Mori;1;7;10;30;2;2;Réflexion;30;1;Oui
-Zargos;3;12;120;120;2;6;Wargame / Stratégie;60;1;Oui
+Zargos;3;12;120;120;2;6;Wargame/Stratégie;60;1;Oui
 Zombicide 2ème édition;4;14;60;60;1;6;Plateau/Stratégie/Coop;100;1;Oui
 Zombie 15';2;14;15;15;2;4;Plateau/Survie/Coop;60;1;Oui

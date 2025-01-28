@@ -11,7 +11,11 @@ def games_to_vector():
     for game in games:
         tags = Tags.objects.filter(game_id=game)
         tags_list = [tag.tag_id for tag in tags]
+        
+        #Ordre : Type, Durée, Age, Difficulté, Matériel, Équipe, suivi de tout les types
         games_vector.append((game.difficulty, game.game_length_max, game.min_age, game.max_players))
+        
+        
     return games_vector
 
 

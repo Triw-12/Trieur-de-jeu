@@ -6,7 +6,15 @@ def distance(v1: list, v2: list) :
 	dist : int = 0
 	
 	for i in range (len(v1)) :
-		dist += (v1[i] - v2[i])**2
+		
+		if i < 2 :	#Pondération par rapport à l'importance du composant
+			dist += (8 * (v1[i] - v2[i])) **2
+		
+		elif i < 6 :
+			dist += (5 * (v1[i] - v2[i])) **2
+		
+		else :
+			dist + = (v1[i] - v2[i]) **2
 	
 	dist = sqrt(dist)
 	return dist

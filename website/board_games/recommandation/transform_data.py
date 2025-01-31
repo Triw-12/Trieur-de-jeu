@@ -9,11 +9,40 @@ def games_to_vector():
     games = Games.objects.all()
     games_vector = []
     for game in games:
-        tags = Tags.objects.filter(game_id=game)
-        tags_list = [tag.tag_id for tag in tags]
-        
-        #Ordre : Type, Durée, Age, Difficulté, Matériel, Équipe, suivi de tout les types
-        games_vector.append((game.difficulty, game.game_length_max, game.min_age, game.max_players))
+        tags_ = Tags.objects.filter(game_id=game)
+        tags_link = {
+            "Chance" : (0, 1),
+            "Adresse" : (0, 3),
+            "Réflexion" : (0, 5),
+            "Stratégie" : (0, 6),
+            "Cartes" : (4, 0),
+            "Plateau" : (4, 1),
+            "Dés": (4, 2),
+            "AE": (4, 3),
+            "Coop": (5, 0),
+            "Team VS": (5, 1),
+            "VS": (5, 2),
+            "Bluff" : (6, 1),
+            "Conquête" : (7, 1),
+            "Déduction" : (8, 1),
+            "Construction" : (9, 1),
+            "Improvisation" : (10, 1),
+            "Mémoire" : (11, 1),
+            "Rôle Caché": (12, 1),
+            "Rigolo": (13, 1),
+            "RP": (14, 1),
+        }
+        tags = [0 for _ in range(15)]
+        tags[1] = game.game_length_max
+        tags[2] = game.min_age
+        tags[3] = game.difficulty
+        for tag in tags_:
+            if tag.tag_id in tags_link:
+                tags[tags_link[tag.tag_id][0]] = tags_link[tag.tag_id][1]
+            else:
+                print("Tag non reconnu : ", tag.tag_id)
+        #Ordre : Type (Adresse Chance Reflexion Stratégie), Durée, Age, Difficulté, Matériel (Carte, Plateau, Dés, AE), Équipe (Coop, VS, Team VS), Autre tags (tableau de 9 pour l'instant)) 
+        games_vector.append(tags)
         
         
     return games_vector

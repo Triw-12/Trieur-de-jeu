@@ -1,5 +1,6 @@
 from board_games.models import Games, Tags, History, History_players
 from authentification.models import User
+		
 
 
 def games_to_vector():
@@ -11,17 +12,17 @@ def games_to_vector():
     for game in games:
         tags_ = Tags.objects.filter(game_id=game)
         tags_link = {
-            "Chance" : (0, 1),
-            "Adresse" : (0, 3),
-            "Réflexion" : (0, 5),
-            "Stratégie" : (0, 6),
+            "Chance" : (0, 1/6),
+            "Adresse" : (0, 3/6),
+            "Réflexion" : (0, 5/6),
+            "Stratégie" : (0, 6/6),
             "Cartes" : (4, 0),
-            "Plateau" : (4, 1),
-            "Dés": (4, 2),
-            "AE": (4, 3),
+            "Plateau" : (4, 1/3),
+            "Dés": (4, 2/3),
+            "AE": (4, 3/3),
             "Coop": (5, 0),
-            "Team VS": (5, 1),
-            "VS": (5, 2),
+            "Team VS": (5, 1/2),
+            "VS": (5, 2/2),
             "Bluff" : (6, 1),
             "Conquête" : (7, 1),
             "Déduction" : (8, 1),

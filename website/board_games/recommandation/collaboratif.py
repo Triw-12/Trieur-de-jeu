@@ -11,8 +11,8 @@ def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : f
 	for i in range(m):
 		if nb_jeux_joues[joueur1][i]*nb_jeux_joues[joueur2][i] != 0 :
 			scalaire += (nb_jeux_joues[joueur1][i] - joueur1_moyenne) * (nb_jeux_joues[joueur2][i] - joueur2_moyenne)
-			ecard_u +=  (nb_jeux_joues[joueur1][i] - joueur1_moyenne) * (nb_jeux_joues[joueur1][i] - joueur1_moyenne)
-			ecard_v += (nb_jeux_joues[joueur2][i] - joueur2_moyenne) * (nb_jeux_joues[joueur2][i] - joueur2_moyenne)
+			ecard_u +=  (nb_jeux_joues[joueur1][i] - joueur1_moyenne) ** 2
+			ecard_v += (nb_jeux_joues[joueur2][i] - joueur2_moyenne) ** 2
 	if ecard_u == 0 or ecard_v == 0:
 		return 0
 	return (scalaire/ (sqrt(ecard_u * ecard_v)))
@@ -36,7 +36,7 @@ def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int):
 			pear += ppuiss
 			pearpond += (nb_jeux_joues[joueur2][j] - joueur2_moyenne) * ppuiss
 	if pear == 0:
-		return joueur_moyenne
+		return 0
 	else:
 		return (joueur_moyenne + (pearpond/pear))
 

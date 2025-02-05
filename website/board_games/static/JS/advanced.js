@@ -45,7 +45,11 @@ $(function () {
 
 $(document).ready(function () {
     let selectedTags = new Set(); // Stocke les tags sélectionnés
-	$(".hidden-tag").hide();
+    let showAll = false; // Indique si on est en mode large (true) ou réduit (false)
+
+    // Masquer les tags supplémentaires au démarrage
+    $(".hidden-tag").hide();
+
     // Gestion de la sélection des tags
     $(".tag-btn").click(function () {
         let tagId = $(this).data("tag");
@@ -61,62 +65,56 @@ $(document).ready(function () {
         $("#id-tags").val(Array.from(selectedTags).join(","));
     });
 
-    // Affichage des tags cachés
-    $("#show-more-tags").click(function () {
-        $(".hidden-tag").fadeIn(); // Affiche les tags cachés
-        $(this).hide(); // Cache le bouton "Afficher plus"
-        $("#show-less-tags").show(); // Affiche le bouton "Voir moins"
-    });
+    // Fonction pour afficher les tags en fonction du mode actuel
+    function updateTagDisplay() {
+        let searchValue = $("#tag-search").val().toLowerCase();
+        let matchingTags = [];
 
-    // Repli des tags
-    $("#show-less-tags").click(function () {
-        $(".hidden-tag").fadeOut(function () {
-            $(this).addClass("hidden-tag"); // Réapplique la classe pour le masquage
-        });
-        $(this).hide(); // Cache le bouton "Voir moins"
-        $("#show-more-tags").show(); // Réaffiche le bouton "Afficher plus"
-    });
-    // Recherche dynamique des tags
-    $("#tag-search").on("input", function () {
-        let searchValue = $(this).val().toLowerCase();
-
+        // Filtrer les tags selon la recherche
         $(".tag-btn").each(function () {
             let tagText = $(this).text().toLowerCase();
-
             if (tagText.includes(searchValue)) {
-                $(this).show(); // Affiche les tags correspondants
+                matchingTags.push(this);
             } else {
-                $(this).hide(); // Masque les tags non pertinents
+                $(this).hide();
             }
         });
 
-        // Ajuster l'affichage des boutons "Afficher plus" et "Voir moins"
-        if ($(".tag-btn:visible").length > 5) {
+        // Affichage selon le mode actuel
+        $(".tag-btn").hide(); // On cache tous les tags avant d'afficher les bons
+
+        if (showAll) {
+            // Mode large → afficher tous les tags correspondant à la recherche
+            matchingTags.forEach(tag => $(tag).show());
             $("#show-more-tags").hide();
-            $("#show-less-tags").show();
+            $("#show-less-tags").toggle(matchingTags.length > 5);
         } else {
-            $("#show-more-tags").show();
+            // Mode réduit → afficher seulement 5 résultats max
+            matchingTags.slice(0, 5).forEach(tag => $(tag).show());
+            $("#show-more-tags").toggle(matchingTags.length > 5);
             $("#show-less-tags").hide();
         }
+    }
+
+    // Recherche dynamique des tags
+    $("#tag-search").on("input", function () {
+        updateTagDisplay();
+    });
+
+    // Affichage des tags cachés → Passe en mode large
+    $("#show-more-tags").click(function () {
+        showAll = true;
+        $(".tag-btn").show(); // Afficher tous les tags d'abord
+        updateTagDisplay(); // Ensuite appliquer la recherche
+        $(this).hide();
+        $("#show-less-tags").show();
+    });
+
+    // Repli des tags → Passe en mode réduit
+    $("#show-less-tags").click(function () {
+        showAll = false;
+        updateTagDisplay(); // Appliquer la recherche d'abord, puis réduire à 5
+        $(this).hide();
+        $("#show-more-tags").show();
     });
 });
-
-/*
-$(document).ready(function () {
-    let selectedTags = new Set(); // Stocke les tags sélectionnés
-
-    $(".tag-btn").click(function () {
-        let tagId = $(this).data("tag");
-
-        if (selectedTags.has(tagId)) {
-            selectedTags.delete(tagId);
-            $(this).removeClass("btn-primary").addClass("btn-outline-primary");
-        } else {
-            selectedTags.add(tagId);
-            $(this).removeClass("btn-outline-primary").addClass("btn-primary");
-        }
-
-        $("#id-tags").val(Array.from(selectedTags).join(","));
-    });
-});
-*/

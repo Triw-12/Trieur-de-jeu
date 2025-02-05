@@ -34,7 +34,7 @@ Recherche avancée
     </div>
     <div class="container-xxl m-4 user-input">
         <div class="my-2">
-            <label for="time-slider">Durée :</label><br>
+            <label for="time-slider">Durée (min) :</label><br>
         </div>
         <div id="time-slider" class="slider-range"></div>
         <input type="text" class="digit-box m-2" id="id-min-time" name="game_length_min" readonly>
@@ -42,11 +42,8 @@ Recherche avancée
     </div>
     <div class="container-xxl m-4 user-input">
         <div class="my-2">
-            <label>Rechercher un tag :</label><br>
-            <input type="text" id="tag-search" class="form-control" placeholder="Tapez un tag...">
-        </div>
-        <div class="my-2">
-            <label>Tags :</label><br>
+            <label> Tags :</label><br>
+            <input type="text" id="tag-search" class="form-control my-3" placeholder="Chercher un tag...">
         </div>
         <div id="tag-buttons">
             {% for tag_id in tags_id %}
@@ -61,7 +58,9 @@ Recherche avancée
         <!-- Champ caché pour stocker les tags sélectionnés -->
         <input type="hidden" id="id-tags" name="tags">
     </div>    
-    <button type="submit">Rechercher</button>
+    <div class="container-xxl my-4 user-input">
+        <button type="submit mx-auto" class="btn btn-primary mt-2">Rechercher</button>
+    </div>
 </form>
 
 {% if games %}

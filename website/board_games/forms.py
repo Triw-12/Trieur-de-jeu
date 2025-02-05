@@ -18,6 +18,7 @@ class Simple_search(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields["game_name"].widget.attrs.update({
             "placeholder": "Nom du jeu",
+            "size": "10%",
         })
 
 class Advanced_search(forms.Form):

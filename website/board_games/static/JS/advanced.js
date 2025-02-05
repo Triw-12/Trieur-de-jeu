@@ -1,46 +1,25 @@
 $(function () {
-	// Initialisation du slider pour le nombre de joueurs
-	const minPlayers = 1;  // Valeur minimale du slider
-	const maxPlayers = 20; // Valeur maximale du slider
+    function initSlider(sliderId, minField, maxField, minValue, maxValue, step = 1) {
+        $(sliderId).slider({
+            range: true,
+            min: minValue,
+            max: maxValue,
+            values: [minValue, maxValue],
+            step: step,
+            slide: function (event, ui) {
+                $(minField).val(ui.values[0]);
+                $(maxField).val(ui.values[1]);
+            }
+        });
 
-	$("#players-slider").slider({
-	    range: true,
-	    min: minPlayers,
-	    max: maxPlayers,
-	    values: [minPlayers, maxPlayers],
-	    slide: function (event, ui) {
-		   // Mise à jour des champs min-players et max-players
-		   $("#id-min-players").val(ui.values[0]);
-		   $("#id-max-players").val(ui.values[1]);
-	    }
-	});
+        // Initialisation des champs avec les valeurs du slider
+        $(minField).val($(sliderId).slider("values", 0));
+        $(maxField).val($(sliderId).slider("values", 1));
+    }
 
-	// Initialisation des valeurs des champs à celles du slider
-	$("#id-min-players").val($("#players-slider").slider("values", 0));
-	$("#id-max-players").val($("#players-slider").slider("values", 1));
-});
-
- $(function () {
-	// Initialisation du slider pour le nombre de joueurs
-	const minTime = 0;  // Valeur minimale du slider
-	const maxTime = 360; // Valeur maximale du slider
-
-	$("#time-slider").slider({
-	    range: true,
-	    min: minTime,
-	    max: maxTime,
-	    values: [minTime, maxTime],
-		step: 5,
-	    slide: function (event, ui) {
-		   // Mise à jour des champs min-players et max-players
-		   $("#id-min-time").val(ui.values[0]);
-		   $("#id-max-time").val(ui.values[1]);
-	    }
-	});
-
-	// Initialisation des valeurs des champs à celles du slider
-	$("#id-min-time").val($("#time-slider").slider("values", 0));
-	$("#id-max-time").val($("#time-slider").slider("values", 1));
+    // Initialiser les sliders
+    initSlider("#players-slider", "#id-min-players", "#id-max-players", 1, 20);
+    initSlider("#time-slider", "#id-min-time", "#id-max-time", 0, 360, 5);
 });
 
 $(document).ready(function () {

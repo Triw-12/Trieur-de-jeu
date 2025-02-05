@@ -10,6 +10,7 @@
     {% bootstrap_javascript %}    
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.min.js" integrity="sha256-AlTido85uXPlSyyaZNsjJXeCs07eSv3r43kyCVc8ChI=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui-touch-punch/0.2.3/jquery.ui.touch-punch.min.js"></script>
     <link rel="stylesheet" href="{% static 'CSS/base.css' %}">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/black-tie/jquery-ui.css">
     <title>{% block title %}{% endblock title %}</title>
@@ -18,7 +19,7 @@
 </head>
 
 <body>
-    <div class="navbar">
+    <div class="container-fluid navbar">
         {% if simple_search %}
         <form class="simple_search" method="post" action="{% url 'advanced_search' %}">
             <div class="row">
@@ -27,12 +28,12 @@
                     {{ simple_search.game_name }}
                 </div>
                 <div class="col-2">
-                    <button class="button_search btn btn-danger" type="submit">Rechercher</button>
+                    <button class="button_search btn btn-danger" type="submit">🔎</button>
                 </div>
             </div>
         </form>
         {% endif %}
-        <div class="dropdown menu-btn ps-3 ms-2">
+        <div class="dropdown menu-btn">
             <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Menu
             </button>

@@ -69,3 +69,12 @@
     margin: 5px 0;
     font-size: 0.9rem;
 }
+
+.game-card-link {
+    text-decoration: none; /* Supprime le soulignement */
+    color: inherit; /* Garde la couleur par défaut du texte */
+}
+
+.game-card-link:hover {
+    text-decoration: none;
+}

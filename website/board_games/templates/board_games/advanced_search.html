@@ -62,7 +62,7 @@ Recherche avancée
                     <input type="hidden" id="id-tags" name="tags">
                 </div>    
                 <div class="container-xxl my-4 user-input">
-                    <button type="submit" class="btn btn-danger">Rechercher</button>
+                    <button type="submit" class="btn btn-dangery">Rechercher</button>
                 </div>
             </form>
         </div>
@@ -75,6 +75,7 @@ Recherche avancée
         <div class="row">
             {% for game, tags in games.items %}
             <div class="col-md-4 col-12 mb-4">
+                <a href="../game/{{game.game_id}}" class="game-card-link">
                 <div class="game-card">
                     <h4 class="game-title">{{ game.game_name }}</h4>
                     <div class="game-image-container">
@@ -87,6 +88,7 @@ Recherche avancée
                         <p><strong>Difficulté :</strong> ez</p>
                     </div>
                 </div>
+                </a>
             </div>
             {% endfor %}
         </div>

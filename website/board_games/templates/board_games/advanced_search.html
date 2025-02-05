@@ -42,10 +42,25 @@ Recherche avancée
     </div>
     <div class="container-xxl m-4 user-input">
         <div class="my-2">
-            <label for="id-tag">Tag :</label><br>
+            <label>Rechercher un tag :</label><br>
+            <input type="text" id="tag-search" class="form-control" placeholder="Tapez un tag...">
         </div>
-        <input type="text" id="id-tag" name="tag" maxlength="200">
-    </div>
+        <div class="my-2">
+            <label>Tags :</label><br>
+        </div>
+        <div id="tag-buttons">
+            {% for tag_id in tags_id %}
+            <button type="button" class="tag-btn btn btn-outline-primary m-1 {% if forloop.counter > 5 %}hidden-tag{% endif %}" 
+                    data-tag="{{ tag_id }}">
+                {{ tag_id }}
+            </button>
+            {% endfor %}
+        </div>
+        <button type="button" id="show-more-tags" class="btn btn-secondary mt-2">Afficher plus</button>
+        <button type="button" id="show-less-tags" class="btn btn-secondary mt-2" style="display: none;">Voir moins</button>
+        <!-- Champ caché pour stocker les tags sélectionnés -->
+        <input type="hidden" id="id-tags" name="tags">
+    </div>    
     <button type="submit">Rechercher</button>
 </form>
 

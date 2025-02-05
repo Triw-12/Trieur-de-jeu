@@ -27,4 +27,4 @@ class Advanced_search(forms.Form):
     min_age = forms.IntegerField(label='Age minimum', required=False)
     game_length_min = forms.IntegerField(label='Durée minimum', required=False)
     game_length_max = forms.IntegerField(label='Durée maximum', required=False)
-    tag = forms.CharField(label='Tag', max_length=200, required=False)
+    tags = forms.CharField(label='Tag', max_length=200, required=False)

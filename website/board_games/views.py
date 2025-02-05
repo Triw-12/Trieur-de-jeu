@@ -10,11 +10,17 @@ def home(request):
 def advanced_search(request):
     simple_search = forms.Simple_search()
     form = forms.Advanced_search()
+    tags = Tags.objects.all()
+    tags_id = []
+    for tag in tags:
+        if tag.tag_id not in tags_id:
+            tags_id.append(tag.tag_id)
     if request.method == 'POST':
         form = forms.Advanced_search(request.POST)
         simple_search = forms.Simple_search()
         if form.is_valid():
-            tags = Tags.objects.all()
+            print(form.cleaned_data)
+            print(form)
             games = Games.objects.all()
             if form.cleaned_data['game_name']:
                 games = games.filter(game_name__icontains=form.cleaned_data['game_name'])
@@ -28,8 +34,8 @@ def advanced_search(request):
                 games = games.filter(game_length_min__gte=form.cleaned_data['game_length_min'])
             if form.cleaned_data['game_length_max']:
                 games = games.filter(game_length_max__lte=form.cleaned_data['game_length_max'])
-            if form.cleaned_data['tag']:
-                games = games.filter(tag__icontains=form.cleaned_data['tag'])
+            if form.cleaned_data['tags']:
+                games = games.filter(tags__icontains=form.cleaned_data['tags'])
             games_and_tags = {}
             for tag in tags:
                 if tag.game_id in games:
@@ -38,11 +44,11 @@ def advanced_search(request):
                     games_and_tags[tag.game_id] += tag.tag_id + ", " 
             for key in games_and_tags.keys():
                 games_and_tags[key] = games_and_tags[key][:-2]
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games_and_tags})
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games_and_tags, 'tags_id': tags_id})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games})
-    return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search})
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id})
+    return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'tags_id': tags_id})
 
 def add_game(request):
     simple_search = forms.Simple_search()

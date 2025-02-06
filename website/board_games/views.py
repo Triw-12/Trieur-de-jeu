@@ -1,15 +1,11 @@
 from django.shortcuts import render, redirect
 from board_games import forms
-<<<<<<< HEAD
-from board_games.models import Games, Tags
-=======
 from board_games.models import Games, Tags, History, History_players, Rating
 from board_games.recommandation.hybride import notes
 from authentification.models import User
 from datetime import datetime
 from django.http import HttpResponseForbidden, HttpResponseNotFound
 import logging
->>>>>>> main
 
 
 def home(request):
@@ -33,12 +29,6 @@ def advanced_search(request):
         form = forms.Advanced_search(request.POST)
         simple_search = forms.Simple_search()
         if form.is_valid():
-<<<<<<< HEAD
-            print(form.cleaned_data)
-            print(form)
-=======
-            tags = Tags.objects.all()
->>>>>>> main
             games = Games.objects.all()
             if form.cleaned_data['game_name']:
                 games = games.filter(game_name__icontains=form.cleaned_data['game_name'])
@@ -52,13 +42,8 @@ def advanced_search(request):
                 games = games.filter(game_length_min__gte=form.cleaned_data['game_length_min'])
             if form.cleaned_data['game_length_max']:
                 games = games.filter(game_length_max__lte=form.cleaned_data['game_length_max'])
-<<<<<<< HEAD
             if form.cleaned_data['tags']:
                 games = games.filter(tags__icontains=form.cleaned_data['tags'])
-=======
-            if form.cleaned_data['tag']:
-                games = games.filter(tag__icontains=form.cleaned_data['tag'])
->>>>>>> main
             games_and_tags = {}
             for tag in tags:
                 if tag.game_id in games:

@@ -29,6 +29,7 @@ def advanced_search(request):
         form = forms.Advanced_search(request.POST)
         simple_search = forms.Simple_search()
         if form.is_valid():
+            print(form.cleaned_data)
             games = Games.objects.all()
             if form.cleaned_data['game_name']:
                 games = games.filter(game_name__icontains=form.cleaned_data['game_name'])

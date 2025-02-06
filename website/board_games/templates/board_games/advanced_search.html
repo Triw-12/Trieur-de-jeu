@@ -5,7 +5,10 @@ Recherche avancée
 {% endblock title %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'CSS/advanced.css' %}">
+<<<<<<< HEAD
 <script src="{% static 'JS/advanced.js' %}"></script>
+=======
+>>>>>>> main
 {% endblock head %}
 
 {% block body %}
@@ -85,7 +88,7 @@ Recherche avancée
                         <p><strong>Joueurs :</strong> de {{ game.min_players }} à {{ game.max_players }}</p>
                         <p><strong>Durée :</strong> {{ game.game_length_min }}m</p>
                         <p><strong>Tags :</strong> {{ tags }}</p>
-                        <p><strong>Difficulté :</strong> ez</p>
+                        <p><strong>Difficulté : </strong> {{ game.difficulty }}</p>
                     </div>
                 </div>
                 </a>

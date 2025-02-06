@@ -19,7 +19,11 @@
 </head>
 
 <body>
+<<<<<<< HEAD
     <div class="container-fluid navbar">
+=======
+    <div class="navbar">
+>>>>>>> main
         {% if simple_search %}
         <form class="simple_search" method="post" action="{% url 'advanced_search' %}">
             <div class="row">
@@ -40,7 +44,9 @@
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
                 <li><a class="dropdown-item" href="{% url 'advanced_search' %}">Recherche avancée</a></li>
+                <li><a class="dropdown-item" href="{% url 'stats' %}">Statistiques</a></li>
                 {% if user.is_authenticated %}
+                    <li><a class="dropdown-item" href="{% url 'profil' request.user.id %}">Profil</a></li>
                     {% if user.is_staff %}
                     <li><a class="dropdown-item" href={% url 'add_game' %}>Ajouter un jeu</a></li>
                     <li><a class="dropdown-item" href="/admin/">Admin</a></li>

@@ -39,7 +39,8 @@ class Command(BaseCommand):
                             min_players=min_players,
                             max_players=max_players,
                             min_age=min_age,
-                            game_name=game_name
+                            game_name=game_name,
+                            difficulty=difficulty
                         )
 
                         # Split the tags column into the different tags
@@ -50,3 +51,4 @@ class Command(BaseCommand):
                             Tags.objects.create(tag_id=tag, game_id=game)
                     except Exception as e:
                         print(f"Error inserting {game_name}: {e}")
+        print("Games added to the database.")

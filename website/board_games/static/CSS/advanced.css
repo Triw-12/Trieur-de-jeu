@@ -78,3 +78,14 @@
 .game-card-link:hover {
     text-decoration: none;
 }
+
+.age-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#age-slider {
+    width: 200px;
+    cursor: pointer;
+}

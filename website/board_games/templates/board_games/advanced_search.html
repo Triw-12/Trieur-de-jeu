@@ -5,7 +5,6 @@ Recherche avancée
 {% endblock title %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'CSS/advanced.css' %}">
-<script src="{% static 'JS/advanced.js' %}"></script>
 {% endblock head %}
 
 {% block body %}
@@ -19,7 +18,7 @@ Recherche avancée
                     <div class="my-2">
                         <label for="id-game-name">Nom du jeu :</label><br>
                     </div>
-                    <input type="text" class="form-control" id="id-game-name" name="game-name" maxlength="200">
+                    <input type="text" class="form-control" id="id-game-name" name="game_name" maxlength="200">
                 </div>
                 <div class="container-xxl my-4 user-input">
                     <div class="my-2">
@@ -29,12 +28,12 @@ Recherche avancée
                     <input type="text" class="digit-box m-2" id="id-min-players" name="min_players" readonly>
                     <input type="text" class="digit-box m-2" id="id-max-players" name="max_players" readonly>
                 </div>
-                <div class="container-xxl my-4 user-input">
-                    <div class="my-2">
-                        <label for="id-min-age">Âge minimum :</label><br>
-                    </div>
-                    <input type="number" class="form-control" id="id-min-age" name="min-age">
-                </div>
+                <div class="age-slider-container">
+                    <label for="age-slider" class="d-block mb-2">Âge minimum :</label>
+                    <div id="age-slider"></div>
+                    <span id="age-value">10</span> ans
+                    <input type="hidden" name="min_age" id="age-input" value="10">
+                </div>                                      
                 <div class="container-xxl my-4 user-input">
                     <div class="my-2">
                         <label for="time-slider">Durée (min) :</label><br>
@@ -63,7 +62,9 @@ Recherche avancée
                 </div>    
                 <div class="container-xxl my-4 user-input">
                     <button type="submit" class="btn btn-danger">Rechercher</button>
+                    <button type="button" id="reset-button" class="btn btn-secondary">Réinitialiser</button>
                 </div>
+                
             </form>
         </div>
     </div>
@@ -94,4 +95,5 @@ Recherche avancée
         </div>
     </div>
     {% endif %}
+    <script src="{% static 'JS/advanced.js' %}"></script>
 {% endblock body %}

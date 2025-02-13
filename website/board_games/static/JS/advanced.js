@@ -97,3 +97,53 @@ $(document).ready(function () {
         $("#show-more-tags").show();
     });
 });
+
+$(function () {
+    $("#age-slider").slider({
+        range: "min",
+        min: 0,
+        max: 14,
+        value: 10,  // Valeur par défaut
+        step: 1,
+        slide: function (event, ui) {
+            $("#age-value").text(ui.value);
+            $("#age-input").val(ui.value);
+        }
+    });
+
+    // Initialiser la valeur affichée
+    $("#age-value").text($("#age-slider").slider("value"));
+});
+
+$(document).ready(function () {
+    $("#reset-button").click(function () {
+        // Réinitialiser les champs texte
+        $("#id-game-name").val("");
+
+        // Réinitialiser les sliders
+        $("#players-slider").slider("values", [1, 20]);
+        $("#id-min-players").val(1);
+        $("#id-max-players").val(20);
+
+        $("#time-slider").slider("values", [0, 360]);
+        $("#id-min-time").val(0);
+        $("#id-max-time").val(360);
+
+        $("#age-slider").slider("value", 10);
+        $("#age-value").text(10);
+        $("#age-input").val(10);
+
+        // Réinitialiser les tags sélectionnés
+        $(".tag-btn").removeClass("btn-primary").addClass("btn-outline-primary");
+        $("#id-tags").val("");
+
+        // Réinitialiser la barre de recherche de tags
+        $("#tag-search").val("");
+
+        // Revenir en mode réduit pour les tags
+        $(".tag-btn").hide(); // Cacher tous les tags
+        $(".tag-btn:lt(5)").show(); // Afficher seulement les 5 premiers
+        $("#show-more-tags").show();
+        $("#show-less-tags").hide();
+    });
+});

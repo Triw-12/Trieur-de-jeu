@@ -9,16 +9,16 @@ def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : f
 	ecard_v : float = 0
 	
 	for i in range(m):
-		#if nb_jeux_joues[joueur1][i]*nb_jeux_joues[joueur2][i] != 0 :
-		scalaire += (nb_jeux_joues[joueur1][i] - joueur1_moyenne) * (nb_jeux_joues[joueur2][i] - joueur2_moyenne)
-		ecard_u +=  (nb_jeux_joues[joueur1][i] - joueur1_moyenne) ** 2
-		ecard_v += (nb_jeux_joues[joueur2][i] - joueur2_moyenne) ** 2
+		if nb_jeux_joues[joueur1][i]*nb_jeux_joues[joueur2][i] != 0 :
+			scalaire += (nb_jeux_joues[joueur1][i] - joueur1_moyenne) * (nb_jeux_joues[joueur2][i] - joueur2_moyenne)
+			ecard_u +=  (nb_jeux_joues[joueur1][i] - joueur1_moyenne) ** 2
+			ecard_v += (nb_jeux_joues[joueur2][i] - joueur2_moyenne) ** 2
 	if ecard_u == 0 or ecard_v == 0:
 		return 0
 	return (scalaire/ (sqrt(ecard_u * ecard_v)))
 
 
-def moyennePonderee(nb_jeux_joues: list, joueur: int, jeu: int):
+def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int):
 	"""Renvoie une note hypothétique de j pour joueur"""
 	
 	n : int = len(nb_jeux_joues)
@@ -29,16 +29,16 @@ def moyennePonderee(nb_jeux_joues: list, joueur: int, jeu: int):
 	pearpond = 0
 	
 	for joueur2 in range(n) :
-		if nb_jeux_joues[joueur2][jeu] > 0 :
+		if nb_jeux_joues[joueur2][j] > 0 :
 			joueur2_moyenne = sum(nb_jeux_joues[joueur2])/m
 			res_pearson = pearson(nb_jeux_joues, joueur, joueur2, joueur_moyenne, joueur2_moyenne)
 			ppuiss = pow(abs(res_pearson),1.5) * res_pearson
 			pear += ppuiss
-			pearpond += (nb_jeux_joues[joueur2][jeu] - joueur2_moyenne) * ppuiss
+			pearpond += (nb_jeux_joues[joueur2][j] - joueur2_moyenne) * ppuiss
 	if pear == 0:
 		return 0
 	else:
-		return (joueur_moyenne + (pearpond/abs(pear)))
+		return (joueur_moyenne + (pearpond/pear))
 
 
 def collaboratif(nb_jeux_joues : list, joueur : int) :

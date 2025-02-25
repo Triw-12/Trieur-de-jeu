@@ -31,13 +31,13 @@ print(collaboratif(M,1))
 # print(notes(M,MX,1))
 
 print("")
-M2 = [[2,1,0],[0,1,0]]
+M2 = [[2,1,0],[0,1,0],[0,1,0],[0,1,0],[0,1,0],[0,1,0]]
 X1 = [1,1]
 X2 = [1,0]
 X3 = [0,0]
 MX2 = [X1,X2,X3]
-print(barycentre(M2,MX2,0,sum(M2[0])))
-print(contenus(M2,MX2,0,sum(M2[0])))
+print(barycentre(M2,MX2,1,sum(M2[1])))
+print(contenus(M2,MX2,1,sum(M2[1])))
 
 print("")
 M3 = [[3,4,3,0,0],[3,4,3,2,0]]

@@ -27,7 +27,7 @@ def notes(user_id : int):
 	notesCollaboratif = collaboratif(nb_jeux_joues,joueur)
 	notesContenus = contenus(nb_jeux_joues,vecteur_jeux,joueur,nb_total_jouer)
 
-	notes = [ (notesCollaboratif[i] + notesContenus[i]) /2 for i in range (m) ]
+	notes = [ (notesCollaboratif[i] + notesContenus[i])/2  for i in range (m) ]
 	
 	return notes
 

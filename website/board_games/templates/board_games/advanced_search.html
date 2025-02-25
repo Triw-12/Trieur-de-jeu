@@ -83,7 +83,11 @@ Recherche avancée
                         <img class="game-image" src="{% static 'images/board_games/default.jpg' %}" alt="{{ game.game_name }}">
                     </div>
                     <div class="game-info">
-                        <p><strong>Joueurs :</strong> de {{ game.min_players }} à {{ game.max_players }}</p>
+                        {% if game.min_players != game.max_players %}
+                            <p><strong>Joueurs :</strong> de {{ game.min_players }} à {{ game.max_players }}</p>
+                        {% else %}
+                            <p><strong>Joueurs :</strong> {{ game.min_players }}</p>
+                        {% endif %}
                         <p><strong>Durée :</strong> {{ game.game_length_min }}m</p>
                         <p><strong>Tags :</strong> {{ tags }}</p>
                         <p><strong>Difficulté : </strong> {{ game.difficulty }}</p>

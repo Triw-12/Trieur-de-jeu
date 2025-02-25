@@ -33,9 +33,9 @@ def advanced_search(request):
             if form.cleaned_data['game_name']:
                 games = games.filter(game_name__icontains=form.cleaned_data['game_name'])
             if form.cleaned_data['min_players']:
-                games = games.filter(min_players__gte=form.cleaned_data['min_players'])
+                games = games.filter(max_players__gte=form.cleaned_data['min_players'])
             if form.cleaned_data['max_players']:
-                games = games.filter(max_players__lte=form.cleaned_data['max_players'])
+                games = games.filter(min_players__lte=form.cleaned_data['max_players'])
             if form.cleaned_data['min_age']:
                 games = games.filter(min_age__gte=form.cleaned_data['min_age'])
             if form.cleaned_data['game_length_min']:

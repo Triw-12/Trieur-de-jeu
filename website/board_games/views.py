@@ -43,7 +43,11 @@ def advanced_search(request):
             if form.cleaned_data['game_length_max']:
                 games = games.filter(game_length_max__lte=form.cleaned_data['game_length_max'])
             if form.cleaned_data['tags']:
-                games = games.filter(tags__icontains=form.cleaned_data['tags'])
+                tags_form = form.cleaned_data['tags'].split(',')
+                game_filtered = tags.filter(tag_id__in=tags_form).values_list('game_id', flat=True).distinct()
+                games = games.filter(game_id__in=game_filtered)
+            
+
             games_and_tags = {}
             for tag in tags:
                 if tag.game_id in games:
@@ -52,6 +56,7 @@ def advanced_search(request):
                     games_and_tags[tag.game_id] += tag.tag_id + ", " 
             for key in games_and_tags.keys():
                 games_and_tags[key] = games_and_tags[key][:-2]
+            
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games_and_tags, 'tags_id': tags_id})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])

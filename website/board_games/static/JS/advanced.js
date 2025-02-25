@@ -103,7 +103,7 @@ $(function () {
         range: "min",
         min: 0,
         max: 14,
-        value: 10,  // Valeur par défaut
+        value: 6,  // Valeur par défaut
         step: 1,
         slide: function (event, ui) {
             $("#age-value").text(ui.value);
@@ -129,9 +129,9 @@ $(document).ready(function () {
         $("#id-min-time").val(0);
         $("#id-max-time").val(360);
 
-        $("#age-slider").slider("value", 10);
-        $("#age-value").text(10);
-        $("#age-input").val(10);
+        $("#age-slider").slider("value", 6);
+        $("#age-value").text(6);
+        $("#age-input").val(6);
 
         // Réinitialiser les tags sélectionnés
         $(".tag-btn").removeClass("btn-primary").addClass("btn-outline-primary");

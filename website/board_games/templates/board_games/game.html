@@ -12,9 +12,13 @@
 
 <h2>Description</h2>
 <ul>
-    <li>Note moyenne : {{ game.rating }}</li>
+    {% if game.rating != 0 %}
+    <li>Note moyenne : {{ game.rating }}/5</li>
+    {% else %}
+    <li>Note moyenne : Non noté</li>
+    {% endif %}
     <li>Nombre de joueurs : {{ game.min_players }} à {{ game.max_players }}</li>
-    <li>Difficulté : {{ game.difficulty }}</li>
+    <li>Difficulté : {{ game.difficulty }}/5</li>
     <li>Âge minimum : {{ game.min_age }} ans</li>
     
     {% if game.game_length_min != game.game_length_max %}
@@ -24,6 +28,7 @@
     {% endif %}
 </ul>
 
+{% if user.is_authenticated %}
 <h2>Noter le jeu</h2>
 <form method="post" action="{% url 'rate_game' game.game_id %}">
     {% csrf_token %}
@@ -126,6 +131,6 @@
         disableSelectedOptions();
     });
 </script>
-
+{% endif %}
 
 {% endblock body %}

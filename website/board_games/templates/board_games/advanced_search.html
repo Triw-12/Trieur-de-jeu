@@ -108,7 +108,12 @@ Recherche avancée
                         {% with tags_game|default_if_none:""|get_item:game as tags %}
                         <p><strong>Tags :</strong> {{ tags }}</p>
                         {% endwith %}
-                        <p><strong>Difficulté : </strong> {{ game.difficulty }}</p>
+                        <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
+                        {% if game.rating != 0 %}
+                        <p><strong>Note : </strong> {{ game.rating }}/5</p>
+                        {% else %}
+                        <p><strong>Note : </strong> Non noté</p>
+                        {% endif %}
                     </div>
                 </div>
                 </a>

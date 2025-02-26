@@ -1,5 +1,6 @@
 from math import *
 
+
 def distance(v1: list, v2: list) :
 	"""Renvoie la distance entre v1 et v2, tous deux de même tailles"""
 	assert len(v1) == len(v2)
@@ -7,11 +8,23 @@ def distance(v1: list, v2: list) :
 	
 	for i in range (len(v1)) :
 		
+		dist += (v1[i] - v2[i]) **2
+	
+	dist = sqrt(dist)
+	return dist
+
+def distancePond(v1: list, v2: list) :
+	"""Renvoie la distance pondéré entre v1 et v2, tous deux de même tailles"""
+	assert len(v1) == len(v2)
+	dist : int = 0
+	
+	for i in range (len(v1)) :
+		
 		if i < 2 :	#Pondération par rapport à l'importance du composant
-			dist += (8 * (v1[i] - v2[i])) **2
+			dist += 8 * (v1[i] - v2[i]) **2
 		
 		elif i < 6 :
-			dist += (5 * (v1[i] - v2[i])) **2
+			dist += 5 * (v1[i] - v2[i]) **2
 		
 		else :
 			dist += (v1[i] - v2[i]) **2
@@ -40,7 +53,11 @@ def valeurHypp( dist : float, distmax : float, distmin : float, plus_jouer : int
 	"""Donne une valeur hypothétique de j pour X"""
 	assert distmax >= dist >= distmin
 	
-	return plus_jouer*(distmax-dist)/(distmax-distmin)
+	if distmax == distmin :
+		return plus_jouer
+	
+	else :
+		return plus_jouer*(distmax-dist)/(distmax-distmin)
 
 
 
@@ -60,7 +77,7 @@ def contenus(nb_jeux_joues :list , vecteur_jeux : list, joueur : int, nb_jeux_jo
 	
 	for i in range (m):	#On calcule les distances au barycentre
 
-		dist[i] = distance(vecteur_jeux[i], vect_u)
+		dist[i] = distancePond(vecteur_jeux[i], vect_u)
 		
 		if dist[i] > distmax :
 			distmax = dist[i]

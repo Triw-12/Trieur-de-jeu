@@ -9,7 +9,7 @@ def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : f
 	ecard_v : float = 0
 	
 	for i in range(m):
-		#if nb_jeux_joues[joueur1][i]*nb_jeux_joues[joueur2][i] != 0 :
+		#if nb_jeux_joues[joumoyennePonderee(nb_jeux_joues: list, joueur: int, jeu: int)eur1][i]*nb_jeux_joues[joueur2][i] != 0 :
 		scalaire += (nb_jeux_joues[joueur1][i] - joueur1_moyenne) * (nb_jeux_joues[joueur2][i] - joueur2_moyenne)
 		ecard_u +=  (nb_jeux_joues[joueur1][i] - joueur1_moyenne) ** 2
 		ecard_v += (nb_jeux_joues[joueur2][i] - joueur2_moyenne) ** 2

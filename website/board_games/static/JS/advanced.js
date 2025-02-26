@@ -1,5 +1,5 @@
 $(function () {
-    function initSlider(sliderId, minField, maxField, minValue, maxValue, step = 1) {
+    function initSlider(sliderId, minField, maxField, minValue, maxValue, step = 1, callback = null) {
         $(sliderId).slider({
             range: true,
             min: minValue,
@@ -9,141 +9,115 @@ $(function () {
             slide: function (event, ui) {
                 $(minField).val(ui.values[0]);
                 $(maxField).val(ui.values[1]);
+                saveFilters();
+            },
+            change: function () {
+                saveFilters();
             }
         });
 
-        // Initialisation des champs avec les valeurs du slider
-        $(minField).val($(sliderId).slider("values", 0));
-        $(maxField).val($(sliderId).slider("values", 1));
+        $(minField).val(minValue);
+        $(maxField).val(maxValue);
     }
 
-    // Initialiser les sliders
-    initSlider("#players-slider", "#id-min-players", "#id-max-players", 1, 20);
-    initSlider("#time-slider", "#id-min-time", "#id-max-time", 0, 360, 5);
-});
+    function saveFilters() {
+        let filters = {
+            gameName: $("#id-game-name").val(),
+            sortBy: $("#sort_by").val(),
+            minPlayers: $("#id-min-players").val(),
+            maxPlayers: $("#id-max-players").val(),
+            minTime: $("#id-min-time").val(),
+            maxTime: $("#id-max-time").val(),
+            age: $("#age-input").val(),
+            tags: $("#id-tags").val(),
+            tagSearch: $("#tag-search").val()
+        };
+        localStorage.setItem("filters", JSON.stringify(filters));
+    }
 
-$(document).ready(function () {
-    let selectedTags = new Set(); // Stocke les tags sélectionnés
-    let showAll = false; // Indique si on est en mode large (true) ou réduit (false)
-
-    // Masquer les tags supplémentaires au démarrage
-    $(".hidden-tag").hide();
-
-    // Gestion de la sélection des tags
-    $(".tag-btn").click(function () {
-        let tagId = $(this).data("tag");
-
-        if (selectedTags.has(tagId)) {
-            selectedTags.delete(tagId);
-            $(this).removeClass("btn-primary").addClass("btn-outline-primary");
-        } else {
-            selectedTags.add(tagId);
-            $(this).removeClass("btn-outline-primary").addClass("btn-primary");
+    function loadFilters() {
+        let filters = JSON.parse(localStorage.getItem("filters"));
+        if (filters) {
+            $("#id-game-name").val(filters.gameName);
+            $("#sort_by").val(filters.sortBy);
+            $("#players-slider").slider("values", [filters.minPlayers, filters.maxPlayers]);
+            $("#id-min-players").val(filters.minPlayers);
+            $("#id-max-players").val(filters.maxPlayers);
+            $("#time-slider").slider("values", [filters.minTime, filters.maxTime]);
+            $("#id-min-time").val(filters.minTime);
+            $("#id-max-time").val(filters.maxTime);
+            $("#age-slider").slider("value", filters.age);
+            $("#age-value").text(filters.age);
+            $("#age-input").val(filters.age);
+            $("#id-tags").val(filters.tags);
+            
+            $(".tag-btn").removeClass("btn-primary").addClass("btn-outline-primary");
+            filters.tags.split(",").forEach(tag => {
+                $(".tag-btn[data-tag='" + tag + "']").removeClass("btn-outline-primary").addClass("btn-primary");
+            });
+            
+            $("#tag-search").val(filters.tagSearch);
+            updateTagDisplay();
         }
+    }
 
-        $("#id-tags").val(Array.from(selectedTags).join(","));
-    });
-
-    // Fonction pour afficher les tags en fonction du mode actuel
     function updateTagDisplay() {
         let searchValue = $("#tag-search").val().toLowerCase();
-        let matchingTags = [];
-
-        // Filtrer les tags selon la recherche
-        $(".tag-btn").each(function () {
-            let tagText = $(this).text().toLowerCase();
-            if (tagText.includes(searchValue)) {
-                matchingTags.push(this);
-            } else {
-                $(this).hide();
-            }
+        let matchingTags = $(".tag-btn").filter(function () {
+            return $(this).text().toLowerCase().includes(searchValue);
         });
-
-        // Affichage selon le mode actuel
-        $(".tag-btn").hide(); // On cache tous les tags avant d'afficher les bons
-
-        if (showAll) {
-            // Mode large → afficher tous les tags correspondant à la recherche
-            matchingTags.forEach(tag => $(tag).show());
-            $("#show-more-tags").hide();
-            $("#show-less-tags").toggle(matchingTags.length > 5);
-        } else {
-            // Mode réduit → afficher seulement 5 résultats max
-            matchingTags.slice(0, 5).forEach(tag => $(tag).show());
-            $("#show-more-tags").toggle(matchingTags.length > 5);
-            $("#show-less-tags").hide();
-        }
+        $(".tag-btn").hide();
+        matchingTags.slice(0, showAll ? matchingTags.length : 5).show();
+        $("#show-more-tags").toggle(matchingTags.length > 5 && !showAll);
+        $("#show-less-tags").toggle(showAll);
     }
 
-    // Recherche dynamique des tags
-    $("#tag-search").on("input", function () {
-        updateTagDisplay();
+    let selectedTags = new Set();
+    let showAll = false;
+    $(".hidden-tag").hide();
+    $(".tag-btn").click(function () {
+        let tagId = $(this).data("tag");
+        selectedTags.has(tagId) ? selectedTags.delete(tagId) : selectedTags.add(tagId);
+        $(this).toggleClass("btn-primary btn-outline-primary");
+        $("#id-tags").val(Array.from(selectedTags).join(","));
+        saveFilters();
     });
 
-    // Affichage des tags cachés → Passe en mode large
-    $("#show-more-tags").click(function () {
-        showAll = true;
-        $(".tag-btn").show(); // Afficher tous les tags d'abord
-        updateTagDisplay(); // Ensuite appliquer la recherche
-        $(this).hide();
-        $("#show-less-tags").show();
-    });
+    $("#tag-search").on("input", updateTagDisplay);
+    $("#show-more-tags").click(() => { showAll = true; updateTagDisplay(); });
+    $("#show-less-tags").click(() => { showAll = false; updateTagDisplay(); });
 
-    // Repli des tags → Passe en mode réduit
-    $("#show-less-tags").click(function () {
-        showAll = false;
-        updateTagDisplay(); // Appliquer la recherche d'abord, puis réduire à 5
-        $(this).hide();
-        $("#show-more-tags").show();
-    });
-});
-
-$(function () {
     $("#age-slider").slider({
-        range: "min",
-        min: 0,
-        max: 14,
-        value: 6,  // Valeur par défaut
-        step: 1,
-        slide: function (event, ui) {
-            $("#age-value").text(ui.value);
-            $("#age-input").val(ui.value);
-        }
+        range: "min", min: 0, max: 14, value: 6, step: 1,
+        slide: function (event, ui) { $("#age-value").text(ui.value); $("#age-input").val(ui.value); saveFilters(); },
+        change: saveFilters
     });
-
-    // Initialiser la valeur affichée
     $("#age-value").text($("#age-slider").slider("value"));
-});
 
-$(document).ready(function () {
+    $("#id-game-name").on("input", saveFilters);
+    $("#sort_by").on("change", saveFilters);
+
     $("#reset-button").click(function () {
-        // Réinitialiser les champs texte
+        localStorage.removeItem("filters");
         $("#id-game-name").val("");
-
-        // Réinitialiser les sliders
+        $("#sort_by").val("name");
         $("#players-slider").slider("values", [1, 20]);
         $("#id-min-players").val(1);
         $("#id-max-players").val(20);
-
         $("#time-slider").slider("values", [0, 360]);
         $("#id-min-time").val(0);
         $("#id-max-time").val(360);
-
         $("#age-slider").slider("value", 6);
         $("#age-value").text(6);
         $("#age-input").val(6);
-
-        // Réinitialiser les tags sélectionnés
         $(".tag-btn").removeClass("btn-primary").addClass("btn-outline-primary");
         $("#id-tags").val("");
-
-        // Réinitialiser la barre de recherche de tags
         $("#tag-search").val("");
-
-        // Revenir en mode réduit pour les tags
-        $(".tag-btn").hide(); // Cacher tous les tags
-        $(".tag-btn:lt(5)").show(); // Afficher seulement les 5 premiers
-        $("#show-more-tags").show();
-        $("#show-less-tags").hide();
+        showAll = false;
+        updateTagDisplay();
     });
+
+    initSlider("#players-slider", "#id-min-players", "#id-max-players", 1, 20);
+    initSlider("#time-slider", "#id-min-time", "#id-max-time", 0, 360, 5);
+    loadFilters();
 });

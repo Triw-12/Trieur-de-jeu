@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block title %}
 Recherche avancée
 {% endblock title %}
@@ -59,6 +60,22 @@ Recherche avancée
                     <button type="button" id="show-less-tags" class="btn btn-secondary mt-2" style="display: none;">Voir moins</button>
                     <!-- Champ caché pour stocker les tags sélectionnés -->
                     <input type="hidden" id="id-tags" name="tags">
+
+                    <div class="container-xxl my-4 user-input">
+                        <div class="my-2">
+                            <label for="sort-by">Trier par :</label><br>
+                        </div>
+                        <select class="form-control" id="sort_by" name="sort_by">
+                            <option value="name">Nom</option>
+                            <option value="players_min">Nombre de joueurs minimum</option>
+                            <option value="players_max">Nombre de joueurs maximum</option>
+                            <option value="age_min">Âge minimum</option>
+                            <option value="time_min">Durée minimum</option>
+                            <option value="time_max">Durée maximum</option>
+                            <option value="difficulty">Difficulté</option>
+                            <option value="rating">Notes</option>
+                        </select>
+                    </div>
                 </div>    
                 <div class="container-xxl my-4 user-input">
                     <button type="submit" class="btn btn-danger">Rechercher</button>
@@ -74,7 +91,7 @@ Recherche avancée
     <h2 class="text-center">Résultats de la recherche</h2>
     <div class="container-card">
         <div class="row">
-            {% for game, tags in games.items %}
+            {% for game in games %}
             <div class="col-md-4 col-12 mb-4">
                 <a href="../game/{{game.game_id}}" class="game-card-link">
                 <div class="game-card">
@@ -88,8 +105,9 @@ Recherche avancée
                         {% else %}
                             <p><strong>Joueurs :</strong> {{ game.min_players }}</p>
                         {% endif %}
-                        <p><strong>Durée :</strong> {{ game.game_length_min }}m</p>
+                        {% with tags_game|default_if_none:""|get_item:game as tags %}
                         <p><strong>Tags :</strong> {{ tags }}</p>
+                        {% endwith %}
                         <p><strong>Difficulté : </strong> {{ game.difficulty }}</p>
                     </div>
                 </div>

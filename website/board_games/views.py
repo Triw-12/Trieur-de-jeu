@@ -46,8 +46,27 @@ def advanced_search(request):
                 tags_form = form.cleaned_data['tags'].split(',')
                 game_filtered = tags.filter(tag_id__in=tags_form).values_list('game_id', flat=True).distinct()
                 games = games.filter(game_id__in=game_filtered)
-            
 
+            sort_by = form.cleaned_data['sort_by']
+            if sort_by:
+                if sort_by == 'name':
+                    games = games.order_by('game_name')
+                elif sort_by == 'rating':
+                    games = games.order_by('rating')
+                elif sort_by == 'players_min':
+                    games = games.order_by('min_players')
+                elif sort_by == 'players_max':
+                    games = games.order_by('max_players')
+                elif sort_by == 'age_min':
+                    games = games.order_by('min_age')
+                elif sort_by == 'time_min':
+                    games = games.order_by('game_length_min')
+                elif sort_by == 'time_max':
+                    games = games.order_by('game_length_max')
+                elif sort_by == 'difficulty':
+                    games = games.order_by('difficulty')
+            
+            # A optimiser si possible
             games_and_tags = {}
             for tag in tags:
                 if tag.game_id in games:
@@ -57,7 +76,7 @@ def advanced_search(request):
             for key in games_and_tags.keys():
                 games_and_tags[key] = games_and_tags[key][:-2]
             
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games_and_tags, 'tags_id': tags_id})
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games' : games, 'tags_game': games_and_tags, 'tags_id': tags_id})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id})

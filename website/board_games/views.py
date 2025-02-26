@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 from board_games import forms
 from board_games.models import Games, Tags, History, History_players, Rating
 from board_games.recommandation.hybride import notes
+
 from authentification.models import User
-from datetime import datetime
+
 from django.http import HttpResponseForbidden, HttpResponseNotFound
 import logging
 
@@ -82,6 +85,7 @@ def advanced_search(request):
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id})
     return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'tags_id': tags_id})
 
+@login_required
 def add_game(request):
     simple_search = forms.Simple_search()
     form = forms.AddGames()
@@ -127,6 +131,7 @@ def game(request, id):
             logger.error('Erreur dans le nombre de joueurs: game_id=%s, num_players=%s, min_players=%s, max_players=%s', game.game_id, num_players, game.min_players, game.max_players)
     return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating})
 
+@login_required
 def profil(request, id):
     simple_search = forms.Simple_search()
     if request.user.id != id and not request.user.is_superuser:
@@ -139,6 +144,7 @@ def stats(request):
     users = User.objects.all()
     return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search})
 
+@login_required
 def rate_game(request,id):
     form = forms.RateGame()
     game = Games.objects.get(game_id=id)

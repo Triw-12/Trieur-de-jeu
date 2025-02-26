@@ -9,8 +9,20 @@ Profil
 
 <h3>Informations personnelles</h3>
 
+Profil créé le {{ user.date_joined|date:"d/m/Y" }}<br>
+Dernière connexion le {{ user.last_login|date:"d/m/Y H:i" }}<br>
+
 <h3>Changer le mot de passe</h3>
 
-<h3>Statistiques du joueur</h3> 
+<h3>Statistiques du joueur</h3>
+
+<ul>
+    <li>Nombre de parties jouées : {{ user.nb_games_played }}
+    <li>Nombre de jeux joués: {{ user.nb_games_played_unique }}
+    <li>Nombre de jeux notés : {{ user.nb_games_rated }}
+    {% if user.nb_games_rated > 0 %}
+    <li>Moyenne des notes données : {{ user.avg_rating }}/5
+    {% endif %}
+</ul>
 
 {% endblock body %}

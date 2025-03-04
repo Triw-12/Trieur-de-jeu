@@ -1,3 +1,5 @@
+from board_games.recommandation.collaboratif import *
+from board_games.recommandation.contenus import *
 
 X0 = [1,0,0]
 X1 = [0,1,0]
@@ -18,7 +20,7 @@ nb_jeux_joues = [u0,u1,u2,u3]
 vecteur_jeux = [X0,X1,X2,X3]
 
 ##Test collaboratif
-from collaboratif import *
+
 
 def testPearson() :
 	"""pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : float, joueur2_moyenne : float)"""
@@ -44,11 +46,11 @@ testCollaboratif()
 
 
 ##Test contenus
-from contenus import *
+
 
 def testDistance() :
 	"""distance(v1: list, v2: list)"""
-	assert(distance(X0,X2) )
+	assert(distance(X0,X2) == 1)
 	assert(distance(X2,X0) == 1)
 	assert(distance(u0,u1) == 4)
 	assert(distance(u1,u0) == 4)

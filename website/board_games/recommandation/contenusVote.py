@@ -4,7 +4,7 @@ from math import *
 def distance(v1: list, v2: list) :
 	"""Renvoie la distance entre v1 et v2, tous deux de même tailles"""
 	assert len(v1) == len(v2)
-	dist : int = 0
+	dist : float = 0
 	
 	for i in range (len(v1)) :
 		

@@ -7,14 +7,13 @@ class User(AbstractUser):
     last_name = None
 
     def nb_games_played(self):
-        return len(History_players.objects.filter(user_id=self))
+        return History_players.objects.filter(user_id=self).count()
     
     def nb_games_played_unique(self):
-        return len(History.objects.filter(play_id__in=History_players.objects.filter(user_id=self)))
+        return History.objects.filter(play_id__in=History_players.objects.filter(user_id=self)).count()
     
     def nb_games_rated(self):
-        return len(Rating.objects.filter(user_id=self))
-    
+        return Rating.objects.filter(user_id=self).count()
     def avg_rating(self):
         ratings = Rating.objects.filter(user_id=self)
         if len(ratings) == 0:

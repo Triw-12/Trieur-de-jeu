@@ -40,7 +40,7 @@ class TestCoherenceBDD(TestCase):
 
     def test_game_fields_not_empty(self):
         for game in self.games:
-            self.assertTrue(game.game_name, f"Game ID '{game.game.name}' has an empty name")
+            self.assertTrue(game.game_name, f"Game ID '{game.game_name}' has an empty name")
     
     def test_game_stock_positive(self):
         for game in self.games:

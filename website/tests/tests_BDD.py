@@ -1,6 +1,6 @@
 from django.test import TestCase
-from board_games.models import Games, Extensions, Tags, Lending, History, History_players, Rating
-from authentification.models import User
+from board_games.models import *
+from authentification.models import *
 
 class GameTestCase(TestCase):
     def setUp(self):

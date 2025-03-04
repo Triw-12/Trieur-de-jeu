@@ -6,6 +6,7 @@ from authentification.models import User
 from datetime import datetime
 from django.http import HttpResponseForbidden, HttpResponseNotFound
 import logging
+from os import listdir
 
 
 def home(request):
@@ -52,10 +53,12 @@ def advanced_search(request):
                     games_and_tags[tag.game_id] += tag.tag_id + ", " 
             for key in games_and_tags.keys():
                 games_and_tags[key] = games_and_tags[key][:-2]
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games_and_tags, 'tags_id': tags_id})
+            image_dict = get_image_dict(games_and_tags)
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games_and_tags, 'tags_id': tags_id, 'dict': image_dict})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id})
+            image_dict = get_image_dict(games)
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id, 'dict': image_dict})
     return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'tags_id': tags_id})
 
 def add_game(request):
@@ -130,3 +133,16 @@ def rate_game(request,id):
             rating.save()
             return redirect(f'/game/{id}?rated={rating.rating}')
     return HttpResponseNotFound()
+
+
+def get_image_dict(games):
+    """Helper function to get image paths for games."""
+    mypath = "static/images/board_games"
+    mypath2 = "images/board_games"
+    list_images = listdir(mypath)
+    list_images_name_only = {i.split('.')[0]: i for i in list_images}
+
+    return {
+        game.game_name: f"{mypath2}/{list_images_name_only.get(''.join(e for e in game.game_name if e.isalnum()), '')}"
+        for game in games if ''.join(e for e in game.game_name if e.isalnum()) in list_images_name_only
+    }

@@ -33,31 +33,31 @@ def distancePond(v1: list, v2: list) :
 	return dist
 
 
-def barycentre(nb_jeux_joues: list, vecteur_jeux : list, joueur: int, nb_total_jouer : int) :
+def barycentre(nb_jeux_joues: list, vecteur_jeux : list, joueur: int, nb_total_joue : int) :
 	"""Calcule le barycentre de joueur par rapport au jeu de nb_jeux_joues (sous la forme de vecteur stocké dans vecteur_jeux)"""
 	
 	vect_u = [0 for i in range (len(vecteur_jeux[0]))]	#Vecteur barycentre de joueur
-	if nb_total_jouer == 0 :
+	if nb_total_joue == 0 :
 		return vect_u
 	
 	for i in range (len(vecteur_jeux)) :	#Pour chaque jeu
 		
 		for j in range (len(vecteur_jeux[0])):	#Pour chaque composante du vecteur
-			vect_u[j] += vecteur_jeux[i][j] * nb_jeux_joues[joueur][i] / nb_total_jouer
+			vect_u[j] += vecteur_jeux[i][j] * nb_jeux_joues[joueur][i] / nb_total_jouee
 		
 	return vect_u
 
 
-def valeurHypp( dist : float, distmax : float, distmin : float, plus_jouer : int) :
+def valeurHypp( dist : float, distmax : float, distmin : float, plus_joue : int) :
 	"""Hypothèse: distmax > dist > distmin"""
 	"""Donne une valeur hypothétique de j pour X"""
 	assert distmax >= dist >= distmin
 	
 	if distmax == distmin :
-		return plus_jouer
+		return plus_joue
 	
 	else :
-		return plus_jouer*(distmax-dist)/(distmax-distmin)
+		return plus_joue*(distmax-dist)/(distmax-distmin)
 
 
 
@@ -72,7 +72,7 @@ def contenus(nb_jeux_joues :list , vecteur_jeux : list, joueur : int, nb_jeux_jo
 	
 	distmax = 0.0
 	distmin = float('inf')
-	plus_jouer = max(nb_jeux_joues[joueur])
+	plus_joue = max(nb_jeux_joues[joueur])
 	
 	
 	for i in range (m):	#On calcule les distances au barycentre
@@ -88,6 +88,6 @@ def contenus(nb_jeux_joues :list , vecteur_jeux : list, joueur : int, nb_jeux_jo
 	
 	for i in range (m):	#On donne les notes
 		
-		notes[i] = valeurHypp(dist[i], distmax, distmin, plus_jouer)
+		notes[i] = valeurHypp(dist[i], distmax, distmin, plus_joue)
 	
 	return notes

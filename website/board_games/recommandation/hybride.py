@@ -22,12 +22,12 @@ def notes(user_id : int):
 	init()
 	joueur : int = dict_user[user_id]
 	m = len(vecteur_jeux)
-	nb_total_jouer : int = sum(nb_jeux_joues[joueur])
+	nb_total_joue : int = sum(nb_jeux_joues[joueur])
 
 	notesCollaboratif = collaboratif(nb_jeux_joues,joueur)
-	notesContenus = contenus(nb_jeux_joues,vecteur_jeux,joueur,nb_total_jouer)
+	notesContenus = contenus(nb_jeux_joues,vecteur_jeux,joueur,nb_total_joue)
 
-	notes = [ (notesCollaboratif[i] + notesContenus[i])/2  for i in range (m) ]
+	notes = [ (notesCollaboratif[i] + notesContenus[i])/2 for i in range (m) ]
 	
 	return notes
 

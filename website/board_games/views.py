@@ -24,9 +24,8 @@ def home(request):
 
 def get_image_dict(games):
     """Helper function to get image paths for games."""
-    base_dir = settings.BASE_DIR
-    image_dir_path = base_dir + "static/images/board_games" # Relative path to the images directory
-    image_dir_path_website = base_dir + "images/board_games" # Relative path to the images directory as seen by the website
+    image_dir_path = settings.BASE_DIR / "static/images/board_games" # Relative path to the images directory
+    image_dir_path_website = "images/board_games" # Relative path to the images directory as seen by the website
     list_images = listdir(image_dir_path) # List all images in the images directory
     list_images_name_only = {image_name.split('.')[0]: image_name for image_name in list_images} # Dictionary linking the file name without it's extension it's full name.
     image_dict = {} # Dictionary containing the images path referenced by the game name

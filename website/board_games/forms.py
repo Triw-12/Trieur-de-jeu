@@ -29,6 +29,7 @@ class Advanced_search(forms.Form):
     game_length_min = forms.IntegerField(label='Durée minimum', required=False)
     game_length_max = forms.IntegerField(label='Durée maximum', required=False)
     tags = forms.CharField(label='Tags', max_length=200, required=False)
+    sort_by = forms.CharField(label='Trier par', required=True)
 
 class RateGame(forms.ModelForm):
     RATING_CHOICES = [(i, str(i)) for i in range(1, 11)]

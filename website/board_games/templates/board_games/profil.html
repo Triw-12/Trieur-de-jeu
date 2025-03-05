@@ -21,7 +21,7 @@ Dernière connexion le {{ user.last_login|date:"d/m/Y H:i" }}<br>
     <li>Nombre de jeux joués: {{ user.nb_games_played_unique }}
     <li>Nombre de jeux notés : {{ user.nb_games_rated }}
     {% if user.nb_games_rated > 0 %}
-    <li>Moyenne des notes données : {{ user.avg_rating }}/5
+    <li>Moyenne des notes données : {{ user.avg_rating }}/10
     {% endif %}
 </ul>
 

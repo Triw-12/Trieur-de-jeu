@@ -1,0 +1,30 @@
+codecov:
+  require_ci_to_pass: true
+  notify:
+    after_n_builds: 1
+
+coverage:
+  status:
+    project:
+      default:
+        target: 50%  
+        threshold: 1%
+    patch:
+      default:
+        target: 50%
+        threshold: 1%
+
+comment:
+  layout: "diff, files"
+  behavior: default  # Ajoute un commentaire sur la PR
+  require_changes: true  # Ne commente que si des changements ont eu lieu
+
+ignore:
+  - "*/migrations/*"  # Exclure les migrations Django
+  - "*/settings/*"  # Exclure les fichiers de configuration Django
+  - "*/wsgi.py"  # Exclure le fichier WSGI
+  - "*/asgi.py"  # Exclure le fichier ASGI
+  - "manage.py"  # Exclure le fichier de gestion Django
+  - "*/tests/*"  # Exclure les fichiers de tests du calcul de couverture
+
+codecov_yaml: website/codecov.yaml

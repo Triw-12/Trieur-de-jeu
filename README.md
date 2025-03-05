@@ -44,9 +44,9 @@ Il est possible de faire des tests de coverage avec les commandes suivantes :
 
 ```sh
 cd website/
-converage run manage.py test
+coverage run manage.py test
 coverage html
 ```
 
 Et accédez à la page `htmlcov/index.html`
-Vous pouvez sinon executer `converage report` pour avoir le rapport directement dans le terminal
+Vous pouvez sinon executer `coverage report` pour avoir le rapport directement dans le terminal

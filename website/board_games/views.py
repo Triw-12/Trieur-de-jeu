@@ -9,6 +9,7 @@ from authentification.models import User
 
 from django.http import HttpResponseForbidden, HttpResponseNotFound
 import logging
+from os import listdir
 
 
 def home(request):
@@ -19,6 +20,23 @@ def home(request):
         notes_game = notes(request.user.id)
         games = sorted([(game, notes_game[i]) for i, game in enumerate(games)], key=lambda x: x[1], reverse=True)[:15]
     return render(request, 'board_games/home.html', context={'simple_search': simple_search, 'games': games})
+
+def get_image_dict(games):
+    """Helper function to get image paths for games."""
+    image_dir_path = "static/images/board_games" # Relative path to the images directory
+    image_dir_path_website = "images/board_games" # Relative path to the images directory as seen by the website
+    list_images = listdir(image_dir_path) # List all images in the images directory
+    list_images_name_only = {image_name.split('.')[0]: image_name for image_name in list_images} # Dictionary linking the file name without it's extension it's full name.
+    image_dict = {} # Dictionary containing the images path referenced by the game name
+
+    for game in games:
+        cleaned_game_name = ''.join(name_part for name_part in game.game_name if name_part.isalnum()) # Cleaning the game name
+        image_filename = list_images_name_only.get(cleaned_game_name) # If a file with the game name is found, get it's full file name.
+
+        if cleaned_game_name in list_images_name_only: # If a file with the game name is found
+            image_dict[game.game_name] = f"{image_dir_path_website}/{image_filename}" # Then add it's proper path to image_dict.
+
+    return image_dict # Return the dictionary containing the images.
 
 def advanced_search(request):
     simple_search = forms.Simple_search()
@@ -78,11 +96,11 @@ def advanced_search(request):
                     games_and_tags[tag.game_id] += tag.tag_id + ", " 
             for key in games_and_tags.keys():
                 games_and_tags[key] = games_and_tags[key][:-2]
-            
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games' : games, 'tags_game': games_and_tags, 'tags_id': tags_id})
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_game': games_and_tags, 'tags_id': tags_id, 'dict': image_dict})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id})
+            image_dict = get_image_dict(games)
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id, 'dict': image_dict})
     return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'tags_id': tags_id})
 
 @login_required

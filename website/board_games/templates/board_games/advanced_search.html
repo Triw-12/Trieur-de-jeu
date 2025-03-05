@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 {% load static %}
 {% block title %}
 Recherche avancée
@@ -6,6 +7,7 @@ Recherche avancée
 {% block head %}
 <link rel="stylesheet" href="{% static 'CSS/advanced.css' %}">
 {% endblock head %}
+
 
 {% block body %}
 <div class="container">
@@ -76,11 +78,11 @@ Recherche avancée
         <div class="row">
             {% for game, tags in games.items %}
             <div class="col-md-4 col-12 mb-4">
-                <a href="../game/{{game.game_id}}" class="game-card-link">
+                <a href="../game/{{ game.game_id }}" class="game-card-link">
                 <div class="game-card">
                     <h4 class="game-title">{{ game.game_name }}</h4>
                     <div class="game-image-container">
-                        <img class="game-image" src="{% static 'images/board_games/default.jpg' %}" alt="{{ game.game_name }}">
+                            <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">
                     </div>
                     <div class="game-info">
                         <p><strong>Joueurs :</strong> de {{ game.min_players }} à {{ game.max_players }}</p>

@@ -18,6 +18,23 @@ def home(request):
         games = sorted([(game, notes_game[i]) for i, game in enumerate(games)], key=lambda x: x[1], reverse=True)[:15]
     return render(request, 'board_games/home.html', context={'simple_search': simple_search, 'games': games})
 
+def get_image_dict(games):
+    """Helper function to get image paths for games."""
+    mypath = "static/images/board_games"
+    mypath2 = "images/board_games"
+    list_images = listdir(mypath)
+    list_images_name_only = {i.split('.')[0]: i for i in list_images}
+    image_dict = {}
+
+    for game in games:
+        cleaned_game_name = ''.join(name_part for name_part in game.game_name if name_part.isalnum())
+        image_filename = list_images_name_only.get(cleaned_game_name, "")
+
+        if cleaned_game_name in list_images_name_only:
+            image_dict[game.game_name] = f"{mypath2}/{image_filename}"
+
+    return image_dict
+
 def advanced_search(request):
     simple_search = forms.Simple_search()
     form = forms.Advanced_search()
@@ -133,16 +150,3 @@ def rate_game(request,id):
             rating.save()
             return redirect(f'/game/{id}?rated={rating.rating}')
     return HttpResponseNotFound()
-
-
-def get_image_dict(games):
-    """Helper function to get image paths for games."""
-    mypath = "static/images/board_games"
-    mypath2 = "images/board_games"
-    list_images = listdir(mypath)
-    list_images_name_only = {i.split('.')[0]: i for i in list_images}
-
-    return {
-        game.game_name: f"{mypath2}/{list_images_name_only.get(''.join(e for e in game.game_name if e.isalnum()), '')}"
-        for game in games if ''.join(e for e in game.game_name if e.isalnum()) in list_images_name_only
-    }

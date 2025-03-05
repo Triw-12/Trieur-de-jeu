@@ -27,7 +27,7 @@ jobs:
         env:
           DJANGO_SETTINGS_MODULE: website.settings
         run: |
-          coverage run manage.py test
+          coverage run website/manage.py test
           coverage report
           coverage xml
 

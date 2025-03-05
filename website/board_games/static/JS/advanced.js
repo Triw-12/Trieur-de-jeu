@@ -1,12 +1,12 @@
 $(function () {
-    function initSlider(sliderId, minField, maxField, minValue, maxValue, step = 1, callback = null) {
+    function initSlider(sliderId, minField, maxField, minValue, maxValue, step = 1) {
         $(sliderId).slider({
             range: true,
             min: minValue,
             max: maxValue,
             values: [minValue, maxValue],
             step: step,
-            slide: function (event, ui) {
+            slide: function (_, ui) {
                 $(minField).val(ui.values[0]);
                 $(maxField).val(ui.values[1]);
                 saveFilters();
@@ -52,10 +52,13 @@ $(function () {
             $("#id-tags").val(filters.tags);
             
             $(".tag-btn").removeClass("btn-primary").addClass("btn-outline-primary");
-            filters.tags.split(",").forEach(tag => {
-                $(".tag-btn[data-tag='" + tag + "']").removeClass("btn-outline-primary").addClass("btn-primary");
-            });
-            
+            selectedTags.clear();
+            if (filters.tags) {
+                filters.tags.split(",").forEach(tag => {
+                    selectedTags.add(tag);
+                    $(".tag-btn[data-tag='" + tag + "']").removeClass("btn-outline-primary").addClass("btn-primary");
+                });
+            }
             $("#tag-search").val(filters.tagSearch);
             updateTagDisplay();
         }
@@ -89,7 +92,7 @@ $(function () {
 
     $("#age-slider").slider({
         range: "min", min: 0, max: 14, value: 6, step: 1,
-        slide: function (event, ui) { $("#age-value").text(ui.value); $("#age-input").val(ui.value); saveFilters(); },
+        slide: function (_, ui) { $("#age-value").text(ui.value); $("#age-input").val(ui.value); saveFilters(); },
         change: saveFilters
     });
     $("#age-value").text($("#age-slider").slider("value"));

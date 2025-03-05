@@ -51,6 +51,7 @@ def advanced_search(request):
         simple_search = forms.Simple_search()
         if form.is_valid():
             games = Games.objects.all()
+
             if form.cleaned_data['game_name']:
                 games = games.filter(game_name__icontains=form.cleaned_data['game_name'])
             if form.cleaned_data['min_players']:
@@ -96,6 +97,9 @@ def advanced_search(request):
                     games_and_tags[tag.game_id] += tag.tag_id + ", " 
             for key in games_and_tags.keys():
                 games_and_tags[key] = games_and_tags[key][:-2]
+            
+            image_dict = get_image_dict(games)
+            
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_game': games_and_tags, 'tags_id': tags_id, 'dict': image_dict})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])

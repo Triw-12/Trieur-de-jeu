@@ -20,20 +20,20 @@ def home(request):
 
 def get_image_dict(games):
     """Helper function to get image paths for games."""
-    mypath = "static/images/board_games"
-    mypath2 = "images/board_games"
-    list_images = listdir(mypath)
-    list_images_name_only = {i.split('.')[0]: i for i in list_images}
-    image_dict = {}
+    image_dir_path = "static/images/board_games" # Relative path to the images directory
+    image_dir_path_website = "images/board_games" # Relative path to the images directory as seen by the website
+    list_images = listdir(image_dir_path) # List all images in the images directory
+    list_images_name_only = {image_name.split('.')[0]: image_name for image_name in list_images} # Dictionary linking the file name without it's extension it's full name.
+    image_dict = {} # Dictionary containing the images path referenced by the game name
 
     for game in games:
-        cleaned_game_name = ''.join(name_part for name_part in game.game_name if name_part.isalnum())
-        image_filename = list_images_name_only.get(cleaned_game_name, "")
+        cleaned_game_name = ''.join(name_part for name_part in game.game_name if name_part.isalnum()) # Cleaning the game name
+        image_filename = list_images_name_only.get(cleaned_game_name) # If a file with the game name is found, get it's full file name.
 
-        if cleaned_game_name in list_images_name_only:
-            image_dict[game.game_name] = f"{mypath2}/{image_filename}"
+        if cleaned_game_name in list_images_name_only: # If a file with the game name is found
+            image_dict[game.game_name] = f"{image_dir_path_website}/{image_filename}" # Then add it's proper path to image_dict.
 
-    return image_dict
+    return image_dict # Return the dictionary containing the images.
 
 def advanced_search(request):
     simple_search = forms.Simple_search()

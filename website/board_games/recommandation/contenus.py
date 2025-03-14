@@ -43,7 +43,7 @@ def barycentre(nb_jeux_joues: list, vecteur_jeux : list, joueur: int, nb_total_j
 	for i in range (len(vecteur_jeux)) :	#Pour chaque jeu
 		
 		for j in range (len(vecteur_jeux[0])):	#Pour chaque composante du vecteur
-			vect_u[j] += vecteur_jeux[i][j] * nb_jeux_joues[joueur][i] / nb_total_jouee
+			vect_u[j] += vecteur_jeux[i][j] * nb_jeux_joues[joueur][i] / nb_total_joue
 		
 	return vect_u
 

@@ -1,15 +1,58 @@
 .navbar{
     height: 10vh;
+    min-height: 50px;
     background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.game-row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.game-res {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.game-row .col-6, .game-row .col-3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5px;
+}
+
+@media (max-width: 768px) {
+    .game-row {
+        flex-direction: column;
+    }
+    
+    .game-row .col-6 {
+        width: 100%;
+    }
+    
+    .game-row .col-6 p, .game-row .col-3 p {
+        margin: 0;
+        padding: 5px;
+    }
+}
 
 
-.menu-btn{
+.simple_search{
+    transform: translateX(20px);
+}
+
+.button_search{
+    transform: translateX(-40px);
+}
+
+.menu-btn {
     position: absolute;
-    top: 10px;
-    left: 0px
+    top: 50%; /* Place le haut du bouton au milieu de la navbar */
+    left: 10px; /* Garde l'alignement à gauche (ajuste si nécessaire) */
+    transform: translateY(-50%); /* Ajuste pour centrer précisément */
 }

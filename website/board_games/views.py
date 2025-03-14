@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 from board_games import forms
 from board_games.models import Games, Tags, History, History_players, Rating
 from board_games.recommandation.hybride import notes
+
 from authentification.models import User
-from datetime import datetime
+
 from django.http import HttpResponseForbidden, HttpResponseNotFound
 import logging
+from os import listdir
+from django.conf import settings
 
 
 def home(request):
@@ -17,29 +22,74 @@ def home(request):
         games = sorted([(game, notes_game[i]) for i, game in enumerate(games)], key=lambda x: x[1], reverse=True)[:15]
     return render(request, 'board_games/home.html', context={'simple_search': simple_search, 'games': games})
 
+def get_image_dict(games):
+    """Helper function to get image paths for games."""
+    image_dir_path = settings.BASE_DIR / "static/images/board_games" # Relative path to the images directory
+    image_dir_path_website = "images/board_games" # Relative path to the images directory as seen by the website
+    list_images = listdir(image_dir_path) # List all images in the images directory
+    list_images_name_only = {image_name.split('.')[0]: image_name for image_name in list_images} # Dictionary linking the file name without it's extension it's full name.
+    image_dict = {} # Dictionary containing the images path referenced by the game name
+
+    for game in games:
+        cleaned_game_name = ''.join(name_part for name_part in game.game_name if name_part.isalnum()) # Cleaning the game name
+        image_filename = list_images_name_only.get(cleaned_game_name) # If a file with the game name is found, get it's full file name.
+
+        if cleaned_game_name in list_images_name_only: # If a file with the game name is found
+            image_dict[game.game_name] = f"{image_dir_path_website}/{image_filename}" # Then add it's proper path to image_dict.
+
+    return image_dict # Return the dictionary containing the images.
+
 def advanced_search(request):
     simple_search = forms.Simple_search()
     form = forms.Advanced_search()
+    tags = Tags.objects.all()
+    tags_id = []
+    for tag in tags:
+        if tag.tag_id not in tags_id:
+            tags_id.append(tag.tag_id)
     if request.method == 'POST':
         form = forms.Advanced_search(request.POST)
         simple_search = forms.Simple_search()
         if form.is_valid():
-            tags = Tags.objects.all()
             games = Games.objects.all()
+
             if form.cleaned_data['game_name']:
                 games = games.filter(game_name__icontains=form.cleaned_data['game_name'])
             if form.cleaned_data['min_players']:
-                games = games.filter(min_players__gte=form.cleaned_data['min_players'])
+                games = games.filter(max_players__gte=form.cleaned_data['min_players'])
             if form.cleaned_data['max_players']:
-                games = games.filter(max_players__lte=form.cleaned_data['max_players'])
+                games = games.filter(min_players__lte=form.cleaned_data['max_players'])
             if form.cleaned_data['min_age']:
                 games = games.filter(min_age__gte=form.cleaned_data['min_age'])
             if form.cleaned_data['game_length_min']:
                 games = games.filter(game_length_min__gte=form.cleaned_data['game_length_min'])
             if form.cleaned_data['game_length_max']:
                 games = games.filter(game_length_max__lte=form.cleaned_data['game_length_max'])
-            if form.cleaned_data['tag']:
-                games = games.filter(tag__icontains=form.cleaned_data['tag'])
+            if form.cleaned_data['tags']:
+                tags_form = form.cleaned_data['tags'].split(',')
+                game_filtered = tags.filter(tag_id__in=tags_form).values_list('game_id', flat=True).distinct()
+                games = games.filter(game_id__in=game_filtered)
+
+            sort_by = form.cleaned_data['sort_by']
+            if sort_by:
+                if sort_by == 'name':
+                    games = games.order_by('game_name')
+                elif sort_by == 'rating':
+                    games = games.order_by('rating')
+                elif sort_by == 'players_min':
+                    games = games.order_by('min_players')
+                elif sort_by == 'players_max':
+                    games = games.order_by('max_players')
+                elif sort_by == 'age_min':
+                    games = games.order_by('min_age')
+                elif sort_by == 'time_min':
+                    games = games.order_by('game_length_min')
+                elif sort_by == 'time_max':
+                    games = games.order_by('game_length_max')
+                elif sort_by == 'difficulty':
+                    games = games.order_by('difficulty')
+            
+            # A optimiser si possible
             games_and_tags = {}
             for tag in tags:
                 if tag.game_id in games:
@@ -48,12 +98,17 @@ def advanced_search(request):
                     games_and_tags[tag.game_id] += tag.tag_id + ", " 
             for key in games_and_tags.keys():
                 games_and_tags[key] = games_and_tags[key][:-2]
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games_and_tags})
+            
+            image_dict = get_image_dict(games)
+            
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_game': games_and_tags, 'tags_id': tags_id, 'dict': image_dict})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games})
-    return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search})
+            image_dict = get_image_dict(games)
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id, 'dict': image_dict})
+    return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'tags_id': tags_id})
 
+@login_required
 def add_game(request):
     simple_search = forms.Simple_search()
     form = forms.AddGames()
@@ -99,6 +154,7 @@ def game(request, id):
             logger.error('Erreur dans le nombre de joueurs: game_id=%s, num_players=%s, min_players=%s, max_players=%s', game.game_id, num_players, game.min_players, game.max_players)
     return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating})
 
+@login_required
 def profil(request, id):
     simple_search = forms.Simple_search()
     if request.user.id != id and not request.user.is_superuser:
@@ -111,6 +167,7 @@ def stats(request):
     users = User.objects.all()
     return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search})
 
+@login_required
 def rate_game(request,id):
     form = forms.RateGame()
     game = Games.objects.get(game_id=id)

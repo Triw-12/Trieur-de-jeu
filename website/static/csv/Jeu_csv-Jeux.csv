@@ -2,7 +2,7 @@ Nom;Difficulté;Age min;Durée minimale;Durée maximale;Nb joueurs min;Nb joueur
 50 Missions;2;8;20;20;1;4;Chance/Cartes/Coop;20;1;Oui
 7 Wonders;2;10;30;30;2;7;Stratégie/Cartes/VS/Construction;50;1;Oui
 7 wonders : Duel;3;10;30;30;2;2;Stratégie/Cartes/VS/Construction;30;1;Oui
-"À l'heure du crime; où étiez-vous ?";1;10;20;20;5;20;Cartes/Team VS/Improvisation/Rigolo/RP;20;1;Oui
+"À l'heure du crime; où étiez-vous ?";1;10;20;20;5;20;Réflexion/Cartes/Team VS/Improvisation/Rigolo/RP;20;1;Oui
 Adel Verpflichtet;2;12;45;45;2;6;Réflexion/Plateau/VS/Bluff/Improvisation;30;2;Oui (x2)
 Aeon's End;3;14;60;60;1;4;Stratégie/Cartes/Coop/RP;50;1;Oui
 Astoria;3;10;45;45;2;6;Stratégie/Dés/Coop/RP;30;0;?
@@ -11,7 +11,7 @@ Awalé;2;6;20;30;2;2;Réflexion/AE/VS;20;1;Oui
 BANG!;1;8;20;40;4;7;Réflexion/Cartes/Team VS/Rôle Caché/Déduction/RP;20;1;Oui
 Barbe Noire : La vraie vie des Pirates;3;12;120;240;1;4;Stratégie/Plateau/VS/Conquête/RP;40;1;Oui
 Blood Bowl;3;14;120;120;2;2;Stratégie/Plateau/Team VS/RP;30;1;Oui
-Bluffer;1;10;15;15;2;6;Plateau/VS/Bluff/Improvisation/Rigolo;30;1;Oui
+Bluffer;1;10;15;15;2;6;Réflexion/Plateau/VS/Bluff/Improvisation/Rigolo;30;1;Oui
 Canardage;1;8;20;20;3;6;Chance/Cartes/VS/Rigolo;20;1;Oui
 Captain Sonar;3;12;45;45;2;8;Stratégie/Plateau/Team VS/Déduction/RP;40;1;Oui
 Catan;3;10;75;75;3;4;Stratégie/Dés/VS/Construction;40;1;Oui

@@ -127,8 +127,8 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    'authentification/static', 
-    'board_games/static'
+    BASE_DIR / 'authentification/static', 
+    BASE_DIR / 'board_games/static'
 ]
 
 # Default primary key field type

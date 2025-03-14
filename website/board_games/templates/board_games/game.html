@@ -4,133 +4,172 @@
 {% block title %}
 {{ game.game_name }}
 {% endblock title %}
-
+{% block head %}
+<link rel="stylesheet" href="{% static 'CSS/game.css' %}">
+{% endblock head %}
 {% block body %}
-<h1>{{ game.game_name }}</h1>
-
-{{ message }}
-
-<h2>Description</h2>
-<ul>
-    {% if game.rating != 0 %}
-    <li>Note moyenne : {{ game.rating }}/10</li>
-    {% else %}
-    <li>Note moyenne : Non noté</li>
-    {% endif %}
-    <li>Nombre de joueurs : {{ game.min_players }} à {{ game.max_players }}</li>
-    <li>Difficulté : {{ game.difficulty }}/5</li>
-    <li>Âge minimum : {{ game.min_age }} ans</li>
-    
-    {% if game.game_length_min != game.game_length_max %}
-        <li>Durée moyenne : entre {{ game.game_length_min }} et {{ game.game_length_max }} minutes</li>
-    {% else %}
-        <li>Durée moyenne : {{ game.game_length_min }} minutes</li>
-    {% endif %}
-</ul>
-
-{% if user.is_authenticated %}
-<h2>Noter le jeu</h2>
-<form method="post" action="{% url 'rate_game' game.game_id %}">
-    {% csrf_token %}
-    {{ form.rating.label_tag }}
-    {{ form.rating }}
-    <button type="submit">Noter</button>
-</form>
-
-<h2>Ajouter une partie</h2>
-<form method="post">
-    {% csrf_token %}
-    <label for="num_players">Nombre de joueurs :</label>
-    <select id="num_players" name="num_players" required>
-        {% with game.max_players|add:1 as max_players_plus_one %}
-            {% for i in game.min_players|add:0|get_range:max_players_plus_one %}
-                <option value="{{ i }}">{{ i }}</option>
-            {% endfor %}
-        {% endwith %}
-    </select>
-    <div id="players">
-        <label for="player_1">Joueur 1 :</label>
-        <select name="player_1" id="player_1" required>
-            <option value="{{ request.user.id }}">{{ request.user.username }}</option>
-        </select>
+<div class="container mt-4">
+    <!-- Nom du jeu -->
+    <div class="text-center">
+        <h1 class="fw-bold">{{ game.game_name }}</h1>
     </div>
-    <button type="submit">Ajouter</button>
-</form>
+
+    <!-- Message éventuel -->
+    {% if message %}
+    <div class="alert alert-info text-center mt-3">{{ message }}</div>
+    {% endif %}
+
+    <!-- Carte Description -->
+    <div class="card shadow-sm my-4">
+        <div class="card-body">
+            <h2 class="card-title text-center">Description</h2>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Note moyenne :</strong> 
+                    {% if game.rating != 0 %}
+                        {{ game.rating }}/10
+                    {% else %}
+                        Non noté
+                    {% endif %}
+                </li>
+                <li class="list-group-item">
+                    <strong>Nombre de joueurs :</strong> 
+                    {% if game.min_players == game.max_players %}
+                        {{ game.min_players }}
+                    {% else %}
+                        {{ game.min_players }} à {{ game.max_players }}
+                    {% endif %}
+                </li>
+                <li class="list-group-item">
+                    <strong>Difficulté :</strong> {{ game.difficulty }}/5
+                </li>
+                <li class="list-group-item">
+                    <strong>Âge minimum :</strong> {{ game.min_age }} ans
+                </li>
+                <li class="list-group-item">
+                    <strong>Durée moyenne :</strong> 
+                    {% if game.game_length_min != game.game_length_max %}
+                        entre {{ game.game_length_min }} et {{ game.game_length_max }} minutes
+                    {% else %}
+                        {{ game.game_length_min }} minutes
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <!-- Notation du jeu -->
+    <div class="card shadow-sm my-4">
+        <div class="card-body">
+            <h2 class="card-title text-center">Noter le jeu</h2>
+            <form method="post" action="{% url 'rate_game' game.game_id %}">
+                {% csrf_token %}
+                <input type="hidden" id="rating_input" name="rating" value="1">  <!-- Définit une note par défaut -->
+            
+                <div class="rating">
+                    {% for i in "1234567890" %}
+                        <span class="star" data-value="{{ i }}"
+                              {% if i == "1" %}style="color: gold;"{% endif %}>☆</span>
+                    {% endfor %}
+                </div>
+            
+                <button type="submit" class="btn btn-primary mt-3 w-100">Noter</button>
+            </form>               
+        </div>
+    </div>
+
+    <!-- Ajouter une partie -->
+    <div class="card shadow-sm my-4">
+        <div class="card-body">
+            <h2 class="card-title text-center">Ajouter une partie</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% if game.min_players != game.max_players %}
+                <div class="mb-3">
+                    <label for="num_players" class="form-label">Nombre de joueurs :</label>
+                    <select id="num_players" name="num_players" class="form-select" required>
+                        {% with game.max_players|add:1 as max_players_plus_one %}
+                            {% for i in game.min_players|add:0|get_range:max_players_plus_one %}
+                                <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        {% endwith %}
+                    </select>
+                </div>
+                {% else %}
+                <input type="hidden" id="num_players" name="num_players" value="{{ game.min_players }}">
+                {% endif %}
+
+                <div id="players">
+                    <label for="player_1" class="form-label">Joueur 1 :</label>
+                    <input type="text" name="player_1" id="player_1" class="form-control" list="players_list" required>
+                </div>
+
+                <datalist id="players_list">
+                    {% for user in users %}
+                        <option value="{{ user.username }}">
+                    {% endfor %}
+                </datalist>
+
+                <button type="submit" class="btn btn-success mt-3 w-100">Ajouter</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 <script>
-    function updatePlayers(numPlayers) {
-        var playersDiv = document.getElementById('players');
-        playersDiv.innerHTML = '';
+document.addEventListener("DOMContentLoaded", function () {
+    const stars = document.querySelectorAll(".star");
+    const ratingInput = document.getElementById("rating_input");
 
-        // Add the first player as the request.user
-        var label = document.createElement('label');
-        label.setAttribute('for', 'player_1');
-        label.textContent = 'Joueur 1 :';
-        playersDiv.appendChild(label);
-
-        var select = document.createElement('select');
-        select.setAttribute('name', 'player_1');
-        select.setAttribute('id', 'player_1');
-        select.setAttribute('required', 'required');
-        var option = document.createElement('option');
-        option.setAttribute('value', '{{ request.user.id }}');
-        option.textContent = '{{ request.user.username }}';
-        select.appendChild(option);
-        playersDiv.appendChild(select);
-
-        // Add the remaining players as guests
-        for (var i = 2; i <= numPlayers; i++) {
-            var label = document.createElement('label');
-            label.setAttribute('for', 'player_' + i);
-            label.textContent = 'Joueur ' + i + ' :';
-            playersDiv.appendChild(label);
-
-            var select = document.createElement('select');
-            select.setAttribute('name', 'player_' + i);
-            select.setAttribute('id', 'player_' + i);
-            select.setAttribute('onchange', 'disableSelectedOptions()');
-
-            var guestOption = document.createElement('option');
-            guestOption.setAttribute('value', 'guest_' + i);
-            guestOption.textContent = 'Invité ' + i;
-            select.appendChild(guestOption);
-
-            {% for user in users %}
-                var option = document.createElement('option');
-                option.setAttribute('value', '{{ user.id }}');
-                option.textContent = '{{ user.username }}';
-                select.appendChild(option);
-            {% endfor %}
-            playersDiv.appendChild(select);
-        }
-    }
-
-    function disableSelectedOptions() {
-        var selects = document.querySelectorAll('#players select');
-        var selectedValues = Array.from(selects).map(select => select.value);
-
-        selects.forEach(select => {
-            Array.from(select.options).forEach(option => {
-                if (selectedValues.includes(option.value) && option.value !== select.value) {
-                    option.disabled = true;
-                } else {
-                    option.disabled = false;
-                }
-            });
+    function updateStars(rating) {
+        stars.forEach((star, index) => {
+            star.textContent = index < rating ? "★" : "☆";
+            star.style.color = index < rating ? "gold" : "black";
         });
+        ratingInput.value = rating;
     }
 
-    document.getElementById('num_players').addEventListener('change', function() {
-        updatePlayers(this.value);
-        disableSelectedOptions();
+    stars.forEach((star, index) => {
+        star.addEventListener("click", function () {
+            updateStars(index + 1);
+        });
     });
 
-    // Execute the script on page load to set the initial number of players
-    document.addEventListener('DOMContentLoaded', function() {
-        updatePlayers(document.getElementById('num_players').value);
-        disableSelectedOptions();
+    updateStars(1);  // ⭐ Active la première étoile au chargement
+});
+// Gestion du formulaire des joueurs (autocomplétion dynamique)
+function updatePlayers(numPlayers) {
+    var playersDiv = document.getElementById('players');
+    playersDiv.innerHTML = '';
+    for (var i = 1; i <= numPlayers; i++) {
+        var label = document.createElement('label');
+        label.setAttribute('for', 'player_' + i);
+        label.textContent = 'Joueur ' + i + ' :';
+        label.classList.add('form-label');
+        playersDiv.appendChild(label);
+    
+        var input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.setAttribute('name', 'player_' + i);
+        input.setAttribute('id', 'player_' + i);
+        input.setAttribute('class', 'form-control');
+        input.setAttribute('list', 'players_list');
+        input.required = true;
+        playersDiv.appendChild(input);
+    }
+}
+    
+// Détecte les changements dans le choix du nombre de joueurs
+var numPlayersSelect = document.getElementById('num_players');
+if (numPlayersSelect) {
+    numPlayersSelect.addEventListener("change", function () {
+        updatePlayers(this.value);
     });
+updatePlayers(numPlayersSelect.value);
+}
 </script>
+    
 {% endif %}
 
 {% endblock body %}

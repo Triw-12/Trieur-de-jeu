@@ -1,0 +1,10 @@
+.rating {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    font-size: 2rem;
+    cursor: pointer;
+}
+.star {
+    transition: color 0.3s;
+}

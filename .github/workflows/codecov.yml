@@ -24,7 +24,7 @@ jobs:
       - name: Run tests and collect coverage
         run: |
           cd website
-          coverage run --source=website manage.py test
+          coverage run manage.py test
           coverage xml -o coverage.xml
           coverage report
 

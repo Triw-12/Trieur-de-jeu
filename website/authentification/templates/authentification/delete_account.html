@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Confirm Delete{% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'CSS/auth.css' %}">
+{% endblock head %}
+{% block body %}
+<div class="background container-fluid p-0">
+    <img class="img-bg" src="{% static 'images/authentification/bg.jpg' %}">
+    <div class="row background-pics">
+    </div>
+</div>
+<div class="foreground container-fluid">
+    <div class="row">
+        <div class="d-flex col-lg-5 col-md-6 col-xs-12 align-items-center justify-content-center">
+            <div class="form p-3 pt-5 rounded-4">
+                <h1 class="mb-3">Confirmer la suppression</h1>
+                <p>Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible.</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Confirmer" class="btn btn-danger">
+                    <a href="{% url 'home' %}" class="btn btn-secondary">Annuler</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

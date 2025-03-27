@@ -1,26 +1,114 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block title %}
 Home
 {% endblock title %}
 
-{% block body %}
-<h1>Home</h1>
+{% block head %}
+<link rel="stylesheet" href="{% static 'CSS/home.css' %}">
+{% endblock head %}
 
-{% if user.is_authenticated %}
-<strong>Bonjour {{ request.user }}</strong>
-<div class="recomendation">
-    <h2>Recommandations</h2>
-    <ul>
-        {% for game, note in games %}
-        <li>
-            <a href="{% url 'game' game.game_id %}">{{ game.game_name }}</a> - Note: {{ note }}
-        </li>
-        {% endfor %}
-    </ul>
+{% block body %}
+<div class="container">
+    {% if user.is_authenticated %}        
+        <div class="game-section">
+            <h2>Vos jeux préférés</h2>
+            <div class="scroll-container">
+                <div class="scroll-content">
+                    {% for game in favorite_games %}
+                    <div class="game-card">
+                        <a href="{% url 'game' game.game_id %}">
+                            <div class="game-image-container">
+                                <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">                        
+                            </div>
+                                <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
+                                <div class="game-info">
+                                {% with tags_game|get_item:game as tags %}
+                                <p class="game-tags">{{ tags }}</p>
+                                {% endwith %}
+                                <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="game-section">
+        <h2>Jeux sociaux</h2>
+        <div class="scroll-container">
+            <div class="scroll-content">
+                {% for game in social_games %}
+                <div class="game-card">
+                    <a href="{% url 'game' game.game_id %}">
+                        <div class="game-image-container">
+                            <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">                        
+                        </div>
+                            <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
+                            <div class="game-info">
+                            {% with tags_game|get_item:game as tags %}
+                            <p class="game-tags">{{ tags }}</p>
+                            {% endwith %}
+                            <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="game-section">
+        <h2>Jeux de Déduction</h2>
+        <div class="scroll-container">
+            <div class="scroll-content">
+                {% for game in deduction_games %}
+                <div class="game-card">
+                    <a href="{% url 'game' game.game_id %}">
+                        <div class="game-image-container">
+                            <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">                        
+                        </div>
+                            <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
+                            <div class="game-info">
+                            {% with tags_game|get_item:game as tags %}
+                            <p class="game-tags">{{ tags }}</p>
+                            {% endwith %}
+                            <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="game-section">
+        <h2>Jeux de Bluff</h2>
+        <div class="scroll-container">
+            <div class="scroll-content">
+                {% for game in bluff_games %}
+                <div class="game-card">
+                    <a href="{% url 'game' game.game_id %}">
+                        <div class="game-image-container">
+                            <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">                        
+                        </div>
+                            <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
+                            <div class="game-info">
+                            {% with tags_game|get_item:game as tags %}
+                            <p class="game-tags">{{ tags }}</p>
+                            {% endwith %}
+                            <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </div>
-{% else %}
-<strong>Vous n'êtes pas connecté</strong>
-<a href="{% url 'login' %}">Login</a>
-{% endif %}
+
+<script src="{% static 'JS/home.js' %}"></script>
 {% endblock body %}

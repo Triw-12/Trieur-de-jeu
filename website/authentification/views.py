@@ -67,3 +67,12 @@ def reset_password(request):
                 return redirect('login')
 
     return render(request, 'authentification/reset_password.html', context={'form': form, 'message': message})
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        user = request.user
+        logout(request)
+        user.delete()
+        return redirect('home')
+    return render(request, 'authentification/delete_account.html')

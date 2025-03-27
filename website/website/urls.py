@@ -28,6 +28,7 @@ urlpatterns = [
     path('logout/', authentification.views.logout_custom,name='logout'),
     path('signup/', authentification.views.signup, name='signup'),
     path('reset_password/', authentification.views.reset_password, name='reset_password'),
+    path('delete_account/', authentification.views.delete_account, name='delete_account'),
     path('advanced_search/', board_games.views.advanced_search, name='advanced_search'),
     path('add_game/', board_games.views.add_game, name='add_game'),
     path('game/<int:id>', board_games.views.game, name='game'),

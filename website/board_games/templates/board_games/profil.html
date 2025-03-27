@@ -13,6 +13,8 @@ Profil créé le {{ user.date_joined|date:"d/m/Y" }}<br>
 Dernière connexion le {{ user.last_login|date:"d/m/Y H:i" }}<br>
 
 <a href={% url 'reset_password' %}>Changer le mot de passe</a>
+<a href={% url 'delete_account' %} style="color: red;">Supprimer le compte</a>
+
 
 <h3>Statistiques du joueur</h3>
 

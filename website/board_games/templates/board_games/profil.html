@@ -12,7 +12,7 @@ Profil
 Profil créé le {{ user.date_joined|date:"d/m/Y" }}<br>
 Dernière connexion le {{ user.last_login|date:"d/m/Y H:i" }}<br>
 
-<h3>Changer le mot de passe</h3>
+<a href={% url 'reset_password' %}>Changer le mot de passe</a>
 
 <h3>Statistiques du joueur</h3>
 

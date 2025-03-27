@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 
 from django.conf import settings
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 
 from authentification import forms
 
@@ -40,3 +41,29 @@ def login_custom(request):
                 message = 'Identifiants invalides.'
     return render(
         request, 'authentification/login.html', context={'form': form})
+
+@login_required
+def reset_password(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    form = forms.ResetPasswordForm()
+    message = ''
+    if request.method == 'POST':
+        form = forms.ResetPasswordForm(request.POST)
+        if form.is_valid():
+            old_password = form.cleaned_data['old_password']
+            new_password = form.cleaned_data['new_password']
+            confirm_password = form.cleaned_data['confirm_password']
+
+            if not request.user.check_password(old_password):
+                message = 'Ancien mot de passe incorrect.'
+            elif new_password != confirm_password:
+                message = 'Les nouveaux mots de passe ne correspondent pas.'
+            else:
+                request.user.set_password(new_password)
+                request.user.save()
+                message = 'Mot de passe mis à jour avec succès.'
+                return redirect('login')
+
+    return render(request, 'authentification/reset_password.html', context={'form': form, 'message': message})

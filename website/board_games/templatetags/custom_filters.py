@@ -16,4 +16,4 @@ def hash(h, key):
     if key in h.keys():
         return h[key]
     else:
-        return 'images/board_games/default.jpg'
+        return 'images/board_games/point_interro.webp'

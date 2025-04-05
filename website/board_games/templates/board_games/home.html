@@ -20,7 +20,10 @@ Home
                     <div class="game-card">
                         <a href="{% url 'game' game.game_id %}">
                             <div class="game-image-container">
-                                <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">                        
+                                <img class="game-image"
+                                     src="{% static dict|hash:game.game_name %}"
+                                     alt="{{ game.game_name }}"
+                                     onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.png' %}'">
                             </div>
                                 <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
                                 <div class="game-info">
@@ -38,14 +41,17 @@ Home
     {% endif %}
 
     <div class="game-section">
-        <h2>Jeux sociaux</h2>
+        <h2>Jeux de Stratégie</h2>
         <div class="scroll-container">
             <div class="scroll-content">
-                {% for game in social_games %}
+                {% for game in strategy_games %}
                 <div class="game-card">
                     <a href="{% url 'game' game.game_id %}">
                         <div class="game-image-container">
-                            <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">                        
+                            <img class="game-image"
+                                 src="{% static dict|hash:game.game_name %}"
+                                 alt="{{ game.game_name }}"
+                                 onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
                         </div>
                             <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
                             <div class="game-info">
@@ -62,14 +68,17 @@ Home
     </div>
 
     <div class="game-section">
-        <h2>Jeux de Déduction</h2>
+        <h2>Jeux de Réflexion</h2>
         <div class="scroll-container">
             <div class="scroll-content">
-                {% for game in deduction_games %}
+                {% for game in reflexion_games %}
                 <div class="game-card">
                     <a href="{% url 'game' game.game_id %}">
                         <div class="game-image-container">
-                            <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">                        
+                            <img class="game-image"
+                                 src="{% static dict|hash:game.game_name %}"
+                                 alt="{{ game.game_name }}"
+                                 onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
                         </div>
                             <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
                             <div class="game-info">
@@ -86,14 +95,44 @@ Home
     </div>
 
     <div class="game-section">
-        <h2>Jeux de Bluff</h2>
+        <h2>Jeux de Chance</h2>
         <div class="scroll-container">
             <div class="scroll-content">
-                {% for game in bluff_games %}
+                {% for game in luck_games %}
                 <div class="game-card">
                     <a href="{% url 'game' game.game_id %}">
                         <div class="game-image-container">
-                            <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">                        
+                            <img class="game-image"
+                                 src="{% static dict|hash:game.game_name %}"
+                                 alt="{{ game.game_name }}"
+                                 onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
+                        </div>
+                            <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
+                            <div class="game-info">
+                            {% with tags_game|get_item:game as tags %}
+                            <p class="game-tags">{{ tags }}</p>
+                            {% endwith %}
+                            <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="game-section"></div>
+        <h2>Jeux d'Adresse</h2>
+        <div class="scroll-container">
+            <div class="scroll-content">
+                {% for game in dexterity_games %}
+                <div class="game-card">
+                    <a href="{% url 'game' game.game_id %}">
+                        <div class="game-image-container">
+                            <img class="game-image"
+                                 src="{% static dict|hash:game.game_name %}"
+                                 alt="{{ game.game_name }}"
+                                 onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
                         </div>
                             <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
                             <div class="game-info">

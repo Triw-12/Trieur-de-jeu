@@ -52,12 +52,13 @@ def home(request):
         favorite_games = [game for game, _ in favorite_games]
 
     # Récupérer les jeux avec les tags spécifiques
-    social_games = Games.objects.filter(tags__tag_id="Jeu social").distinct()
-    bluff_games = Games.objects.filter(tags__tag_id="Bluff").distinct()
-    deduction_games = Games.objects.filter(tags__tag_id="Déduction").distinct()
+    strategy_games = Games.objects.filter(tags__tag_id="Stratégie").distinct()
+    reflexion_games = Games.objects.filter(tags__tag_id="Réflexion").distinct()
+    luck_games = Games.objects.filter(tags__tag_id="Chance").distinct()
+    dexterity_games = Games.objects.filter(tags__tag_id="Adresse").distinct()
 
     # Rassembler tous les jeux pour récupérer leurs tags
-    all_displayed_games = set(favorite_games) | set(social_games) | set(bluff_games) | set(deduction_games)
+    all_displayed_games = set(favorite_games) | set(strategy_games) | set(reflexion_games) | set(luck_games) | set(dexterity_games)
     tags_game = get_game_tags(all_displayed_games)
 
     # Dictionnaire des images des jeux
@@ -66,9 +67,10 @@ def home(request):
     return render(request, 'board_games/home.html', {
         'simple_search': simple_search,
         'favorite_games': favorite_games,
-        'social_games': social_games,
-        'bluff_games': bluff_games,
-        'deduction_games': deduction_games,
+        'strategy_games': strategy_games,
+        'reflexion_games': reflexion_games,
+        'luck_games': luck_games,
+        'dexterity_games': dexterity_games,
         'tags_game': tags_game,
         'dict': image_dict
     })

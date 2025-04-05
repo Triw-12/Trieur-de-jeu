@@ -11,7 +11,6 @@ class AddExtensions(forms.ModelForm):
         model = Extensions
         fields = ['extension_name', 'time_add']
 
-
 class Simple_search(forms.Form):
     game_name = forms.CharField(label='Nom du jeu', max_length=200, required=True)
     def __init__(self, *args, **kwargs):
@@ -32,9 +31,14 @@ class Advanced_search(forms.Form):
     sort_by = forms.CharField(label='Trier par', required=True)
 
 class RateGame(forms.ModelForm):
-    RATING_CHOICES = [(i, str(i)) for i in range(1, 11)]
+    RATING_CHOICES = [(i, '★' * i) for i in range(1, 11)]
     
-    rating = forms.ChoiceField(choices=RATING_CHOICES, label='Rating')
+    rating = forms.ChoiceField(
+        choices=RATING_CHOICES, 
+        label='Note', 
+        widget=forms.RadioSelect(),
+        initial=1
+    )
     
     class Meta:
         model = Rating

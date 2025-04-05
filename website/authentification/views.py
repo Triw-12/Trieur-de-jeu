@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 
 from django.conf import settings
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.decorators import login_required
 
 from authentification import forms
+from django.forms import ValidationError
 
 def signup(request):
     form = forms.SignupForm()
@@ -61,10 +63,15 @@ def reset_password(request):
             elif new_password != confirm_password:
                 message = 'Les nouveaux mots de passe ne correspondent pas.'
             else:
-                request.user.set_password(new_password)
-                request.user.save()
-                message = 'Mot de passe mis à jour avec succès.'
-                return redirect('login')
+                try:
+                    validate_password(new_password, user=request.user)
+                except ValidationError as e:
+                    message = ' '.join(e.messages)
+                else:
+                    request.user.set_password(new_password)
+                    request.user.save()
+                    message = 'Mot de passe mis à jour avec succès.'
+                    return redirect('login')
 
     return render(request, 'authentification/reset_password.html', context={'form': form, 'message': message})
 

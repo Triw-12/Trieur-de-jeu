@@ -39,6 +39,19 @@ def get_image_dict(games):
 
     return image_dict # Return the dictionary containing the images.
 
+def get_tags_id(tags, games):
+    """Helper function to get tags for games."""
+    # A optimiser si possible
+    games_and_tags = {}
+    for tag in tags:
+        if tag.game_id in games:
+            if tag.game_id not in games_and_tags:
+                games_and_tags[tag.game_id] = ""
+            games_and_tags[tag.game_id] += tag.tag_id + ", " 
+    for key in games_and_tags.keys():
+        games_and_tags[key] = games_and_tags[key][:-2]
+    return games_and_tags
+
 def advanced_search(request):
     simple_search = forms.Simple_search()
     form = forms.Advanced_search()
@@ -49,7 +62,7 @@ def advanced_search(request):
             tags_id.append(tag.tag_id)
     if request.method == 'POST':
         form = forms.Advanced_search(request.POST)
-        simple_search = forms.Simple_search()
+        simple_search = forms.Simple_search(request.POST)
         if form.is_valid():
             games = Games.objects.all()
 
@@ -89,23 +102,16 @@ def advanced_search(request):
                 elif sort_by == 'difficulty':
                     games = games.order_by('difficulty')
             
-            # A optimiser si possible
-            games_and_tags = {}
-            for tag in tags:
-                if tag.game_id in games:
-                    if tag.game_id not in games_and_tags:
-                        games_and_tags[tag.game_id] = ""
-                    games_and_tags[tag.game_id] += tag.tag_id + ", " 
-            for key in games_and_tags.keys():
-                games_and_tags[key] = games_and_tags[key][:-2]
-            
+            games_and_tags = get_tags_id(tags, games)
             image_dict = get_image_dict(games)
             
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_game': games_and_tags, 'tags_id': tags_id, 'dict': image_dict})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])
+            games_and_tags = get_tags_id(tags, games)
             image_dict = get_image_dict(games)
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id, 'dict': image_dict})
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_game': games_and_tags, 'tags_id': tags_id, 'dict': image_dict})
+
     return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'tags_id': tags_id})
 
 @login_required

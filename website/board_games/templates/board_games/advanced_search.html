@@ -99,7 +99,10 @@ Recherche avancée
                 <div class="game-card">
                     <h4 class="game-title">{{ game.game_name }}</h4>
                     <div class="game-image-container">
-                            <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">
+                        <img class="game-image"
+                             src="{% static dict|hash:game.game_name %}"
+                             alt="{{ game.game_name }}"
+                             onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
                     </div>
                     <div class="game-info">
                         {% if game.min_players != game.max_players %}

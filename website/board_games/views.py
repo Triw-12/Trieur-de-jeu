@@ -262,20 +262,18 @@ def stats(request):
             cumulative_sum += daily_count
             user_data['data'].append(cumulative_sum)
 
-    games_plays = History.objects.all()
+    games_plays = History.objects.annotate(play_date=TruncDate('date')).values('play_date').distinct()
     games_plays_data = {
         'labels': [],
         'data': []
     }
     cumulative_sum = 0
     for game_play in games_plays:
-        if game_play.date:
-            game_play_date = game_play.date.date()
-            if game_play_date not in games_plays_data['labels']:
-                games_plays_data['labels'].append(game_play_date.strftime('%d/%m/%Y'))
-                daily_count = History.objects.filter(date__date=game_play_date).count()
-                cumulative_sum += daily_count
-                games_plays_data['data'].append(cumulative_sum)
+        if game_play['play_date']:
+            games_plays_data['labels'].append(game_play['play_date'].strftime('%d/%m/%Y'))
+            daily_count = History.objects.filter(date__date=game_play['play_date']).count()
+            cumulative_sum += daily_count
+            games_plays_data['data'].append(cumulative_sum)
                 
     return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search, 'user_data': user_data, 'games_plays_data': games_plays_data})
 

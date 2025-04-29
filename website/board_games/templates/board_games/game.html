@@ -102,7 +102,7 @@
 
                 <div id="players">
                     <label for="player_1" class="form-label">Joueur 1 :</label>
-                    <input type="text" name="player_1" id="player_1" class="form-control" list="players_list" required>
+                    <input type="text" name="player_1" id="player_1" class="form-control" value="{{ user.username }}" readonly required>
                 </div>
 
                 <datalist id="players_list">
@@ -143,7 +143,26 @@ document.addEventListener("DOMContentLoaded", function () {
 function updatePlayers(numPlayers) {
     var playersDiv = document.getElementById('players');
     playersDiv.innerHTML = '';
-    for (var i = 1; i <= numPlayers; i++) {
+    
+    // Ajoute le joueur connecté en premier
+    var label = document.createElement('label');
+    label.setAttribute('for', 'player_1');
+    label.textContent = 'Joueur 1 :';
+    label.classList.add('form-label');
+    playersDiv.appendChild(label);
+
+    var input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('name', 'player_1');
+    input.setAttribute('id', 'player_1');
+    input.setAttribute('class', 'form-control');
+    input.setAttribute('value', '{{ user.username }}');
+    input.setAttribute('readonly', true);
+    input.required = true;
+    playersDiv.appendChild(input);
+
+    // Ajoute les autres joueurs
+    for (var i = 2; i <= numPlayers; i++) {
         var label = document.createElement('label');
         label.setAttribute('for', 'player_' + i);
         label.textContent = 'Joueur ' + i + ' :';
@@ -167,10 +186,9 @@ if (numPlayersSelect) {
     numPlayersSelect.addEventListener("change", function () {
         updatePlayers(this.value);
     });
-updatePlayers(numPlayersSelect.value);
+    updatePlayers(numPlayersSelect.value);
 }
 </script>
-    
 {% endif %}
 
 {% endblock body %}

@@ -11,6 +11,7 @@ from django.http import HttpResponseForbidden, HttpResponseNotFound
 import logging
 from os import listdir
 from django.conf import settings
+from django.db.models.functions import TruncDate
 
 
 def get_game_tags(games):
@@ -33,9 +34,6 @@ def get_game_tags(games):
 def home(request):
     simple_search = forms.Simple_search()
     favorite_games = []
-    social_games = []
-    bluff_games = []
-    deduction_games = []
 
     if request.user.is_authenticated:
         all_games = Games.objects.all()
@@ -224,8 +222,20 @@ def profil(request, id):
 
 def stats(request):
     simple_search = forms.Simple_search()
-    users = User.objects.all()
-    return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search})
+    users = User.objects.annotate(date_joined_date=TruncDate('date_joined')).values('date_joined_date').distinct()
+    user_data = {
+        'labels': [],
+        'data': []
+    }
+    cumulative_sum = 0
+    for user in users:
+        if user['date_joined_date']:
+            user_data['labels'].append(user['date_joined_date'].strftime('%d/%m/%Y'))
+            daily_count = User.objects.filter(date_joined__date=user['date_joined_date']).count()
+            cumulative_sum += daily_count
+            user_data['data'].append(cumulative_sum)
+    print(user_data)
+    return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search, 'user_data': user_data})
 
 @login_required
 def rate_game(request,id):

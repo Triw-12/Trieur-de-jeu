@@ -5,5 +5,91 @@ Statistiques
 {% endblock title %}
 
 {% block body %}
-<h1>Statistiques</h1>   
+<h1>Statistiques</h1>
+<div id="stats-chart-container">
+    <canvas id="games-played-chart-1"></canvas>
+    <canvas id="games-played-chart-2"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx1 = document.getElementById('games-played-chart-1').getContext('2d');
+    const playersChart = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: {{ user_data.labels|safe }}, // Use the labels from the context
+            datasets: [{
+                label: 'Nombre de joueurs',
+                data: {{ user_data.data|safe }}, // Use the data from the context
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderWidth: 2,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Temps'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Nombre de joueurs'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    const ctx2 = document.getElementById('games-played-chart-2').getContext('2d');
+    const playersChart2 = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: {{ user_data.labels|safe }}, // Use the labels from the context
+            datasets: [{
+                label: 'Nombre de joueurs',
+                data: {{ user_data.data|safe }}, // Use the data from the context
+                borderColor: 'rgba(54, 162, 235, 1)',
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderWidth: 2,
+                tension: 0.3
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Temps'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Nombre de joueurs'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 {% endblock body %}

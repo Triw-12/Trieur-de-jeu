@@ -21,29 +21,29 @@ Recherche avancée
                     <div class="my-2">
                         <label for="id-game-name">Nom du jeu :</label><br>
                     </div>
-                    <input type="text" class="form-control" id="id-game-name" name="game_name" maxlength="200">
+                    <input type="text" class="form-control" id="id-game-name" name="game_name" maxlength="200" value="{{ request.POST.game_name }}">
                 </div>
                 <div class="container-xxl my-4 user-input">
                     <div class="my-2">
                         <label for="players-slider">Nombre de joueurs :</label><br>
                     </div>
                     <div id="players-slider" class="slider-range"></div>
-                    <input type="text" class="digit-box m-2" id="id-min-players" name="min_players" readonly>
-                    <input type="text" class="digit-box m-2" id="id-max-players" name="max_players" readonly>
+                    <input type="text" class="digit-box m-2" id="id-min-players" name="min_players" value="{{ request.POST.min_players|default:1 }}" readonly>
+                    <input type="text" class="digit-box m-2" id="id-max-players" name="max_players" value="{{ request.POST.max_players|default:20 }}" readonly>
                 </div>
                 <div class="age-slider-container">
                     <label for="age-slider" class="d-block mb-2">Âge minimum :</label>
                     <div id="age-slider"></div>
-                    <span id="age-value">6</span> ans
-                    <input type="hidden" name="min_age" id="age-input" value="6">
+                    <span id="age-value">{{ request.POST.min_age|default:6 }}</span> ans
+                    <input type="hidden" name="min_age" id="age-input" value="{{ request.POST.min_age|default:6 }}">
                 </div>                                      
                 <div class="container-xxl my-4 user-input">
                     <div class="my-2">
                         <label for="time-slider">Durée (min) :</label><br>
                     </div>
                     <div id="time-slider" class="slider-range"></div>
-                    <input type="text" class="digit-box m-2" id="id-min-time" name="game_length_min" readonly>
-                    <input type="text" class="digit-box m-2" id="id-max-time" name="game_length_max" readonly>
+                    <input type="text" class="digit-box m-2" id="id-min-time" name="game_length_min" value="{{ request.POST.game_length_min|default:0 }}" readonly>
+                    <input type="text" class="digit-box m-2" id="id-max-time" name="game_length_max" value="{{ request.POST.game_length_max|default:360 }}" readonly>
                 </div>
                 <div class="container-xxl my-4 user-input">
                     <div class="my-2">
@@ -61,21 +61,21 @@ Recherche avancée
                     <button type="button" id="show-more-tags" class="btn btn-secondary mt-2">Afficher plus</button>
                     <button type="button" id="show-less-tags" class="btn btn-secondary mt-2" style="display: none;">Voir moins</button>
                     <!-- Champ caché pour stocker les tags sélectionnés -->
-                    <input type="hidden" id="id-tags" name="tags">
+                    <input type="hidden" id="id-tags" name="tags" value="{{ request.POST.tags }}">
 
                     <div class="container-xxl my-4 user-input">
                         <div class="my-2">
                             <label for="sort-by">Trier par :</label><br>
                         </div>
                         <select class="form-control" id="sort_by" name="sort_by">
-                            <option value="name">Nom</option>
-                            <option value="players_min">Nombre de joueurs minimum</option>
-                            <option value="players_max">Nombre de joueurs maximum</option>
-                            <option value="age_min">Âge minimum</option>
-                            <option value="time_min">Durée minimum</option>
-                            <option value="time_max">Durée maximum</option>
-                            <option value="difficulty">Difficulté</option>
-                            <option value="rating">Notes</option>
+                            <option value="name" {% if request.POST.sort_by == "name" %}selected{% endif %}>Nom</option>
+                            <option value="players_min" {% if request.POST.sort_by == "players_min" %}selected{% endif %}>Nombre de joueurs minimum</option>
+                            <option value="players_max" {% if request.POST.sort_by == "players_max" %}selected{% endif %}>Nombre de joueurs maximum</option>
+                            <option value="age_min" {% if request.POST.sort_by == "age_min" %}selected{% endif %}>Âge minimum</option>
+                            <option value="time_min" {% if request.POST.sort_by == "time_min" %}selected{% endif %}>Durée minimum</option>
+                            <option value="time_max" {% if request.POST.sort_by == "time_max" %}selected{% endif %}>Durée maximum</option>
+                            <option value="difficulty" {% if request.POST.sort_by == "difficulty" %}selected{% endif %}>Difficulté</option>
+                            <option value="rating" {% if request.POST.sort_by == "rating" %}selected{% endif %}>Notes</option>
                         </select>
                     </div>
                 </div>    
@@ -95,11 +95,14 @@ Recherche avancée
         <div class="row">
             {% for game in games %}
             <div class="col-md-4 col-12 mb-4">
-                <a href="../game/{{ game.game_id }}" class="game-card-link">
+                <a href="{% url 'game' game.game_id %}" class="game-card-link">
                 <div class="game-card">
                     <h4 class="game-title">{{ game.game_name }}</h4>
                     <div class="game-image-container">
-                            <img class="game-image" src="{% static dict|hash:game.game_name %}" alt="{{ game.game_name }}">
+                        <img class="game-image"
+                             src="{% static dict|hash:game.game_name %}"
+                             alt="{{ game.game_name }}"
+                             onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
                     </div>
                     <div class="game-info">
                         {% if game.min_players != game.max_players %}

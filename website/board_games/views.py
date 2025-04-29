@@ -13,14 +13,68 @@ from os import listdir
 from django.conf import settings
 
 
+def get_game_tags(games):
+    """Retourne un dictionnaire associant chaque jeu à ses tags sous forme de texte."""
+    tags = Tags.objects.filter(game_id__in=[game.game_id for game in games])
+    games_and_tags = {}
+
+    for tag in tags:
+        if tag.game_id not in games_and_tags:
+            games_and_tags[tag.game_id] = ""
+        games_and_tags[tag.game_id] += tag.tag_id + ", "
+
+    # Retirer la virgule et l'espace en trop à la fin
+    for key in games_and_tags.keys():
+        games_and_tags[key] = games_and_tags[key][:-2]
+
+    return games_and_tags
+
+
 def home(request):
     simple_search = forms.Simple_search()
-    games = None
+    favorite_games = []
+    social_games = []
+    bluff_games = []
+    deduction_games = []
+
     if request.user.is_authenticated:
-        games = Games.objects.all()
+        all_games = Games.objects.all()
         notes_game = notes(request.user.id)
-        games = sorted([(game, notes_game[i]) for i, game in enumerate(games)], key=lambda x: x[1], reverse=True)[:15]
-    return render(request, 'board_games/home.html', context={'simple_search': simple_search, 'games': games})
+
+        # Récupérer les 15 jeux préférés de l'utilisateur
+        favorite_games = sorted(
+            [(game, notes_game[i]) for i, game in enumerate(all_games)],
+            key=lambda x: x[1],
+            reverse=True
+        )[:15]
+
+        # Supprimer les notes, on ne garde que les jeux
+        favorite_games = [game for game, _ in favorite_games]
+
+    # Récupérer les jeux avec les tags spécifiques
+    strategy_games = Games.objects.filter(tags__tag_id="Stratégie").distinct().order_by("rating").reverse()
+    reflexion_games = Games.objects.filter(tags__tag_id="Réflexion").distinct().order_by("rating").reverse()
+    luck_games = Games.objects.filter(tags__tag_id="Chance").distinct().order_by("rating").reverse()
+    dexterity_games = Games.objects.filter(tags__tag_id="Adresse").distinct().order_by("rating").reverse()
+
+    # Rassembler tous les jeux pour récupérer leurs tags
+    all_displayed_games = set(favorite_games) | set(strategy_games) | set(reflexion_games) | set(luck_games) | set(dexterity_games)
+    tags_game = get_game_tags(all_displayed_games)
+
+    # Dictionnaire des images des jeux
+    image_dict = get_image_dict(all_displayed_games)
+
+    return render(request, 'board_games/home.html', {
+        'simple_search': simple_search,
+        'favorite_games': favorite_games,
+        'strategy_games': strategy_games,
+        'reflexion_games': reflexion_games,
+        'luck_games': luck_games,
+        'dexterity_games': dexterity_games,
+        'tags_game': tags_game,
+        'dict': image_dict
+    })
+
 
 def get_image_dict(games):
     """Helper function to get image paths for games."""
@@ -39,6 +93,19 @@ def get_image_dict(games):
 
     return image_dict # Return the dictionary containing the images.
 
+def get_tags_id(tags, games):
+    """Helper function to get tags for games."""
+    # A optimiser si possible
+    games_and_tags = {}
+    for tag in tags:
+        if tag.game_id in games:
+            if tag.game_id not in games_and_tags:
+                games_and_tags[tag.game_id] = ""
+            games_and_tags[tag.game_id] += tag.tag_id + ", " 
+    for key in games_and_tags.keys():
+        games_and_tags[key] = games_and_tags[key][:-2]
+    return games_and_tags
+
 def advanced_search(request):
     simple_search = forms.Simple_search()
     form = forms.Advanced_search()
@@ -49,7 +116,7 @@ def advanced_search(request):
             tags_id.append(tag.tag_id)
     if request.method == 'POST':
         form = forms.Advanced_search(request.POST)
-        simple_search = forms.Simple_search()
+        simple_search = forms.Simple_search(request.POST)
         if form.is_valid():
             games = Games.objects.all()
 
@@ -89,23 +156,16 @@ def advanced_search(request):
                 elif sort_by == 'difficulty':
                     games = games.order_by('difficulty')
             
-            # A optimiser si possible
-            games_and_tags = {}
-            for tag in tags:
-                if tag.game_id in games:
-                    if tag.game_id not in games_and_tags:
-                        games_and_tags[tag.game_id] = ""
-                    games_and_tags[tag.game_id] += tag.tag_id + ", " 
-            for key in games_and_tags.keys():
-                games_and_tags[key] = games_and_tags[key][:-2]
-            
+            games_and_tags = get_tags_id(tags, games)
             image_dict = get_image_dict(games)
             
             return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_game': games_and_tags, 'tags_id': tags_id, 'dict': image_dict})
         elif simple_search.is_valid():
             games = Games.objects.filter(game_name__icontains=simple_search.cleaned_data['game_name'])
+            games_and_tags = get_tags_id(tags, games)
             image_dict = get_image_dict(games)
-            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_id': tags_id, 'dict': image_dict})
+            return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'games': games, 'tags_game': games_and_tags, 'tags_id': tags_id, 'dict': image_dict})
+
     return render(request, 'board_games/advanced_search.html', context={'form': form, 'simple_search': simple_search, 'tags_id': tags_id})
 
 @login_required

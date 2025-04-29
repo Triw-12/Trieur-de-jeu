@@ -50,3 +50,10 @@ coverage html
 
 Et accédez à la page `htmlcov/index.html`
 Vous pouvez sinon exécuter `coverage report` pour avoir le rapport directement dans le terminal
+
+## TODO
+
+- [ ] Mettre en place les stats
+- [ ] Sauvegarder la note quand on a déjà noté un jeu
+- [ ] Mettre le message en rouge quand il y a une erreur
+- [ ] Ajouter un historique des derniers jeux jouées

@@ -12,8 +12,10 @@ Profil
 Profil créé le {{ user.date_joined|date:"d/m/Y" }}<br>
 Dernière connexion le {{ user.last_login|date:"d/m/Y H:i" }}<br>
 
+{% if request.user == user or request.user.is_superuser %}
 <a href={% url 'reset_password' %}>Changer le mot de passe</a>
-<a href={% url 'delete_account' %} style="color: red;">Supprimer le compte</a>
+<a href={% url 'delete_account' user.id %} style="color: red;">Supprimer le compte</a>
+{% endif %}
 
 
 <h3>Statistiques du joueur</h3>
@@ -26,5 +28,31 @@ Dernière connexion le {{ user.last_login|date:"d/m/Y H:i" }}<br>
     <li>Moyenne des notes données : {{ user.avg_rating }}/10
     {% endif %}
 </ul>
+
+<h3>Historique des parties</h3>
+<table>
+    <thead>
+        <tr>
+            <th>Jeu</th>
+            <th>Date</th>
+            <th>Avec</th>
+    </thead>
+    <tbody>
+        {% for partie in parties %}
+        <tr>
+            <td><a href="{% url 'game' partie.history.game_id.game_id %}">{{ partie.history.game_id.game_name }}</a></td>
+            <td>{{ partie.history.date|date:"d/m/Y" }}</td>
+            <td>
+                {% for player in partie.players %}
+                    {% if player != user %}
+                        <a href="{% url 'profil' player.id %}">{{ player.username }}</a>{% if not forloop.last %}, {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 
 {% endblock body %}

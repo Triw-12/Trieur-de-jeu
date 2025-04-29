@@ -12,84 +12,68 @@ Statistiques
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    #stats-chart-container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    canvas {
+        max-width: 45%;
+        height: auto;
+    }
+</style>
+
 <script>
-    const ctx1 = document.getElementById('games-played-chart-1').getContext('2d');
-    const playersChart = new Chart(ctx1, {
-        type: 'line',
-        data: {
-            labels: {{ user_data.labels|safe }}, // Use the labels from the context
-            datasets: [{
-                label: 'Nombre de joueurs',
-                data: {{ user_data.data|safe }}, // Use the data from the context
-                borderColor: 'rgba(54, 162, 235, 1)',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderWidth: 2,
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                }
+    function createChart(ctxId, chartType, labels, data, label, borderColor, backgroundColor, xTitle, yTitle) {
+        const ctx = document.getElementById(ctxId).getContext('2d');
+        return new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: label,
+                    data: data,
+                    borderColor: borderColor,
+                    backgroundColor: backgroundColor,
+                    borderWidth: 2,
+                    tension: 0.3
+                }]
             },
-            scales: {
-                x: {
-                    title: {
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
                         display: true,
-                        text: 'Temps'
+                        position: 'top'
                     }
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Nombre de joueurs'
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: xTitle
+                        }
                     },
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-    const ctx2 = document.getElementById('games-played-chart-2').getContext('2d');
-    const playersChart2 = new Chart(ctx2, {
-        type: 'line',
-        data: {
-            labels: {{ user_data.labels|safe }}, // Use the labels from the context
-            datasets: [{
-                label: 'Nombre de joueurs',
-                data: {{ user_data.data|safe }}, // Use the data from the context
-                borderColor: 'rgba(54, 162, 235, 1)',
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderWidth: 2,
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top'
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Temps'
+                    y: {
+                        title: {
+                            display: true,
+                            text: yTitle
+                        },
+                        beginAtZero: true
                     }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Nombre de joueurs'
-                    },
-                    beginAtZero: true
                 }
             }
-        }
-    });
+        });
+    }
+
+    const labels_user = {{ user_data.labels|safe }};
+    const data_user = {{ user_data.data|safe }};
+    const labels_game = {{ games_plays_data.labels|safe }};
+    const data_game = {{ games_plays_data.data|safe }};
+    createChart('games-played-chart-1', 'line', labels_user, data_user, 'Nombre de joueurs', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)', 'Date', 'Nombre de joueurs');
+    createChart('games-played-chart-2', 'line', labels_game, data_game, 'Nombre de parties', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)', 'Date', 'Nombre de parties');
 </script>
+
 {% endblock body %}

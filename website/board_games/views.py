@@ -186,7 +186,16 @@ def game(request, id):
     error = False
     message = ""
     if 'rated' in request.GET:
-        message = "Merci pour votre évaluation! Vous avez donné la note de " + request.GET['rated'] + "/10"
+        message = "Merci pour votre évaluation ! Vous avez donné la note de " + request.GET['rated'] + "/10"
+
+    if request.user.is_authenticated:
+        try:
+            rating = Rating.objects.get(game_id=game, user_id=request.user)
+        except Rating.DoesNotExist:
+            base_note = 1
+        else:
+            base_note = rating.rating
+    
     if request.method == 'POST':
         num_players = request.POST.get('num_players')
         if num_players and num_players.isdigit() and int(num_players) >= game.min_players and int(num_players) <= game.max_players:
@@ -194,12 +203,17 @@ def game(request, id):
             added_users = set()
             for i in range(int(num_players)):
                 user = request.POST.get('player_' + str(i+1))
-                if user and user.isdigit():
-                    user = int(user)
+                if user and user:
                     if user not in added_users:
-                        user_db = User.objects.get(id=user)
-                        History_players.objects.create(play_id=history, user_id=user_db)
-                        added_users.add(user)
+                        try:
+                            user_db = User.objects.get(username=user)
+                        except User.DoesNotExist:
+                            error = True
+                            message = 'Un joueur n\'existe pas dans la base de données'
+                            logger.error('Un joueur n\'existe pas dans la base de données: user_id=%s, game_id=%s', user, game.game_id)
+                        else:
+                            History_players.objects.create(play_id=history, user_id=user_db)
+                            added_users.add(user)
                     else:
                         message = 'Un joueur a été ajouté plusieurs fois Merci de contacter un administrateur'
                         logger.error('Un joueur a été ajouté plusieurs fois: user_id=%s, game_id=%s', user, game.game_id)
@@ -207,18 +221,31 @@ def game(request, id):
             if not error:
                 message = 'Partie enregistrée'
                 logger.info('Partie enregistrée: game_id=%s, players=%s', game.game_id, list(added_users))
+            else:
+                History.objects.filter(play_id=history.play_id).delete()
         else:
             message = "Erreur dans le nombre de joueurs"
             logger.error('Erreur dans le nombre de joueurs: game_id=%s, num_players=%s, min_players=%s, max_players=%s', game.game_id, num_players, game.min_players, game.max_players)
-    return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating})
+    return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating, 'base_note': base_note})
 
 @login_required
 def profil(request, id):
     simple_search = forms.Simple_search()
-    if request.user.id != id and not request.user.is_superuser:
-        return HttpResponseForbidden()
     user = User.objects.get(id=id)
-    return render(request, 'board_games/profil.html', context={'user': user, 'simple_search': simple_search})
+    history_players = History_players.objects.filter(user_id=user)[:10]
+    history = History.objects.filter(play_id__in=history_players.values_list('play_id', flat=True)).order_by('-date')
+    
+    # Grouper les parties par play_id et récupérer les utilisateurs ayant joué chaque partie
+    parties = []
+    for play_id in history.values_list('play_id', flat=True).distinct():
+        play_history = History_players.objects.filter(play_id=play_id)
+        players = User.objects.filter(id__in=play_history.values_list('user_id', flat=True))
+        parties.append({
+            'history': history.get(play_id=play_id),
+            'players': players
+        })
+    print(parties)
+    return render(request, 'board_games/profil.html', context={'user': user, 'simple_search': simple_search, 'parties': parties})
 
 def stats(request):
     simple_search = forms.Simple_search()
@@ -234,8 +261,23 @@ def stats(request):
             daily_count = User.objects.filter(date_joined__date=user['date_joined_date']).count()
             cumulative_sum += daily_count
             user_data['data'].append(cumulative_sum)
-    print(user_data)
-    return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search, 'user_data': user_data})
+
+    games_plays = History.objects.all()
+    games_plays_data = {
+        'labels': [],
+        'data': []
+    }
+    cumulative_sum = 0
+    for game_play in games_plays:
+        if game_play.date:
+            game_play_date = game_play.date.date()
+            if game_play_date not in games_plays_data['labels']:
+                games_plays_data['labels'].append(game_play_date.strftime('%d/%m/%Y'))
+                daily_count = History.objects.filter(date__date=game_play_date).count()
+                cumulative_sum += daily_count
+                games_plays_data['data'].append(cumulative_sum)
+                
+    return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search, 'user_data': user_data, 'games_plays_data': games_plays_data})
 
 @login_required
 def rate_game(request,id):

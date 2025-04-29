@@ -65,7 +65,7 @@
             <h2 class="card-title text-center">Noter le jeu</h2>
             <form method="post" action="{% url 'rate_game' game.game_id %}">
                 {% csrf_token %}
-                <input type="hidden" id="rating_input" name="rating" value="1">  <!-- Définit une note par défaut -->
+                <input type="hidden" id="rating_input" name="rating" value="{{ base_note }}">  <!-- Définit une note par défaut -->
             
                 <div class="rating">
                     {% for i in "1234567890" %}
@@ -136,7 +136,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    updateStars(1);  // ⭐ Active la première étoile au chargement
+    const initialRating = parseInt({{ base_note }}, 10) || 1; // Utilise la valeur initiale ou 1 par défaut
+    updateStars(initialRating);  // Active les étoiles en fonction de la valeur initiale
 });
 // Gestion du formulaire des joueurs (autocomplétion dynamique)
 function updatePlayers(numPlayers) {

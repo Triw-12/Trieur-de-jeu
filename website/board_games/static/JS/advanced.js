@@ -26,8 +26,8 @@ $(function () {
             return $(this).text().toLowerCase().includes(searchValue);
         });
         $(".tag-btn").hide();
-        matchingTags.slice(0, showAll ? matchingTags.length : 5).show();
-        $("#show-more-tags").toggle(matchingTags.length > 5 && !showAll);
+        matchingTags.slice(0, showAll ? matchingTags.length : 4).show();
+        $("#show-more-tags").toggle(matchingTags.length > 4 && !showAll);
         $("#show-less-tags").toggle(showAll);
     }
 

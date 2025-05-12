@@ -54,6 +54,9 @@ Vous pouvez sinon exécuter `coverage report` pour avoir le rapport directement 
 ## TODO
 
 - [ ] Mettre en place les stats
-- [ ] Sauvegarder la note quand on a déjà noté un jeu
+- [x] Sauvegarder la note quand on a déjà noté un jeu
 - [ ] Mettre le message en rouge quand il y a une erreur
-- [ ] Ajouter un historique des derniers jeux jouées
+- [x] Ajouter un historique des derniers jeux jouées
+- [ ] Trier les tags par priorité et pas par ordre alphabétique
+- [ ] Résoudre ce fichu problème de duplication des jeux
+- [ ] Ajouter l'affichage des extensions

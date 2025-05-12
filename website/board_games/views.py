@@ -50,10 +50,10 @@ def home(request):
         favorite_games = [game for game, _ in favorite_games]
 
     # Récupérer les jeux avec les tags spécifiques
-    strategy_games = Games.objects.filter(tags__tag_id="Stratégie").distinct().order_by("rating").reverse()
-    reflexion_games = Games.objects.filter(tags__tag_id="Réflexion").distinct().order_by("rating").reverse()
-    luck_games = Games.objects.filter(tags__tag_id="Chance").distinct().order_by("rating").reverse()
-    dexterity_games = Games.objects.filter(tags__tag_id="Adresse").distinct().order_by("rating").reverse()
+    strategy_games = Games.objects.filter(tags__tag_id="Stratégie").distinct().order_by("-rating")
+    reflexion_games = Games.objects.filter(tags__tag_id="Réflexion").distinct().order_by("-rating")
+    luck_games = Games.objects.filter(tags__tag_id="Chance").distinct().order_by("-rating")
+    dexterity_games = Games.objects.filter(tags__tag_id="Adresse").distinct().order_by("-rating")
 
     # Rassembler tous les jeux pour récupérer leurs tags
     all_displayed_games = set(favorite_games) | set(strategy_games) | set(reflexion_games) | set(luck_games) | set(dexterity_games)
@@ -108,10 +108,16 @@ def advanced_search(request):
     simple_search = forms.Simple_search()
     form = forms.Advanced_search()
     tags = Tags.objects.all()
-    tags_id = []
-    for tag in tags:
-        if tag.tag_id not in tags_id:
-            tags_id.append(tag.tag_id)
+    tag_priorities = {
+        "Chance": 1, "Adresse": 2, "Réflexion": 3, "Stratégie": 4,
+        "Cartes": 5, "Plateau": 6, "Dés": 7, "AE": 8,
+        "Coop": 9, "Team VS": 10, "VS": 11
+    }
+
+    tags_id = sorted(
+        list(set(tag.tag_id for tag in tags)),
+        key=lambda tag: tag_priorities.get(tag, float('inf'))
+    )
     if request.method == 'POST':
         form = forms.Advanced_search(request.POST)
         simple_search = forms.Simple_search(request.POST)

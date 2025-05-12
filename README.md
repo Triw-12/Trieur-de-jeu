@@ -50,13 +50,3 @@ coverage html
 
 Et accédez à la page `htmlcov/index.html`
 Vous pouvez sinon exécuter `coverage report` pour avoir le rapport directement dans le terminal
-
-## TODO
-
-- [ ] Mettre en place les stats
-- [x] Sauvegarder la note quand on a déjà noté un jeu
-- [ ] Mettre le message en rouge quand il y a une erreur
-- [x] Ajouter un historique des derniers jeux jouées
-- [ ] Trier les tags par priorité et pas par ordre alphabétique
-- [ ] Résoudre ce fichu problème de duplication des jeux
-- [ ] Ajouter l'affichage des extensions

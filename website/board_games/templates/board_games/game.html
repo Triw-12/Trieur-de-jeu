@@ -58,6 +58,27 @@
         </div>
     </div>
 
+    <!-- Extensions -->
+    {% if extensions %}
+    <div class="card shadow-sm my-4">
+        <div class="card-body">
+            <h2 class="card-title text-center">Extensions</h2>
+            <ul class="list-group list-group-flush">
+                {% for extension in extensions %}
+                <li class="list-group-item">
+                    <strong>{{ extension.extension_name }}</strong>: 
+                    {% if extension.time_add != 0 %}
+                        Environ {{ extension.time_add }} minutes de jeu supplémentaire
+                    {% else %}
+                        Même temps de jeu
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
     {% if user.is_authenticated %}
     <!-- Notation du jeu -->
     <div class="card shadow-sm my-4">

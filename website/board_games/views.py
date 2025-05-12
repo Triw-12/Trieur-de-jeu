@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from board_games import forms
-from board_games.models import Games, Tags, History, History_players, Rating
+from board_games.models import Games, Tags, History, History_players, Rating, Extensions
 from board_games.recommandation.hybride import notes
 
 from authentification.models import User
@@ -187,6 +187,7 @@ def game(request, id):
     simple_search = forms.Simple_search()
     rating = forms.RateGame()
     game = Games.objects.get(game_id=id)
+    extensions = Extensions.objects.filter(game_id=game)
     users = User.objects.all()
     logger = logging.getLogger(__name__)
     error = False
@@ -232,7 +233,7 @@ def game(request, id):
         else:
             message = "Erreur dans le nombre de joueurs"
             logger.error('Erreur dans le nombre de joueurs: game_id=%s, num_players=%s, min_players=%s, max_players=%s', game.game_id, num_players, game.min_players, game.max_players)
-    return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating, 'base_note': base_note})
+    return render(request, 'board_games/game.html', context={'game': game, 'extensions': extensions, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating, 'base_note': base_note})
 
 @login_required
 def profil(request, id):

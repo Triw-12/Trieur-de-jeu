@@ -281,8 +281,64 @@ def stats(request):
             daily_count = History.objects.filter(date__date=game_play['play_date']).count()
             cumulative_sum += daily_count
             games_plays_data['data'].append(cumulative_sum)
+
+    ratings = Rating.objects.annotate(rating_date=TruncDate('date')).values('rating_date').distinct()
+    ratings_data = {
+        'labels': [],
+        'data': []
+    }
+    cumulative_sum = 0
+    for rating in ratings:
+        if rating['rating_date']:
+            ratings_data['labels'].append(rating['rating_date'].strftime('%d/%m/%Y'))
+            daily_count = Rating.objects.filter(date__date=rating['rating_date']).count()
+            cumulative_sum += daily_count
+            ratings_data['data'].append(cumulative_sum)
+
+    if request.user.is_authenticated:
+        user_games_plays = History.objects.filter(history_players__user_id=request.user).annotate(play_date=TruncDate('date')).values('play_date').distinct()
+        user_games_plays_data = {
+            'labels': [],
+            'data': []
+        }
+        cumulative_sum = 0
+        for game_play in user_games_plays:
+            if game_play['play_date']:
+                user_games_plays_data['labels'].append(game_play['play_date'].strftime('%d/%m/%Y'))
+                daily_count = History.objects.filter(date__date=game_play['play_date'], history_players__user_id=request.user).count()
+                cumulative_sum += daily_count
+                user_games_plays_data['data'].append(cumulative_sum)
+
+        user_ratings = Rating.objects.filter(user_id=request.user).annotate(rating_date=TruncDate('date')).values('rating_date').distinct()
+        user_ratings_data = {
+            'labels': [],
+            'data': []
+        }
+        cumulative_sum = 0
+        for rating in user_ratings:
+            if rating['rating_date']:
+                user_ratings_data['labels'].append(rating['rating_date'].strftime('%d/%m/%Y'))
+                daily_count = Rating.objects.filter(date__date=rating['rating_date'], user_id=request.user).count()
+                cumulative_sum += daily_count
+                user_ratings_data['data'].append(cumulative_sum)
+
+        return render(request, 'board_games/stats.html', context={
+            'users': users,
+            'simple_search': simple_search,
+            'user_data': user_data,
+            'games_plays_data': games_plays_data,
+            'ratings_data': ratings_data,
+            'user_games_plays_data': user_games_plays_data,
+            'user_ratings_data': user_ratings_data
+        })
+    return render(request, 'board_games/stats.html', context={
+            'users': users,
+            'simple_search': simple_search,
+            'user_data': user_data,
+            'games_plays_data': games_plays_data,
+            'ratings_data': ratings_data,
+        })
                 
-    return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search, 'user_data': user_data, 'games_plays_data': games_plays_data})
 
 @login_required
 def rate_game(request,id):

@@ -82,6 +82,7 @@ class Rating(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     rating = models.IntegerField("rating", blank=False, validators=[MinValueValidator(1), MaxValueValidator(10)])
+    date = models.DateTimeField("date", auto_now_add=True)
 
     class Meta:
         constraints = [

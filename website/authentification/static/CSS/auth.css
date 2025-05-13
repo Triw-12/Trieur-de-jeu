@@ -69,6 +69,7 @@ h1 {
 
 .popup-content {
     position: relative;
+    text-align: center;
 }
 
 .close-btn {

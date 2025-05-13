@@ -5,6 +5,15 @@ class AddGames(forms.ModelForm):
     class Meta:
         model = Games
         fields = ['game_name', 'stock_nb', 'game_length_min', 'game_length_max', 'min_players', 'max_players', 'min_age']
+        widgets = {
+            'game_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom du jeu'}),
+            'stock_nb': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Stock disponible'}),
+            'game_length_min': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Durée minimum (min)'}),
+            'game_length_max': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Durée maximum (min)'}),
+            'min_players': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Nombre minimum de joueurs'}),
+            'max_players': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Nombre maximum de joueurs'}),
+            'min_age': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Âge minimum'}),
+        }
 
 class AddExtensions(forms.ModelForm):
     class Meta:

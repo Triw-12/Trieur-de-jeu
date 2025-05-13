@@ -56,3 +56,7 @@
     left: 10px; /* Garde l'alignement à gauche (ajuste si nécessaire) */
     transform: translateY(-50%); /* Ajuste pour centrer précisément */
 }
+
+.dropdown{
+    z-index: 1050
+}

@@ -50,10 +50,26 @@ def home(request):
         favorite_games = [game for game, _ in favorite_games]
 
     # Récupérer les jeux avec les tags spécifiques
-    strategy_games = Games.objects.filter(tags__tag_id="Stratégie").distinct().order_by("-rating")
-    reflexion_games = Games.objects.filter(tags__tag_id="Réflexion").distinct().order_by("-rating")
-    luck_games = Games.objects.filter(tags__tag_id="Chance").distinct().order_by("-rating")
-    dexterity_games = Games.objects.filter(tags__tag_id="Adresse").distinct().order_by("-rating")
+    strategy_games = sorted(
+        Games.objects.filter(tags__tag_id="Stratégie").distinct(),
+        key=lambda game: game.rating() if hasattr(game, 'rating') else 0,
+        reverse=True
+    )
+    reflexion_games = sorted(
+        Games.objects.filter(tags__tag_id="Réflexion").distinct(),
+        key=lambda game: game.rating() if hasattr(game, 'rating') else 0,
+        reverse=True
+    )
+    luck_games = sorted(
+        Games.objects.filter(tags__tag_id="Chance").distinct(),
+        key=lambda game: game.rating() if hasattr(game, 'rating') else 0,
+        reverse=True
+    )
+    dexterity_games = sorted(
+        Games.objects.filter(tags__tag_id="Adresse").distinct(),
+        key=lambda game: game.rating() if hasattr(game, 'rating') else 0,
+        reverse=True
+    )
 
     # Rassembler tous les jeux pour récupérer leurs tags
     all_displayed_games = set(favorite_games) | set(strategy_games) | set(reflexion_games) | set(luck_games) | set(dexterity_games)

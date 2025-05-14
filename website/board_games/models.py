@@ -18,7 +18,7 @@ class Games(models.Model):
         return self.game_name
     
     def rating(self):
-        ratings = Rating.objects.filter(game_id=self)
+        ratings = Rating.objects.filter(game_id=self.pk)
         if not ratings.exists():
             return 0
         return sum(rating.rating for rating in ratings) / ratings.count()

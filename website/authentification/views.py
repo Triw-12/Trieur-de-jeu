@@ -27,8 +27,11 @@ def logout_custom(request):
 
 def login_custom(request):
     form = forms.LoginForm()
+    message = ""
+
     if request.user.is_authenticated:
         return redirect('home')
+
     if request.method == 'POST':
         form = forms.LoginForm(request.POST)
         if form.is_valid():
@@ -42,8 +45,9 @@ def login_custom(request):
                 return redirect('home')
             else:
                 message = 'Identifiants invalides.'
-    return render(
-        request, 'authentification/login.html', context={'form': form})
+
+    return render(request, 'authentification/login.html', context={'form': form, 'message': message})
+
 
 @login_required
 def reset_password(request):

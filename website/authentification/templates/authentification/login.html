@@ -5,20 +5,24 @@
 <link rel="stylesheet" href="{% static 'CSS/auth.css' %}">
 {% endblock head %}
 {% block body %}
-{% if form.errors %}
-{{ form.errors }}
-{% endif %}
 
 <div class="background container-fluid p-0">
     <img class="img-bg" src="{% static 'images/authentification/bg.jpg' %}">
     <div class="row background-pics">
     </div>
-
 </div>
+{% if message %}
+<div class="error-popup shadow-lg">
+    <div class="popup-content">
+        <span class="close-btn">&times;</span>
+        <p>{{ message }}</p>
+    </div>
+</div>
+{% endif %}
 <div class="foreground container-fluid">
     <div class="row">
-        <div class="d-flex col-lg-5 col-md-6 col-xs-12 align-items-center justify-content-center">
-            <div class="form p-3 pt-5 rounded-4">
+        <div class="card-auth d-flex col-lg-5 col-md-6 col-xs-12 align-items-center justify-content-center">
+            <div class="form p-3 pt-5 rounded-4 shadow-lg">
                 <h1 class="mb-3">Se connecter</h1>
                 <form method="post">
                     {% csrf_token %}
@@ -33,4 +37,5 @@
         </div>
     </div>
 </div>
+<script src="{% static 'JS/auth.js' %}"></script>
 {% endblock body %}

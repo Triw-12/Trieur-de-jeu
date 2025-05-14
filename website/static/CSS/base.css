@@ -56,3 +56,18 @@
     left: 10px; /* Garde l'alignement à gauche (ajuste si nécessaire) */
     transform: translateY(-50%); /* Ajuste pour centrer précisément */
 }
+
+.dropdown{
+    z-index: 1050
+}
+
+.img-bg {
+    position: fixed;    
+    top: 0;
+    left: 0;
+    width: 100vw;         
+    height: 100vh;       
+    object-fit: cover;   
+    object-position: center; 
+    z-index: -1;          
+}

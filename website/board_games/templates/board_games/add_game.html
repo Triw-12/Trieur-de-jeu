@@ -4,12 +4,53 @@
 Ajouter un jeu
 {% endblock title %}
 
-{% block body %}
-<h1>Ajouter un jeu</h1>
+{% block head %}
+<link rel="stylesheet" href="{% static 'CSS/add_game.css' %}">
+{% endblock head %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Ajouter</button>
-</form>
+{% block body %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">Ajouter un jeu</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <p class="label">Nom du jeu :</p>
+                        {{ form.game_name }}
+                    </div>
+                    <div class="mb-3">
+                        <p class="label">Nombre en stock :</p>
+                        {{ form.stock_nb }}
+                    </div>
+                    <div class="mb-3">
+                        <p class="label">Durée minimale :</p>
+                        {{ form.game_length_min }}
+                    </div>
+                    <div class="mb-3">
+                        <p class="label">Durée maximale :</p>
+                        {{ form.game_length_max }}
+                    </div>
+                    <div class="mb-3">
+                        <p class="label">Nombre de joueur minimal :</p>
+                        {{ form.min_players }}
+                    </div>
+                    <div class="mb-3">
+                        <p class="label">Nombre de joueur maximal :</p>
+                        {{ form.max_players }}
+                    </div>
+                    <div class="mb-3">
+                        <p class="label">Âge minimal :</p>
+                        {{ form.min_age }}
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Ajouter le jeu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock body %}

@@ -10,10 +10,17 @@
     height: 90vh;
 }
 
-.img-bg{
-    height: 100%;
-    width: 100%;
+.img-bg {
+    position: fixed;    
+    top: 0;
+    left: 0;
+    width: 100vw;         
+    height: 100vh;       
+    object-fit: cover;   
+    object-position: center; 
+    z-index: -1;          
 }
+
 
 h1 {
     text-align: center;
@@ -39,4 +46,44 @@ h1 {
 .background-pics{
     position: absolute;
     top: 10vh;
+}
+
+.card-auth{
+    z-index: 1;
+}
+
+.error-popup {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 10px;
+    padding: 15px;
+    z-index: 1100;  /* Plus élevé que tout le reste */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content {
+    position: relative;
+    text-align: center;
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #721c24;
+    background: none;
+    border: none;
+    padding: 0;
+}
+
+.close-btn:hover {
+    color: #d9534f;
 }

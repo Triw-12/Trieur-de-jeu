@@ -55,30 +55,27 @@ Profil - {{ user.username }}
                 </ul>
             </div>
         </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg rounded-lg p-4">
+                <h3 class="card-title mb-3">Historique des parties</h3>
+                <ul class="list-group list-group-flush">
+                    {% for partie in parties %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span><a href="{% url 'game' partie.history.game_id.game_id %}">{{ partie.history.game_id.game_name }}</a></span>
+                        <span>{{ partie.history.date|date:"d/m/Y" }}</span>
+                        <span>
+                            {% for player in partie.players %}
+                            {% if player != user %}
+                                <a href="{% url 'profil' player.id %}">{{ player.username }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
-<h3>Historique des parties</h3>
-<table>
-    <thead>
-        <tr>
-            <th>Jeu</th>
-            <th>Date</th>
-            <th>Avec</th>
-    </thead>
-    <tbody>
-        {% for partie in parties %}
-        <tr>
-            <td><a href="{% url 'game' partie.history.game_id.game_id %}">{{ partie.history.game_id.game_name }}</a></td>
-            <td>{{ partie.history.date|date:"d/m/Y" }}</td>
-            <td>
-                {% for player in partie.players %}
-                    {% if player != user %}
-                        <a href="{% url 'profil' player.id %}">{{ player.username }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endif %}
-                {% endfor %}
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 {% endblock body %}

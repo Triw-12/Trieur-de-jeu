@@ -27,7 +27,7 @@
                 <li class="list-group-item">
                     <strong>Note moyenne :</strong> 
                     {% if game.rating != 0 %}
-                        {{ game.rating }}/10
+                        {{ game.rating|floatformat:1 }}/10
                     {% else %}
                         Non noté
                     {% endif %}

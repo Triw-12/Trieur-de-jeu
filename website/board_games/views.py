@@ -210,7 +210,7 @@ def game(request, id):
     message = ""
     if 'rated' in request.GET:
         message = "Merci pour votre évaluation ! Vous avez donné la note de " + request.GET['rated'] + "/10"
-
+    base_note = 1
     if request.user.is_authenticated:
         try:
             rating = Rating.objects.get(game_id=game, user_id=request.user)

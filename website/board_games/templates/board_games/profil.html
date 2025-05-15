@@ -49,7 +49,7 @@ Profil - {{ user.username }}
                     {% if user.nb_games_rated > 0 %}
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Moyenne des notes données :</span>
-                        <span>{{ user.avg_rating }}/10</span>
+                        <span>{{ user.avg_rating|floatformat:1 }}/10</span>
                     </li>
                     {% endif %}
                 </ul>

@@ -25,6 +25,7 @@ Home
                                      alt="{{ game.game_name }}"
                                      onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.png' %}'">
                             </div>
+                        </a>
                                 <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
                                 <div class="game-info">
                                 {% with tags_game|get_item:game as tags %}
@@ -32,7 +33,6 @@ Home
                                 {% endwith %}
                                 <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
                             </div>
-                        </a>
                     </div>
                     {% endfor %}
                 </div>
@@ -53,6 +53,7 @@ Home
                                  alt="{{ game.game_name }}"
                                  onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
                         </div>
+                    </a>
                             <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
                             <div class="game-info">
                             {% with tags_game|get_item:game as tags %}
@@ -60,7 +61,6 @@ Home
                             {% endwith %}
                             <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
                         </div>
-                    </a>
                 </div>
                 {% endfor %}
             </div>
@@ -80,6 +80,7 @@ Home
                                  alt="{{ game.game_name }}"
                                  onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
                         </div>
+                    </a>
                             <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
                             <div class="game-info">
                             {% with tags_game|get_item:game as tags %}
@@ -87,7 +88,6 @@ Home
                             {% endwith %}
                             <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
                         </div>
-                    </a>
                 </div>
                 {% endfor %}
             </div>
@@ -107,6 +107,7 @@ Home
                                  alt="{{ game.game_name }}"
                                  onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
                         </div>
+                    </a>
                             <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
                             <div class="game-info">
                             {% with tags_game|get_item:game as tags %}
@@ -114,7 +115,6 @@ Home
                             {% endwith %}
                             <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
                         </div>
-                    </a>
                 </div>
                 {% endfor %}
             </div>
@@ -134,6 +134,7 @@ Home
                                  alt="{{ game.game_name }}"
                                  onerror="this.onerror=null; this.src='{% static 'images/board_games/point_interro.webp' %}'">
                         </div>
+                    </a>
                             <a href="{% url 'game' game.game_id %}" class="game-title">{{ game.game_name }}</a>                        
                             <div class="game-info">
                             {% with tags_game|get_item:game as tags %}
@@ -141,7 +142,6 @@ Home
                             {% endwith %}
                             <p><strong>Difficulté : </strong> {{ game.difficulty }}/5</p>
                         </div>
-                    </a>
                 </div>
                 {% endfor %}
             </div>

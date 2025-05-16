@@ -227,7 +227,7 @@ def game(request, id):
             added_users = set()
             for i in range(int(num_players)):
                 user = request.POST.get('player_' + str(i+1))
-                if user and user:
+                if user:
                     if user not in added_users:
                         try:
                             user_db = User.objects.get(username=user)

@@ -14,4 +14,6 @@ class ViewsTest(TestCase) :
 		self.assertEqual(dico[self.game], "Test tag1, Test tag2")
 
 
-		
+	def test_home(self) :
+		response = self.client.get('htmlcov/index.html')
+		print(response)

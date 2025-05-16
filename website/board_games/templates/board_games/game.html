@@ -19,6 +19,11 @@
     <div class="alert alert-info text-center mt-3">{{ message }}</div>
     {% endif %}
 
+    <!-- Message erreur éventuel -->
+    {% if message_erreur %}
+    <div class="alert alert-danger text-center mt-3">{{ message_erreur }}</div>
+    {% endif %}
+
     <!-- Carte Description -->
     <div class="card shadow-sm my-4">
         <div class="card-body">

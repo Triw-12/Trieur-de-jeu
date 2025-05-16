@@ -208,6 +208,7 @@ def game(request, id):
     logger = logging.getLogger(__name__)
     error = False
     message = ""
+    message_erreur = ""
     if 'rated' in request.GET:
         message = "Merci pour votre évaluation ! Vous avez donné la note de " + request.GET['rated'] + "/10"
     base_note = 1
@@ -232,13 +233,13 @@ def game(request, id):
                             user_db = User.objects.get(username=user)
                         except User.DoesNotExist:
                             error = True
-                            message = 'Un joueur n\'existe pas dans la base de données'
+                            message_erreur = 'Un joueur n\'existe pas dans la base de données'
                             logger.error('Un joueur n\'existe pas dans la base de données: user_id=%s, game_id=%s', user, game.game_id)
                         else:
                             History_players.objects.create(play_id=history, user_id=user_db)
                             added_users.add(user)
                     else:
-                        message = 'Un joueur a été ajouté plusieurs fois Merci de contacter un administrateur'
+                        message_erreur = 'Un joueur a été ajouté plusieurs fois. Merci de contacter un administrateur'
                         logger.error('Un joueur a été ajouté plusieurs fois: user_id=%s, game_id=%s', user, game.game_id)
                         error = True
             if not error:
@@ -247,9 +248,9 @@ def game(request, id):
             else:
                 History.objects.filter(play_id=history.play_id).delete()
         else:
-            message = "Erreur dans le nombre de joueurs"
+            message_erreur = "Erreur dans le nombre de joueurs"
             logger.error('Erreur dans le nombre de joueurs: game_id=%s, num_players=%s, min_players=%s, max_players=%s', game.game_id, num_players, game.min_players, game.max_players)
-    return render(request, 'board_games/game.html', context={'game': game, 'extensions': extensions, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating, 'base_note': base_note})
+    return render(request, 'board_games/game.html', context={'game': game, 'extensions': extensions, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating, 'base_note': base_note, 'message_erreur' : message_erreur})
 
 @login_required
 def profil(request, id):

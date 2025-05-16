@@ -17,15 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView
+from django.views.static import serve
+from django.conf import settings
 import authentification.views
 import board_games.views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('favicon.ico', serve, {'path': 'static/favicon.ico', 'document_root': settings.BASE_DIR}),
     path('', board_games.views.home, name='home'),
     path('login/', authentification.views.login_custom, name='login'),
-    path('logout/', authentification.views.logout_custom,name='logout'),
+    path('logout/', authentification.views.logout_custom, name='logout'),
     path('signup/', authentification.views.signup, name='signup'),
     path('reset_password/', authentification.views.reset_password, name='reset_password'),
     path('delete_account/<int:id>', authentification.views.delete_account, name='delete_account'),

@@ -1,6 +1,6 @@
 from math import *
 
-def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : float, joueur2_moyenne : float):
+def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : float, joueur2_moyenne : float, listvote : list):
 	""" Renvoie la Correlation de Pearson entre joueur1 et joueur2 selon nb_jeux_joues"""
 	
 	m : int = len(nb_jeux_joues[0])
@@ -10,9 +10,12 @@ def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : f
 	
 	for i in range(m):
 		if nb_jeux_joues[joueur1][i]*nb_jeux_joues[joueur2][i] != 0 :
-			scalaire += (nb_jeux_joues[joueur1][i] - joueur1_moyenne) * (nb_jeux_joues[joueur2][i] - joueur2_moyenne)
-			ecard_u +=  (nb_jeux_joues[joueur1][i] - joueur1_moyenne) ** 2
-			ecard_v += (nb_jeux_joues[joueur2][i] - joueur2_moyenne) ** 2
+			nb_joues_i_joueur1 = nb_jeux_joues[joueur1][i] * listvote[joueur][i] * 2 / 5
+			nb_joues_i_joueur2 = nb_jeux_joues[joueur2][i] * listvote[joueur][i] * 2 / 5
+			
+			scalaire += (nb_joues_i_joueur1 - joueur1_moyenne) * (nb_joues_i_joueur2 - joueur2_moyenne)
+			ecard_u +=  (nb_joues_i_joueur1 - joueur1_moyenne) ** 2
+			ecard_v += (nb_joues_i_joueur2[i] - joueur2_moyenne) ** 2
 	if ecard_u == 0 or ecard_v == 0:
 		return 0
 	return (scalaire/ (sqrt(ecard_u * ecard_v)))

@@ -24,8 +24,8 @@ class Transform_dataTests(TestCase) :
 		self.assertEqual(vectest[0][1], 20)
 		self.assertEqual(vectest[0][14],1) 
 
-	def test_number_play(self) :
+	def test_user_game_stats(self) :
 		
-		tabtest = number_play()
+		tabtest = user_game_stats()
 
 		self.assertEqual(tabtest[0][0][0], 1)

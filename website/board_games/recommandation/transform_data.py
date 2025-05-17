@@ -1,4 +1,4 @@
-from board_games.models import Games, Tags, History, History_players, Rating
+from board_games.models import Games, Tags, History_players, Rating
 from authentification.models import User
 		
 

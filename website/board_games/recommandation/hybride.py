@@ -1,6 +1,6 @@
 from board_games.recommandation.collaboratifVote import collaboratif
 from board_games.recommandation.contenusVote import contenus
-from board_games.recommandation.transform_data import games_to_vector, number_play, listvote
+from board_games.recommandation.transform_data import games_to_vector, user_game_stats
 
 
 nb_jeux_joues = []
@@ -13,7 +13,7 @@ def init():
 	global vecteur_jeux
 	global listvote
 	global dict_user
-	nb_jeux_joues, listvote, dict_user = number_play()
+	nb_jeux_joues, listvote, dict_user = user_game_stats()
 	vecteur_jeux = games_to_vector()
 
 

@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from board_games.models import Games, Tags, History, History_players
+from board_games.models import Games, Tags, History, History_players, Rating
 from authentification.models import User
 from board_games.recommandation.hybride import *
 
@@ -15,6 +15,8 @@ class HybrideTest(TestCase) :
 		
 		self.history = History.objects.create(game_id=self.game)
 		self.history_player = History_players.objects.create(play_id=self.history, user_id=self.user)
+		
+		Rating.objects.create(user_id=self.user,game_id=self.game,rating=5,date="10/10/2010")
 	
 	
 	def test_notes(self) :

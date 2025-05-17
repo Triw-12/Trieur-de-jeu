@@ -43,12 +43,16 @@ def barycentre(nb_jeux_joues: list, vecteur_jeux : list, joueur: int, nb_total_j
 	return vect_u
 
 
-def valeurHypp( dist : float, distmax : float, distmin : float, plus_jouer : int) :
+def valeurHypp( dist : float, distmax : float, distmin : float, plus_joue : int) :
 	"""Hypothèse: distmax > dist > distmin"""
 	"""Donne une valeur hypothétique de j pour X"""
 	assert distmax >= dist >= distmin
 	
-	return plus_jouer*(distmax-dist)/(distmax-distmin)
+	if distmax == distmin :
+		return plus_joue
+	
+	else :
+		return plus_joue*(distmax-dist)/(distmax-distmin)
 
 
 

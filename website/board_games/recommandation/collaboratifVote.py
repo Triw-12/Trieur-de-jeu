@@ -32,7 +32,7 @@ def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : f
 	return (scalaire/ (sqrt(ecard_u * ecard_v)))
 
 
-def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int):
+def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int, listvote : list):
 	"""Renvoie une note hypothétique de j pour joueur"""
 	
 	n : int = len(nb_jeux_joues)
@@ -63,7 +63,7 @@ def collaboratif(nb_jeux_joues : list, joueur : int, listvote : list) :
 	
 	for j in range(n):
 		
-		notes[j] = moyennePonderee(nb_jeux_joues,joueur,j)
+		notes[j] = moyennePonderee(nb_jeux_joues,joueur,j, listvote)
 
 	
 	return notes

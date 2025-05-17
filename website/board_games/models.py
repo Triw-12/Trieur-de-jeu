@@ -18,10 +18,10 @@ class Games(models.Model):
         return self.game_name
     
     def rating(self):
-        ratings = Rating.objects.filter(game_id=self.game_id)
-        if len(ratings) == 0:
+        ratings = Rating.objects.filter(game_id=self.pk)
+        if not ratings.exists():
             return 0
-        return sum([rating.rating for rating in ratings]) / len(ratings)
+        return sum(rating.rating for rating in ratings) / ratings.count()
 
 class Lending(models.Model):
     lending_id = models.AutoField(primary_key=True, blank=False)
@@ -82,6 +82,7 @@ class Rating(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     game_id = models.ForeignKey(Games,blank=False,on_delete=models.CASCADE)
     rating = models.IntegerField("rating", blank=False, validators=[MinValueValidator(1), MaxValueValidator(10)])
+    date = models.DateTimeField("date", auto_now_add=True)
 
     class Meta:
         constraints = [

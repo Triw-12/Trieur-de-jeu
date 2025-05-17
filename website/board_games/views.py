@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
 from board_games import forms
-from board_games.models import Games, Tags, History, History_players, Rating
+from board_games.models import Games, Tags, History, History_players, Rating, Extensions
 from board_games.recommandation.hybride import notes
 
 from authentification.models import User
@@ -11,6 +11,7 @@ from django.http import HttpResponseForbidden, HttpResponseNotFound
 import logging
 from os import listdir
 from django.conf import settings
+from django.db.models.functions import TruncDate
 
 
 def get_game_tags(games):
@@ -33,9 +34,6 @@ def get_game_tags(games):
 def home(request):
     simple_search = forms.Simple_search()
     favorite_games = []
-    social_games = []
-    bluff_games = []
-    deduction_games = []
 
     if request.user.is_authenticated:
         all_games = Games.objects.all()
@@ -52,10 +50,26 @@ def home(request):
         favorite_games = [game for game, _ in favorite_games]
 
     # Récupérer les jeux avec les tags spécifiques
-    strategy_games = Games.objects.filter(tags__tag_id="Stratégie").distinct().order_by("rating").reverse()
-    reflexion_games = Games.objects.filter(tags__tag_id="Réflexion").distinct().order_by("rating").reverse()
-    luck_games = Games.objects.filter(tags__tag_id="Chance").distinct().order_by("rating").reverse()
-    dexterity_games = Games.objects.filter(tags__tag_id="Adresse").distinct().order_by("rating").reverse()
+    strategy_games = sorted(
+        Games.objects.filter(tags__tag_id="Stratégie").distinct(),
+        key=lambda game: game.rating() if hasattr(game, 'rating') else 0,
+        reverse=True
+    )
+    reflexion_games = sorted(
+        Games.objects.filter(tags__tag_id="Réflexion").distinct(),
+        key=lambda game: game.rating() if hasattr(game, 'rating') else 0,
+        reverse=True
+    )
+    luck_games = sorted(
+        Games.objects.filter(tags__tag_id="Chance").distinct(),
+        key=lambda game: game.rating() if hasattr(game, 'rating') else 0,
+        reverse=True
+    )
+    dexterity_games = sorted(
+        Games.objects.filter(tags__tag_id="Adresse").distinct(),
+        key=lambda game: game.rating() if hasattr(game, 'rating') else 0,
+        reverse=True
+    )
 
     # Rassembler tous les jeux pour récupérer leurs tags
     all_displayed_games = set(favorite_games) | set(strategy_games) | set(reflexion_games) | set(luck_games) | set(dexterity_games)
@@ -110,10 +124,16 @@ def advanced_search(request):
     simple_search = forms.Simple_search()
     form = forms.Advanced_search()
     tags = Tags.objects.all()
-    tags_id = []
-    for tag in tags:
-        if tag.tag_id not in tags_id:
-            tags_id.append(tag.tag_id)
+    tag_priorities = {
+        "Chance": 1, "Adresse": 2, "Réflexion": 3, "Stratégie": 4,
+        "Cartes": 5, "Plateau": 6, "Dés": 7, "AE": 8,
+        "Coop": 9, "Team VS": 10, "VS": 11
+    }
+
+    tags_id = sorted(
+        list(set(tag.tag_id for tag in tags)),
+        key=lambda tag: tag_priorities.get(tag, float('inf'))
+    )
     if request.method == 'POST':
         form = forms.Advanced_search(request.POST)
         simple_search = forms.Simple_search(request.POST)
@@ -183,12 +203,23 @@ def game(request, id):
     simple_search = forms.Simple_search()
     rating = forms.RateGame()
     game = Games.objects.get(game_id=id)
+    extensions = Extensions.objects.filter(game_id=game)
     users = User.objects.all()
     logger = logging.getLogger(__name__)
     error = False
     message = ""
+    message_erreur = ""
     if 'rated' in request.GET:
-        message = "Merci pour votre évaluation! Vous avez donné la note de " + request.GET['rated'] + "/10"
+        message = "Merci pour votre évaluation ! Vous avez donné la note de " + request.GET['rated'] + "/10"
+    base_note = 1
+    if request.user.is_authenticated:
+        try:
+            rating = Rating.objects.get(game_id=game, user_id=request.user)
+        except Rating.DoesNotExist:
+            base_note = 1
+        else:
+            base_note = rating.rating
+    
     if request.method == 'POST':
         num_players = request.POST.get('num_players')
         if num_players and num_players.isdigit() and int(num_players) >= game.min_players and int(num_players) <= game.max_players:
@@ -196,36 +227,135 @@ def game(request, id):
             added_users = set()
             for i in range(int(num_players)):
                 user = request.POST.get('player_' + str(i+1))
-                if user and user.isdigit():
-                    user = int(user)
+                if user:
                     if user not in added_users:
-                        user_db = User.objects.get(id=user)
-                        History_players.objects.create(play_id=history, user_id=user_db)
-                        added_users.add(user)
+                        try:
+                            user_db = User.objects.get(username=user)
+                        except User.DoesNotExist:
+                            error = True
+                            message_erreur = 'Un joueur n\'existe pas dans la base de données'
+                            logger.error('Un joueur n\'existe pas dans la base de données: user_id=%s, game_id=%s', user, game.game_id)
+                        else:
+                            History_players.objects.create(play_id=history, user_id=user_db)
+                            added_users.add(user)
                     else:
-                        message = 'Un joueur a été ajouté plusieurs fois Merci de contacter un administrateur'
+                        message_erreur = 'Un joueur a été ajouté plusieurs fois. Merci de contacter un administrateur'
                         logger.error('Un joueur a été ajouté plusieurs fois: user_id=%s, game_id=%s', user, game.game_id)
                         error = True
             if not error:
                 message = 'Partie enregistrée'
                 logger.info('Partie enregistrée: game_id=%s, players=%s', game.game_id, list(added_users))
+            else:
+                History.objects.filter(play_id=history.play_id).delete()
         else:
-            message = "Erreur dans le nombre de joueurs"
+            message_erreur = "Erreur dans le nombre de joueurs"
             logger.error('Erreur dans le nombre de joueurs: game_id=%s, num_players=%s, min_players=%s, max_players=%s', game.game_id, num_players, game.min_players, game.max_players)
-    return render(request, 'board_games/game.html', context={'game': game, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating})
+    return render(request, 'board_games/game.html', context={'game': game, 'extensions': extensions, 'simple_search': simple_search, 'users': users, 'message': message, 'form': rating, 'base_note': base_note, 'message_erreur' : message_erreur})
 
 @login_required
 def profil(request, id):
     simple_search = forms.Simple_search()
-    if request.user.id != id and not request.user.is_superuser:
-        return HttpResponseForbidden()
     user = User.objects.get(id=id)
-    return render(request, 'board_games/profil.html', context={'user': user, 'simple_search': simple_search})
+    history_players = History_players.objects.filter(user_id=user)[:10]
+    history = History.objects.filter(play_id__in=history_players.values_list('play_id', flat=True)).order_by('-date')
+    
+    # Grouper les parties par play_id et récupérer les utilisateurs ayant joué chaque partie
+    parties = []
+    for play_id in history.values_list('play_id', flat=True).distinct():
+        play_history = History_players.objects.filter(play_id=play_id)
+        players = User.objects.filter(id__in=play_history.values_list('user_id', flat=True))
+        parties.append({
+            'history': history.get(play_id=play_id),
+            'players': players
+        })
+    print(parties)
+    return render(request, 'board_games/profil.html', context={'user': user, 'simple_search': simple_search, 'parties': parties})
 
 def stats(request):
     simple_search = forms.Simple_search()
-    users = User.objects.all()
-    return render(request, 'board_games/stats.html', context={'users': users, 'simple_search': simple_search})
+    users = User.objects.annotate(date_joined_date=TruncDate('date_joined')).values('date_joined_date').distinct()
+    user_data = {
+        'labels': [],
+        'data': []
+    }
+    cumulative_sum = 0
+    for user in users:
+        if user['date_joined_date']:
+            user_data['labels'].append(user['date_joined_date'].strftime('%d/%m/%Y'))
+            daily_count = User.objects.filter(date_joined__date=user['date_joined_date']).count()
+            cumulative_sum += daily_count
+            user_data['data'].append(cumulative_sum)
+
+    games_plays = History.objects.annotate(play_date=TruncDate('date')).values('play_date').distinct()
+    games_plays_data = {
+        'labels': [],
+        'data': []
+    }
+    cumulative_sum = 0
+    for game_play in games_plays:
+        if game_play['play_date']:
+            games_plays_data['labels'].append(game_play['play_date'].strftime('%d/%m/%Y'))
+            daily_count = History.objects.filter(date__date=game_play['play_date']).count()
+            cumulative_sum += daily_count
+            games_plays_data['data'].append(cumulative_sum)
+
+    ratings = Rating.objects.annotate(rating_date=TruncDate('date')).values('rating_date').distinct()
+    ratings_data = {
+        'labels': [],
+        'data': []
+    }
+    cumulative_sum = 0
+    for rating in ratings:
+        if rating['rating_date']:
+            ratings_data['labels'].append(rating['rating_date'].strftime('%d/%m/%Y'))
+            daily_count = Rating.objects.filter(date__date=rating['rating_date']).count()
+            cumulative_sum += daily_count
+            ratings_data['data'].append(cumulative_sum)
+
+    if request.user.is_authenticated:
+        user_games_plays = History.objects.filter(history_players__user_id=request.user).annotate(play_date=TruncDate('date')).values('play_date').distinct()
+        user_games_plays_data = {
+            'labels': [],
+            'data': []
+        }
+        cumulative_sum = 0
+        for game_play in user_games_plays:
+            if game_play['play_date']:
+                user_games_plays_data['labels'].append(game_play['play_date'].strftime('%d/%m/%Y'))
+                daily_count = History.objects.filter(date__date=game_play['play_date'], history_players__user_id=request.user).count()
+                cumulative_sum += daily_count
+                user_games_plays_data['data'].append(cumulative_sum)
+
+        user_ratings = Rating.objects.filter(user_id=request.user).annotate(rating_date=TruncDate('date')).values('rating_date').distinct()
+        user_ratings_data = {
+            'labels': [],
+            'data': []
+        }
+        cumulative_sum = 0
+        for rating in user_ratings:
+            if rating['rating_date']:
+                user_ratings_data['labels'].append(rating['rating_date'].strftime('%d/%m/%Y'))
+                daily_count = Rating.objects.filter(date__date=rating['rating_date'], user_id=request.user).count()
+                cumulative_sum += daily_count
+                user_ratings_data['data'].append(cumulative_sum)
+
+        return render(request, 'board_games/stats.html', context={
+            'users': users,
+            'simple_search': simple_search,
+            'user_data': user_data,
+            'games_plays_data': games_plays_data,
+            'ratings_data': ratings_data,
+            'user_games_plays_data': user_games_plays_data,
+            'user_ratings_data': user_ratings_data
+        })
+    return render(request, 'board_games/stats.html', context={
+            'users': users,
+            'simple_search': simple_search,
+            'user_data': user_data,
+            'games_plays_data': games_plays_data,
+            'ratings_data': ratings_data,
+        })
+                
 
 @login_required
 def rate_game(request,id):

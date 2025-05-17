@@ -19,7 +19,7 @@
                 <form method="post">
                     {% csrf_token %}
                     <input type="submit" value="Confirmer" class="btn btn-danger">
-                    <a href="{% url 'home' %}" class="btn btn-secondary">Annuler</a>
+                    <a href="{% url 'profil' user.id %}" class="btn btn-secondary">Annuler</a>
                 </form>
             </div>
         </div>

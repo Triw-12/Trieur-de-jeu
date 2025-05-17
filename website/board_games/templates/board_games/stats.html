@@ -3,7 +3,91 @@
 {% block title %}
 Statistiques
 {% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'CSS/stats.css' %}">
+{% endblock head %}
 
 {% block body %}
-<h1>Statistiques</h1>   
+<h1>Statistiques</h1>
+<div id="stats-chart-container">
+    <div class="chart-row">
+        <canvas id="nb-players-chart-1"></canvas>
+        <canvas id="games-played-chart-2"></canvas>
+        <canvas id="rating-chart-3"></canvas>
+    </div>
+    {% if request.user.is_authenticated %}
+    <div class="chart-row">
+        <canvas id="user-games-chart-4"></canvas>
+        <canvas id="user-ratings-chart-5"></canvas>
+    </div>
+    {% endif %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    function createChart(ctxId, chartType, labels, data, label, borderColor, backgroundColor, xTitle, yTitle) {
+        const ctx = document.getElementById(ctxId).getContext('2d');
+        return new Chart(ctx, {
+            type: chartType,
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: label,
+                    data: data,
+                    borderColor: borderColor,
+                    backgroundColor: backgroundColor,
+                    borderWidth: 2,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: xTitle
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: yTitle
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+
+    const labels_user = {{ user_data.labels|safe }};
+    const data_user = {{ user_data.data|safe }};
+    const labels_game = {{ games_plays_data.labels|safe }};
+    const data_game = {{ games_plays_data.data|safe }};
+    const labels_rating = {{ ratings_data.labels|safe }};
+    const data_rating = {{ ratings_data.data|safe }};
+    {% if request.user.is_authenticated %}
+    const labels_user_game = {{ user_games_plays_data.labels|safe }};
+    const data_user_game = {{ user_games_plays_data.data|safe }};
+    const labels_user_rating = {{ user_ratings_data.labels|safe }};
+    const data_user_rating = {{ user_ratings_data.data|safe }};
+    {% endif %}
+    
+    createChart('nb-players-chart-1', 'line', labels_user, data_user, 'Nombre de joueurs', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)', 'Date', 'Nombre de joueurs');
+    createChart('games-played-chart-2', 'line', labels_game, data_game, 'Nombre de parties', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)', 'Date', 'Nombre de parties');
+    createChart('rating-chart-3', 'line', labels_rating, data_rating, 'Nombre de notes données', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 0.2)', 'Date', 'Nombre de notes données');
+    {% if request.user.is_authenticated %}
+    createChart('user-games-chart-4', 'line', labels_user_game, data_user_game, 'Nombre de parties pour {{ request.user.username }} ', 'rgba(75, 192, 192, 1)', 'rgba(75, 192, 192, 0.2)', 'Date', 'Parties jouées par {{ request.user.username }}');
+    createChart('user-ratings-chart-5', 'line', labels_user_rating, data_user_rating, 'Nombre de notes de {{ request.user.username }}', 'rgba(153, 102, 255, 1)', 'rgba(153, 102, 255, 0.2)', 'Date', 'Notes données par {{ request.user.username }}');
+    {% endif %}
+</script>
+
 {% endblock body %}

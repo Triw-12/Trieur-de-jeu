@@ -19,6 +19,11 @@
     <div class="alert alert-info text-center mt-3">{{ message }}</div>
     {% endif %}
 
+    <!-- Message erreur éventuel -->
+    {% if message_erreur %}
+    <div class="alert alert-danger text-center mt-3">{{ message_erreur }}</div>
+    {% endif %}
+
     <!-- Carte Description -->
     <div class="card shadow-sm my-4">
         <div class="card-body">
@@ -27,7 +32,7 @@
                 <li class="list-group-item">
                     <strong>Note moyenne :</strong> 
                     {% if game.rating != 0 %}
-                        {{ game.rating }}/10
+                        {{ game.rating|floatformat:1 }}/10
                     {% else %}
                         Non noté
                     {% endif %}
@@ -58,6 +63,27 @@
         </div>
     </div>
 
+    <!-- Extensions -->
+    {% if extensions %}
+    <div class="card shadow-sm my-4">
+        <div class="card-body">
+            <h2 class="card-title text-center">Extensions</h2>
+            <ul class="list-group list-group-flush">
+                {% for extension in extensions %}
+                <li class="list-group-item">
+                    <strong>{{ extension.extension_name }}</strong>: 
+                    {% if extension.time_add != 0 %}
+                        Environ {{ extension.time_add }} minutes de jeu supplémentaire
+                    {% else %}
+                        Même temps de jeu
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
     {% if user.is_authenticated %}
     <!-- Notation du jeu -->
     <div class="card shadow-sm my-4">
@@ -65,7 +91,7 @@
             <h2 class="card-title text-center">Noter le jeu</h2>
             <form method="post" action="{% url 'rate_game' game.game_id %}">
                 {% csrf_token %}
-                <input type="hidden" id="rating_input" name="rating" value="1">  <!-- Définit une note par défaut -->
+                <input type="hidden" id="rating_input" name="rating" value="{{ base_note }}">  <!-- Définit une note par défaut -->
             
                 <div class="rating">
                     {% for i in "1234567890" %}
@@ -102,7 +128,7 @@
 
                 <div id="players">
                     <label for="player_1" class="form-label">Joueur 1 :</label>
-                    <input type="text" name="player_1" id="player_1" class="form-control" list="players_list" required>
+                    <input type="text" name="player_1" id="player_1" class="form-control" value="{{ user.username }}" readonly required>
                 </div>
 
                 <datalist id="players_list">
@@ -136,13 +162,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    updateStars(1);  // ⭐ Active la première étoile au chargement
+    const initialRating = parseInt({{ base_note }}, 10) || 1; // Utilise la valeur initiale ou 1 par défaut
+    updateStars(initialRating);  // Active les étoiles en fonction de la valeur initiale
 });
 // Gestion du formulaire des joueurs (autocomplétion dynamique)
 function updatePlayers(numPlayers) {
     var playersDiv = document.getElementById('players');
     playersDiv.innerHTML = '';
-    for (var i = 1; i <= numPlayers; i++) {
+    
+    // Ajoute le joueur connecté en premier
+    var label = document.createElement('label');
+    label.setAttribute('for', 'player_1');
+    label.textContent = 'Joueur 1 :';
+    label.classList.add('form-label');
+    playersDiv.appendChild(label);
+
+    var input = document.createElement('input');
+    input.setAttribute('type', 'text');
+    input.setAttribute('name', 'player_1');
+    input.setAttribute('id', 'player_1');
+    input.setAttribute('class', 'form-control');
+    input.setAttribute('value', '{{ user.username }}');
+    input.setAttribute('readonly', true);
+    input.required = true;
+    playersDiv.appendChild(input);
+
+    // Ajoute les autres joueurs
+    for (var i = 2; i <= numPlayers; i++) {
         var label = document.createElement('label');
         label.setAttribute('for', 'player_' + i);
         label.textContent = 'Joueur ' + i + ' :';
@@ -166,10 +212,9 @@ if (numPlayersSelect) {
     numPlayersSelect.addEventListener("change", function () {
         updatePlayers(this.value);
     });
-updatePlayers(numPlayersSelect.value);
+    updatePlayers(numPlayersSelect.value);
 }
 </script>
-    
 {% endif %}
 
 {% endblock body %}

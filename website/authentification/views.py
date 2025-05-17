@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 
 from authentification import forms
 from django.forms import ValidationError
+from authentification.models import User
 
 def signup(request):
     form = forms.SignupForm()
@@ -80,10 +81,13 @@ def reset_password(request):
     return render(request, 'authentification/reset_password.html', context={'form': form, 'message': message})
 
 @login_required
-def delete_account(request):
+def delete_account(request, id):
+    user = User.objects.get(id=id)
+    if request.user != user and not request.user.is_superuser:
+        return redirect('home')
     if request.method == 'POST':
-        user = request.user
-        logout(request)
+        if request.user == user:
+            logout(request)
         user.delete()
         return redirect('home')
     return render(request, 'authentification/delete_account.html')

@@ -20,10 +20,12 @@ Profil - {{ user.username }}
                 <p><strong>Profil créé le :</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
                 <p><strong>Dernière connexion :</strong> {{ user.last_login|date:"d/m/Y H:i" }}</p>
 
+                {% if request.user == user or request.user.is_superuser %}
                 <div class="d-flex justify-content-between mt-4">
                     <a href="{% url 'reset_password' %}" class="btn btn-primary">Changer le mot de passe</a>
-                    <a href="{% url 'delete_account' %}" class="btn btn-danger">Supprimer le compte</a>
+                    <a href="{% url 'delete_account' user.id %}" class="btn btn-danger">Supprimer le compte</a>
                 </div>
+                {% endif %}
             </div>
         </div>
 
@@ -47,13 +49,33 @@ Profil - {{ user.username }}
                     {% if user.nb_games_rated > 0 %}
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Moyenne des notes données :</span>
-                        <span>{{ user.avg_rating }}/10</span>
+                        <span>{{ user.avg_rating|floatformat:1 }}/10</span>
                     </li>
                     {% endif %}
                 </ul>
             </div>
         </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-lg rounded-lg p-4">
+                <h3 class="card-title mb-3">Historique des parties</h3>
+                <ul class="list-group list-group-flush">
+                    {% for partie in parties %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span><a href="{% url 'game' partie.history.game_id.game_id %}">{{ partie.history.game_id.game_name }}</a></span>
+                        <span>{{ partie.history.date|date:"d/m/Y" }}</span>
+                        <span>
+                            {% for player in partie.players %}
+                            {% if player != user %}
+                                <a href="{% url 'profil' player.id %}">{{ player.username }}</a>{% if not forloop.last %}, {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock body %}

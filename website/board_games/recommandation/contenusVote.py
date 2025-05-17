@@ -32,8 +32,8 @@ def barycentre(nb_jeux_joues: list, vecteur_jeux : list, joueur: int, nb_total_j
 	
 	for i in range (len(vecteur_jeux)) :	#Pour chaque jeu
 		
-		if listvote[i] != 0 :
-			voteCoef = listvote[i] * 2 / 5
+		if listvote[joueur][i] != -1 :
+			voteCoef = listvote[joueur][i] * 2 / 5
 		else :
 			voteCoef = 1
 		

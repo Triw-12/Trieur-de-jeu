@@ -52,7 +52,7 @@ def valeurHypp( dist : float, distmax : float, distmin : float, plus_jouer : int
 
 
 
-def contenus(nb_jeux_joues :list , vecteur_jeux : list, joueur : int, nb_jeux_jouee_par_joueur : int) :
+def contenus(nb_jeux_joues :list , vecteur_jeux : list, joueur : int, nb_jeux_jouee_par_joueur : int, listvote : list) :
 	"""Renvoie un tableau des notes hypothétiques pour joueur pour les jeux non joués de nb_jeux_joues de taille n x m, les jeux sont représentés par des vecteurs de taille nx dans vecteur_jeux"""
 	assert len(nb_jeux_joues[0]) == len(vecteur_jeux)
 	m = len(vecteur_jeux)

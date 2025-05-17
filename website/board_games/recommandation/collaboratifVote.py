@@ -44,7 +44,7 @@ def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int):
 		return (joueur_moyenne + (pearpond/pear))
 
 
-def collaboratif(nb_jeux_joues : list, joueur : int) :
+def collaboratif(nb_jeux_joues : list, joueur : int, listvote : list) :
 	"""Hypothèse: nb_jeux_joues est de taille m*n ; joueur<m"""
 	"""Renvoie des notes hypothétiques pour le joueur joueur à partir de nb_jeux_joues"""
 	n = len(nb_jeux_joues[0])

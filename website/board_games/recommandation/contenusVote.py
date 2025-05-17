@@ -32,8 +32,8 @@ def barycentre(nb_jeux_joues: list, vecteur_jeux : list, joueur: int, nb_total_j
 	
 	for i in range (len(vecteur_jeux)) :	#Pour chaque jeu
 		
-		if listvote[joueur][i] != -1 :
-			voteCoef = listvote[joueur][i] * 2 / 5
+		if listvote[joueur][i] != 0 :
+			voteCoef = listvote[joueur][i] * 2 / 10
 		else :
 			voteCoef = 1
 		
@@ -43,16 +43,20 @@ def barycentre(nb_jeux_joues: list, vecteur_jeux : list, joueur: int, nb_total_j
 	return vect_u
 
 
-def valeurHypp( dist : float, distmax : float, distmin : float, plus_jouer : int) :
+def valeurHypp( dist : float, distmax : float, distmin : float, plus_joue : int) :
 	"""Hypothèse: distmax > dist > distmin"""
 	"""Donne une valeur hypothétique de j pour X"""
 	assert distmax >= dist >= distmin
 	
-	return plus_jouer*(distmax-dist)/(distmax-distmin)
+	if distmax == distmin :
+		return plus_joue
+	
+	else :
+		return plus_joue*(distmax-dist)/(distmax-distmin)
 
 
 
-def contenus(nb_jeux_joues :list , vecteur_jeux : list, joueur : int, nb_jeux_jouee_par_joueur : int) :
+def contenus(nb_jeux_joues :list , vecteur_jeux : list, joueur : int, nb_jeux_jouee_par_joueur : int, listvote : list) :
 	"""Renvoie un tableau des notes hypothétiques pour joueur pour les jeux non joués de nb_jeux_joues de taille n x m, les jeux sont représentés par des vecteurs de taille nx dans vecteur_jeux"""
 	assert len(nb_jeux_joues[0]) == len(vecteur_jeux)
 	m = len(vecteur_jeux)

@@ -10,18 +10,29 @@ def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : f
 	
 	for i in range(m):
 		if nb_jeux_joues[joueur1][i]*nb_jeux_joues[joueur2][i] != 0 :
-			nb_joues_i_joueur1 = nb_jeux_joues[joueur1][i] * listvote[joueur][i] * 2 / 5
-			nb_joues_i_joueur2 = nb_jeux_joues[joueur2][i] * listvote[joueur][i] * 2 / 5
+			
+			if listvote[joueur1][i] == 0 :
+				coefvote1 = 1
+			else :
+				coefvote1 = listvote[joueur1][i] * 2 / 10
+			
+			if listvote[joueur2][i] == 0 :
+				coefvote2 = 1
+			else :
+				coefvote2 = listvote[joueur2][i] * 2 / 10	
+				
+			nb_joues_i_joueur1 = nb_jeux_joues[joueur1][i] * coefvote1
+			nb_joues_i_joueur2 = nb_jeux_joues[joueur2][i] * coefvote2
 			
 			scalaire += (nb_joues_i_joueur1 - joueur1_moyenne) * (nb_joues_i_joueur2 - joueur2_moyenne)
 			ecard_u +=  (nb_joues_i_joueur1 - joueur1_moyenne) ** 2
-			ecard_v += (nb_joues_i_joueur2[i] - joueur2_moyenne) ** 2
+			ecard_v += (nb_joues_i_joueur2 - joueur2_moyenne) ** 2
 	if ecard_u == 0 or ecard_v == 0:
 		return 0
 	return (scalaire/ (sqrt(ecard_u * ecard_v)))
 
 
-def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int):
+def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int, listvote : list):
 	"""Renvoie une note hypothétique de j pour joueur"""
 	
 	n : int = len(nb_jeux_joues)
@@ -34,7 +45,7 @@ def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int):
 	for joueur2 in range(n) :
 		if nb_jeux_joues[joueur2][j] > 0 :
 			joueur2_moyenne = sum(nb_jeux_joues[joueur2])/m
-			res_pearson = pearson(nb_jeux_joues, joueur, joueur2, joueur_moyenne, joueur2_moyenne)
+			res_pearson = pearson(nb_jeux_joues, joueur, joueur2, joueur_moyenne, joueur2_moyenne, listvote)
 			ppuiss = pow(abs(res_pearson),1.5) * res_pearson
 			pear += ppuiss
 			pearpond += (nb_jeux_joues[joueur2][j] - joueur2_moyenne) * ppuiss
@@ -44,7 +55,7 @@ def moyennePonderee(nb_jeux_joues: list, joueur: int, j: int):
 		return (joueur_moyenne + (pearpond/pear))
 
 
-def collaboratif(nb_jeux_joues : list, joueur : int) :
+def collaboratif(nb_jeux_joues : list, joueur : int, listvote : list) :
 	"""Hypothèse: nb_jeux_joues est de taille m*n ; joueur<m"""
 	"""Renvoie des notes hypothétiques pour le joueur joueur à partir de nb_jeux_joues"""
 	n = len(nb_jeux_joues[0])
@@ -52,7 +63,7 @@ def collaboratif(nb_jeux_joues : list, joueur : int) :
 	
 	for j in range(n):
 		
-		notes[j] = moyennePonderee(nb_jeux_joues,joueur,j)
+		notes[j] = moyennePonderee(nb_jeux_joues,joueur,j, listvote)
 
 	
 	return notes

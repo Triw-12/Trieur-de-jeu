@@ -1,4 +1,4 @@
-from board_games.models import Games, Tags, History, History_players
+from board_games.models import Games, Tags, History, History_players, Rating
 from authentification.models import User
 		
 
@@ -49,14 +49,18 @@ def games_to_vector():
     return games_vector
 
 
-def number_play():
+def user_game_stats():
     """
-    Renvoie une matrice dont la première composante et le joueur, la deuxième composante est un jeu et la case contient le nombre de fois que le joueur a joué au jeu
+    Renvoie deux matrices :
+    - nb_jeux_joues : la première composante est le joueur, la deuxième est un jeu, la case contient le nombre de fois que le joueur a joué au jeu
+    - listvote : la première composante est le joueur, la deuxième est un jeu, la case contient le vote du joueur pour le jeu
+    Ainsi qu'un dictionnaire dict_user qui mappe l'id utilisateur à l'indice de la matrice.
     """
     users = User.objects.all()
     games = Games.objects.all()
     dict_user = {}
     nb_jeux_joues = [[0 for _ in range(len(games))] for _ in range(len(users))]
+    listvote = [[0 for _ in range(len(games))] for _ in range(len(users))]
     for i, user in enumerate(users):
         history_players = History_players.objects.filter(user_id=user)
         dict_user[user.id] = i
@@ -64,5 +68,10 @@ def number_play():
             history = history_player.play_id
             game = history.game_id
             nb_jeux_joues[i][game.game_id-1] += 1
-    return nb_jeux_joues, dict_user
 
+            rating = Rating.objects.filter(user_id=user, game_id=game).first()
+            if rating is not None:
+                listvote[i][game.game_id-1] = rating.rating
+            else:
+                listvote[i][game.game_id-1] = 0
+    return nb_jeux_joues, listvote, dict_user

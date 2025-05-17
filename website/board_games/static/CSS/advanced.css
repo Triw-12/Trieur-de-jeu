@@ -89,3 +89,8 @@
     width: 200px;
     cursor: pointer;
 }
+
+.card {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}

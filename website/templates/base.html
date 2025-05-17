@@ -55,8 +55,13 @@
             </ul>
         </div>
     </div>
-
-    {% block body %}{% endblock body %}
+    <div class="background container-fluid p-0"></div>
+        <img class="img-bg" src="{% static 'images/base/bg.jpg' %}">
+        <div class="row background-pics">
+        </div>
+    </div>
+    {% block body %}
+    {% endblock body %}
 </body>
 
 

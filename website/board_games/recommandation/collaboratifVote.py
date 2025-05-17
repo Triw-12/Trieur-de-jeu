@@ -14,12 +14,12 @@ def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : f
 			if listvote[joueur1][i] == 0 :
 				coefvote1 = 1
 			else :
-				coefvote1 = listvote[joueur1][i] * 2 / 5
+				coefvote1 = listvote[joueur1][i] * 2 / 10
 			
 			if listvote[joueur2][i] == 0 :
 				coefvote2 = 1
 			else :
-				coefvote2 = listvote[joueur2][i] * 2 / 5	
+				coefvote2 = listvote[joueur2][i] * 2 / 10	
 				
 			nb_joues_i_joueur1 = nb_jeux_joues[joueur1][i] * coefvote1
 			nb_joues_i_joueur2 = nb_jeux_joues[joueur2][i] * coefvote2

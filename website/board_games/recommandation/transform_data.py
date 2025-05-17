@@ -68,10 +68,10 @@ def user_game_stats():
             history = history_player.play_id
             game = history.game_id
             nb_jeux_joues[i][game.game_id-1] += 1
-            # Get the rating for this user and game, if it exists
+
             rating = Rating.objects.filter(user_id=user, game_id=game).first()
             if rating is not None:
                 listvote[i][game.game_id-1] = rating.rating
             else:
-                listvote[i][game.game_id-1] = 0  # or None if you prefer
+                listvote[i][game.game_id-1] = 0
     return nb_jeux_joues, listvote, dict_user

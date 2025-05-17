@@ -10,8 +10,8 @@ def pearson(nb_jeux_joues: list, joueur1: int, joueur2: int, joueur1_moyenne : f
 	
 	for i in range(m):
 		if nb_jeux_joues[joueur1][i]*nb_jeux_joues[joueur2][i] != 0 :
-			nb_joues_i_joueur1 = nb_jeux_joues[joueur1][i] * listvote[joueur][i] * 2 / 5
-			nb_joues_i_joueur2 = nb_jeux_joues[joueur2][i] * listvote[joueur][i] * 2 / 5
+			nb_joues_i_joueur1 = nb_jeux_joues[joueur1][i] * listvote[joueur1][i] * 2 / 5
+			nb_joues_i_joueur2 = nb_jeux_joues[joueur2][i] * listvote[joueur2][i] * 2 / 5
 			
 			scalaire += (nb_joues_i_joueur1 - joueur1_moyenne) * (nb_joues_i_joueur2 - joueur2_moyenne)
 			ecard_u +=  (nb_joues_i_joueur1 - joueur1_moyenne) ** 2
